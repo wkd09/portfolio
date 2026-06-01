@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="ko" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Engineer, MLOps, LLMOps를 지향하는 장준민의 포트폴리오">
+  <title>장준민 | AI Engineer Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Pretendard', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            dark: '#08090A',
+            card: '#0F1112',
+          },
+          animation: {
+            'fade-in': 'fadeIn .8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'slide-up': 'slideUp .7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(18px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection {
+      background: rgba(99, 102, 241, 0.22);
+      color: #818cf8;
+    }
+
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      opacity: .025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, .76);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 0, 0, .08);
+    }
+
+    .dark .glass-panel {
+      background: rgba(15, 17, 18, .7);
+      border-color: rgba(255, 255, 255, .08);
+    }
+
+    .glass-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.58));
+      border: 1px solid rgba(0,0,0,.08);
+      transition: border-color .25s ease, transform .25s ease, background .25s ease;
+    }
+
+    .dark .glass-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+      border-color: rgba(255,255,255,.08);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(99, 102, 241, .38);
+    }
+
+    .nav-link.active {
+      color: #111827;
+      background: rgba(0,0,0,.05);
+    }
+
+    .dark .nav-link.active {
+      color: #fff;
+      background: rgba(255,255,255,.08);
+    }
+
+    .section-title {
+      letter-spacing: -.02em;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.08);
+      padding: .25rem .6rem;
+      font-size: 11px;
+      line-height: 1.25rem;
+      color: rgb(82 82 91);
+    }
+
+    .dark .badge {
+      border-color: rgba(255,255,255,.1);
+      color: rgb(212 212 216);
+    }
+
+    @media (max-width: 767px) {
+      .nav-scroll {
+        max-width: calc(100vw - 24px);
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#FAFAFA] text-neutral-900 transition-colors duration-500 dark:bg-dark dark:text-[#EAEAEA]">
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="fixed left-[-10%] top-[-20%] h-[420px] w-[420px] rounded-full bg-indigo-500/10 blur-[120px] dark:bg-indigo-500/20" aria-hidden="true"></div>
+  <div class="fixed bottom-[-20%] right-[-10%] h-[520px] w-[520px] rounded-full bg-cyan-500/10 blur-[120px] dark:bg-cyan-500/10" aria-hidden="true"></div>
+  <canvas id="network-canvas" class="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-20 dark:opacity-25" aria-hidden="true"></canvas>
+
+  <nav class="fixed left-1/2 top-5 z-40 w-full max-w-fit -translate-x-1/2 px-3" aria-label="주요 메뉴">
+    <div class="glass-panel nav-scroll flex items-center gap-1 rounded-full px-1.5 py-1.5 shadow-lg shadow-black/5 dark:shadow-black/20">
+      <button onclick="navigateTo('home')" class="flex shrink-0 items-center gap-2 border-r border-black/5 py-2 pl-3 pr-4 text-xs font-semibold tracking-tight dark:border-white/10">
+        <span class="h-2 w-2 rounded-full bg-indigo-500"></span>
+        JJM.AI
+      </button>
+      <button onclick="navigateTo('about')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="about">About</button>
+      <button onclick="navigateTo('projects')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="projects">Projects</button>
+      <button onclick="navigateTo('skills')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="skills">Skills</button>
+      <button onclick="navigateTo('research')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="research">Research</button>
+      <button onclick="navigateTo('contact')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="contact">Contact</button>
+      <span class="mx-1 h-4 w-px shrink-0 bg-black/5 dark:bg-white/10"></span>
+      <button onclick="toggleTheme()" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-black/5 dark:text-neutral-400 dark:hover:bg-white/5" aria-label="테마 전환">
+        <iconify-icon id="theme-icon" icon="lucide:moon" width="14"></iconify-icon>
+      </button>
+    </div>
+  </nav>
+
+  <main class="relative z-10 mx-auto max-w-6xl px-6 pb-20 pt-32">
+    <section id="home" class="page-section flex min-h-[72vh] flex-col justify-center">
+      <div class="mb-7 w-fit opacity-0 animate-slide-up">
+        <div class="flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/5 px-3 py-1 backdrop-blur-md">
+          <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
+          <span class="text-[10px] font-medium uppercase tracking-widest text-indigo-700 dark:text-indigo-300">AI Engineer / MLOps / LLMOps</span>
+        </div>
+      </div>
+
+      <h1 class="section-title max-w-5xl text-3xl font-semibold leading-[1.25] text-neutral-950 opacity-0 animate-slide-up delay-100 dark:text-white md:text-5xl">
+        LLM과 AI 시스템을 실제 서비스로 연결하고, 모델 서빙과 검증까지 고민하는 AI 엔지니어를 지향합니다.
+      </h1>
+
+      <p class="mt-8 max-w-3xl text-base leading-8 text-neutral-600 opacity-0 animate-slide-up delay-200 dark:text-neutral-400 md:text-lg">
+        모델 성능뿐 아니라 운영 환경에서의 안정성, 응답 속도, 평가 자동화까지 함께 고민합니다.
+        FastAPI, Docker, Vector DB, LangChain/LangGraph, vLLM를 활용해
+        LLM 서비스와 RAG 시스템을 실제 사용 가능한 구조로 구현하는 데 관심이 있습니다.
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-3 opacity-0 animate-slide-up delay-300">
+        <button onclick="navigateTo('projects')" class="rounded-full bg-neutral-900 px-6 py-3 text-xs font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-black">
+          프로젝트 보기
+        </button>
+        <button onclick="navigateTo('skills')" class="rounded-full border border-black/10 px-6 py-3 text-xs font-semibold text-neutral-700 transition hover:-translate-y-0.5 hover:bg-black/5 dark:border-white/10 dark:text-neutral-300 dark:hover:bg-white/5">
+          기술 스택 확인
+        </button>
+      </div>
+
+      <div class="mt-20 grid gap-4 border-t border-black/5 pt-8 opacity-0 animate-fade-in delay-500 dark:border-white/5 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <div class="font-mono text-2xl font-semibold text-neutral-950 dark:text-white">Problem</div>
+          <div class="mt-1 text-[10px] uppercase tracking-widest text-neutral-500">문제 정의부터 시작</div>
+        </div>
+        <div>
+          <div class="font-mono text-2xl font-semibold text-neutral-950 dark:text-white">Service</div>
+          <div class="mt-1 text-[10px] uppercase tracking-widest text-neutral-500">LLM을 제품 흐름으로 연결</div>
+        </div>
+        <div>
+          <div class="font-mono text-2xl font-semibold text-neutral-950 dark:text-white">Serving</div>
+          <div class="mt-1 text-[10px] uppercase tracking-widest text-neutral-500">API / 모델 서빙 구현</div>
+        </div>
+        <div>
+          <div class="font-mono text-2xl font-semibold text-neutral-950 dark:text-white">Validate</div>
+          <div class="mt-1 text-[10px] uppercase tracking-widest text-neutral-500">응답 구조와 결과 검증</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="page-section hidden">
+      <div class="mb-12 animate-slide-up">
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">About</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">운영 가능한 AI 시스템에 관심이 있습니다.</h2>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-[1.05fr_.95fr]">
+        <div class="glass-card rounded-2xl p-7 md:p-8">
+          <div class="mb-7 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-5">
+            <p class="font-mono text-xs uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-300">Strength / Problem Definition</p>
+            <h3 class="mt-3 text-xl font-semibold leading-8 text-neutral-950 dark:text-white">문제를 기능 단위가 아니라 서비스 병목과 검증 흐름으로 정의합니다.</h3>
+            <p class="mt-3 text-sm leading-7 text-neutral-600 dark:text-neutral-400">
+              Folio에서는 “AI가 답변한다”가 아니라 업로드 파일 처리, OCR 품질, 응답 schema, 프론트엔드 연동 오류를 문제로 나누어 봤고,
+              defAPI에서는 “취약점을 찾는다”에서 멈추지 않고 패치 생성, diff 검증, 테스트, 재스캔까지 이어지는 흐름을 문제로 정의했습니다.
+            </p>
+          </div>
+
+          <div class="space-y-6 text-sm leading-8 text-neutral-600 dark:text-neutral-400 md:text-base">
+            <p>
+              AI Engineer를 목표로 하며, 단순히 모델을 학습시키는 것보다 사용자가 실제로 호출하고
+              신뢰할 수 있는 AI 서비스 구조를 만드는 과정에 더 큰 흥미를 느낍니다.
+            </p>
+            <p>
+              LLM 서비스의 응답 지연을 OCR 로딩, 문서 chunking, 검색, 생성 단계로 분해해 병목을 분석하고,
+              추론 서버가 어느 부하 조건까지 안정적으로 동작하는지 측정하는 실험을 진행했습니다.
+            </p>
+            <p>
+              앞으로는 RAG와 Agent 시스템을 운영 가능한 구조로 만들기 위해 평가 자동화, 모니터링,
+              재현 가능한 실험 관리, serving optimization을 계속 학습하고 구현해 나가고자 합니다.
+            </p>
+          </div>
+
+          <div class="mt-8 grid gap-4 sm:grid-cols-2">
+            <div class="rounded-2xl border border-black/5 p-5 dark:border-white/10">
+              <p class="font-mono text-xs text-neutral-400">Strength</p>
+              <p class="mt-2 text-sm font-semibold text-neutral-900 dark:text-white">AI Server / Backend</p>
+              <p class="mt-2 text-sm leading-6 text-neutral-500">Folio, defAPI 중심 API 설계와 AI 파이프라인 구현</p>
+            </div>
+            <div class="rounded-2xl border border-black/5 p-5 dark:border-white/10">
+              <p class="font-mono text-xs text-neutral-400">Problem</p>
+              <p class="mt-2 text-sm font-semibold text-neutral-900 dark:text-white">서비스 관점의 문제 정의</p>
+              <p class="mt-2 text-sm leading-6 text-neutral-500">모델 호출을 입력 처리, 응답 구조, 검증 흐름으로 분해</p>
+            </div>
+            <div class="rounded-2xl border border-black/5 p-5 dark:border-white/10">
+              <p class="font-mono text-xs text-neutral-400">Validation</p>
+              <p class="mt-2 text-sm font-semibold text-neutral-900 dark:text-white">응답과 결과 검증</p>
+              <p class="mt-2 text-sm leading-6 text-neutral-500">Pydantic schema, API contract, 테스트 흐름을 함께 고려</p>
+            </div>
+            <div class="rounded-2xl border border-black/5 p-5 dark:border-white/10">
+              <p class="font-mono text-xs text-neutral-400">Growth</p>
+              <p class="mt-2 text-sm font-semibold text-neutral-900 dark:text-white">창업 / 서비스화 경험</p>
+              <p class="mt-2 text-sm leading-6 text-neutral-500">아이디어를 지원사업, 시연, 실제 서비스 구조로 연결</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-sm font-semibold text-neutral-950 dark:text-white">활동 내역</h3>
+            <div class="mt-5 space-y-5 border-l border-dashed border-black/10 pl-5 dark:border-white/10">
+              <div>
+                <p class="font-mono text-xs text-neutral-400">Present</p>
+                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">Software Meister High School 재학</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-500">AI / Backend / MLOps 중심 프로젝트 학습</p>
+              </div>
+              <div>
+                <p class="font-mono text-xs text-neutral-400">Team Project</p>
+                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">AI 동아리 및 팀 프로젝트 활동</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-500">Folio 프로젝트 AI Server / Backend 역할</p>
+              </div>
+              <div>
+                <p class="font-mono text-xs text-neutral-400">Personal Project</p>
+                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">LLM / RAG / Serving 학습</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-500">모델 서빙, 평가 자동화, 보안 자동화 프로젝트 진행</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-sm font-semibold text-neutral-950 dark:text-white">선정 / 지원 / 전시</h3>
+            <div class="mt-5 space-y-4">
+              <div>
+                <p class="font-mono text-xs text-neutral-400">Startup</p>
+                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">경북 유망 기업 창업 사업 선정</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-500">a+end 창업 준비, 2,000만원 지원금</p>
+              </div>
+              <div>
+                <p class="font-mono text-xs text-neutral-400">Talent Program</p>
+                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">인재 양성 사업 선정</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-500">AI 서비스 개발 역량 기반, 500만원 지원금</p>
+              </div>
+              <div>
+                <p class="font-mono text-xs text-neutral-400">Program</p>
+                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">경북소프트웨어마이스터고 레벨업 프로그램</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-500">Folio 프로젝트 관련 활동</p>
+              </div>
+              <div>
+                <p class="font-mono text-xs text-neutral-400">Exhibition</p>
+                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">AI EXPO KOREA 2026</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-500">AI 기반 포트폴리오 분석 서비스 시연 / 전시 경험</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-sm font-semibold text-neutral-950 dark:text-white">자격증</h3>
+            <p class="mt-4 text-sm leading-7 text-neutral-500 dark:text-neutral-400">
+              자격증 정보 입력 예정입니다. 확인된 자격증만 추후 추가합니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="page-section hidden">
+      <div class="mb-12 animate-slide-up">
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">Projects</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">문제 정의와 서비스화 경험을 중심으로 정리했습니다.</h2>
+        <p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-500 dark:text-neutral-400">
+          Folio와 defAPI는 상세 내용을 연결했고, 나머지 프로젝트는 정리 예정 상태로 표시했습니다.
+        </p>
+      </div>
+
+      <div id="project-grid" class="grid auto-rows-[260px] gap-4 md:grid-cols-3 md:auto-rows-[230px]"></div>
+    </section>
+
+    <section id="project-detail" class="page-section hidden">
+      <button onclick="navigateTo('projects')" class="mb-8 flex items-center gap-2 text-xs font-medium text-neutral-500 transition hover:text-black dark:hover:text-white">
+        <span class="rounded-full bg-black/5 p-1 dark:bg-white/10"><iconify-icon icon="lucide:arrow-left" width="14"></iconify-icon></span>
+        프로젝트 목록으로
+      </button>
+
+      <div class="grid gap-10 lg:grid-cols-[1fr_320px]">
+        <article class="animate-slide-up">
+          <div class="glass-card mb-8 rounded-2xl p-8">
+            <div class="flex items-start gap-5">
+              <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
+                <iconify-icon id="detail-icon" icon="lucide:server" width="30"></iconify-icon>
+              </div>
+              <div>
+                <p id="detail-kicker" class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-400"></p>
+                <h1 id="detail-title" class="section-title mt-2 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl"></h1>
+                <p id="detail-overview" class="mt-5 text-base leading-8 text-neutral-600 dark:text-neutral-400"></p>
+              </div>
+            </div>
+          </div>
+
+          <div id="detail-sections" class="grid gap-4 md:grid-cols-2"></div>
+        </article>
+
+        <aside class="animate-slide-up lg:sticky lg:top-24 lg:self-start">
+          <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">Tech Stack</h2>
+            <div id="detail-stack" class="mt-4 flex flex-wrap gap-2"></div>
+
+            <div class="mt-8">
+              <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">Result / Metric</h2>
+              <div id="detail-metrics" class="mt-4 space-y-3"></div>
+            </div>
+
+            <div class="mt-8 border-t border-black/5 pt-5 text-xs leading-6 text-neutral-500 dark:border-white/10">
+              프로젝트별 저장소와 배포 링크는 실제 공개 범위를 확인한 뒤 추가하면 됩니다.
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="skills" class="page-section hidden">
+      <div class="mb-12 animate-slide-up">
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">Skills</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">문제를 구현으로 옮길 때 사용하는 기술 스택</h2>
+        <p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-500 dark:text-neutral-400">
+          스택은 프레임워크, 라이브러리, 도구 중심으로 정리했습니다. 각 기술은 AI Server, 문서 처리, 모델 실험, 배포 환경 구성에 연결됩니다.
+        </p>
+      </div>
+
+      <div id="skills-grid" class="grid gap-4 lg:grid-cols-2"></div>
+    </section>
+
+    <section id="research" class="page-section hidden">
+      <div class="mb-12 animate-slide-up">
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">Blog / Research</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">읽고 실험한 내용을 문제 정의 관점으로 정리합니다.</h2>
+        <p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-500 dark:text-neutral-400">
+          단순 요약보다 “어떤 병목이나 운영 문제를 해결하려는 기술인가”를 중심으로 정리할 예정입니다.
+        </p>
+      </div>
+
+      <div id="research-list" class="grid gap-4 md:grid-cols-2"></div>
+    </section>
+
+    <section id="contact" class="page-section hidden">
+      <div class="mx-auto max-w-3xl text-center animate-slide-up">
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">Contact</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">문제를 서비스로 옮기는 AI 엔지니어를 지향합니다.</h2>
+        <p class="mt-6 text-sm leading-7 text-neutral-500 dark:text-neutral-400">
+          PDF에서 확인된 공개 연락 채널을 연결했습니다. 프로젝트별 저장소, 배포 주소, 스크린샷은 공개 범위 확인 후 추가하면 됩니다.
+        </p>
+
+        <div class="mt-10 grid min-w-0 gap-4 text-left sm:grid-cols-2 lg:grid-cols-4">
+          <a href="https://github.com/wkd09" target="_blank" rel="noopener noreferrer" class="glass-card min-w-0 overflow-hidden rounded-2xl p-6">
+            <iconify-icon icon="lucide:github" width="22" class="text-neutral-700 dark:text-neutral-300"></iconify-icon>
+            <h3 class="mt-4 text-sm font-semibold text-neutral-950 dark:text-white">GitHub</h3>
+            <p class="mt-2 min-w-0 break-all text-sm leading-6 text-neutral-500">github.com/wkd09</p>
+          </a>
+          <a href="mailto:wkdwnsals0413@gmail.com" class="glass-card min-w-0 overflow-hidden rounded-2xl p-6">
+            <iconify-icon icon="lucide:mail" width="22" class="text-neutral-700 dark:text-neutral-300"></iconify-icon>
+            <h3 class="mt-4 text-sm font-semibold text-neutral-950 dark:text-white">Email</h3>
+            <p class="mt-2 min-w-0 break-all text-sm leading-6 text-neutral-500">wkdwnsals0413@gmail.com</p>
+          </a>
+          <a href="https://wkd09.github.io/" target="_blank" rel="noopener noreferrer" class="glass-card min-w-0 overflow-hidden rounded-2xl p-6">
+            <iconify-icon icon="lucide:book-open" width="22" class="text-neutral-700 dark:text-neutral-300"></iconify-icon>
+            <h3 class="mt-4 text-sm font-semibold text-neutral-950 dark:text-white">Blog</h3>
+            <p class="mt-2 min-w-0 break-all text-sm leading-6 text-neutral-500">wkd09.github.io</p>
+          </a>
+          <a href="https://www.linkedin.com/in/junmin09/" target="_blank" rel="noopener noreferrer" class="glass-card min-w-0 overflow-hidden rounded-2xl p-6">
+            <iconify-icon icon="lucide:linkedin" width="22" class="text-neutral-700 dark:text-neutral-300"></iconify-icon>
+            <h3 class="mt-4 text-sm font-semibold text-neutral-950 dark:text-white">LinkedIn</h3>
+            <p class="mt-2 min-w-0 break-all text-sm leading-6 text-neutral-500">linkedin.com/in/junmin09</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="relative z-10 mt-20 border-t border-black/5 dark:border-white/5">
+    <div class="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-10 text-xs text-neutral-400 md:flex-row md:items-center md:justify-between">
+      <p>© 2026 장준민. AI Engineer Portfolio.</p>
+      <p>LLM / RAG / Serving / MLOps / LLMOps</p>
+    </div>
+  </footer>
+
+  <script>
+    const projects = [
+      {
+        id: 'folio',
+        order: '01',
+        title: 'Folio',
+        label: 'Featured',
+        short: 'AI 기반 포트폴리오 분석 서비스',
+        icon: 'lucide:file-search',
+        large: true,
+        status: 'Detail Ready',
+        overview: 'PDF 또는 이미지 포트폴리오를 업로드하면 AI가 구조, 기술 스택, 프로젝트 설명, 강점과 부족한 점을 분석해 개선 방향을 제안하는 서비스입니다. FastAPI 기반 AI Server / Backend를 담당했습니다.',
+        stack: ['FastAPI', 'OpenAI API', 'Pydantic', 'OCR', 'Python', 'Docker'],
+        metrics: ['PDF / 이미지 포트폴리오 업로드', 'OCR / 문서 파싱', '역량 평가, 개선 방향, 성장 로드맵 생성', '경북소프트웨어마이스터고 레벨업 프로그램 및 AI EXPO KOREA 2026 시연 / 전시'],
+        sections: {
+          Overview: '개발자 포트폴리오를 AI가 분석해 피드백과 개선 방향을 제시하는 웹 서비스입니다.',
+          Problem: '학생 개발자가 포트폴리오를 객관적으로 점검받을 기회는 제한적이고, PDF와 이미지 입력은 분석 가능한 텍스트로 정리하기 어렵습니다.',
+          Strength: '문제를 “AI 분석” 하나로 보지 않고 파일 처리, OCR, prompt, 응답 schema, API 연동 문제로 나누어 구현했습니다.',
+          'Key Features': 'PDF/이미지 업로드, OCR/문서 파싱, OpenAI API 기반 분석, 역량 평가, 개선 방향, 성장 로드맵 생성.',
+          'My Role': 'AI Server / Backend 담당. 파일 처리, prompt 설계, 응답 구조화, 예외 처리, 프론트엔드 연동 API를 구현했습니다.',
+          'What I learned': 'AI 서비스에서는 모델 호출보다 입력 데이터 정제, 응답 schema, 예외 처리, 사용자 체감 지연 관리가 중요하다는 점을 배웠습니다.'
+        }
+      },
+      {
+        id: 'defapi',
+        order: '02',
+        title: 'defAPI',
+        label: 'Security API',
+        short: 'LLM 기반 취약 코드 분석 및 보안 패치 자동화 API',
+        icon: 'lucide:shield-check',
+        status: 'Detail Ready',
+        overview: 'Semgrep, Trivy, ZAP 같은 보안 스캐너 결과를 공통 Finding 스키마로 정규화하고, LLM 패치 후보 생성과 diff 검증, 테스트 실행, 재스캔 흐름을 연결하는 FastAPI 기반 보안 분석 MVP입니다.',
+        stack: ['FastAPI', 'LangGraph', 'Pydantic', 'Semgrep', 'Trivy', 'ZAP', 'Docker', 'Pytest'],
+        metrics: ['FastAPI 기반 /scan, /report, /health API', 'scanner JSON 결과를 Finding 모델로 정규화', 'rule-based patch suggestion 및 validation loop', 'GitHub: github.com/junmin0413/defAPI'],
+        sections: {
+          Overview: '로컬 프로젝트를 대상으로 보안 스캐너를 실행하고, LLM이 수정 가능한 패치 후보를 제안하도록 설계한 보안 자동화 API입니다.',
+          Problem: '보안 스캐너는 취약점 위치와 경고를 찾지만, 실제 수정 방법과 패치 검증은 개발자에게 남는 경우가 많습니다.',
+          Strength: '스캐너 실행, Finding 정규화, patch suggestion, diff 검증, 테스트, 재스캔을 하나의 흐름으로 연결해 문제를 정의했습니다.',
+          'Key Features': '취약 코드 스캔, Finding 정규화, 취약 코드 context 추출, 패치 후보 생성, diff 검증, 테스트 실행, 스캐너 재실행.',
+          'My Role': 'AI / Backend / Security pipeline 설계와 구현. FastAPI API, LangGraph workflow, scanner wrapper, Pydantic model을 작성했습니다.',
+          'What I learned': '보안 자동화는 패치 생성보다 적용 가능성, 경로 검증, 테스트, 재스캔까지 이어지는 검증 루프가 중요합니다.'
+        }
+      },
+      {
+        id: 'llm-serving-benchmark',
+        order: '03',
+        title: 'LLM Serving Benchmark',
+        label: '정리 예정',
+        short: 'LLM serving 성능 측정 프로젝트 상세 작성 예정',
+        icon: 'lucide:gauge',
+        status: 'Preparing',
+        comingSoon: true,
+        stack: ['Python', 'FastAPI', 'llama.cpp', 'Docker']
+      },
+      {
+        id: 'java-security-fix',
+        order: '04',
+        title: 'Java Security Fix LLM',
+        label: '정리 예정',
+        short: 'Java 취약 코드 수정 LLM 프로젝트 상세 작성 예정',
+        icon: 'lucide:code-2',
+        status: 'Preparing',
+        comingSoon: true,
+        stack: ['Transformers', 'PEFT', 'vLLM', 'FastAPI']
+      },
+      {
+        id: 'political-news-nlp',
+        order: '05',
+        title: 'Political News NLP',
+        label: '정리 예정',
+        short: '정치 뉴스 성향 분류 NLP 프로젝트 상세 작성 예정',
+        icon: 'lucide:newspaper',
+        status: 'Preparing',
+        comingSoon: true,
+        stack: ['PyTorch', 'BERT', 'Scikit-learn', 'WandB']
+      }
+    ];
+
+    const skills = [
+      {
+        title: 'AI / LLM',
+        items: [
+          ['LangChain', 'RAG pipeline 구성'],
+          ['LangGraph', 'LLM workflow 구성'],
+          ['OpenAI API', 'AI 분석 기능 구현'],
+          ['Hugging Face Transformers', 'LLM/NLP 모델 실험'],
+          ['PEFT', 'LoRA fine-tuning 실험'],
+          ['vLLM', 'LLM serving 실험'],
+          ['llama.cpp', '로컬 LLM 서버 구성']
+        ]
+      },
+      {
+        title: 'Backend',
+        items: [
+          ['FastAPI', 'AI Server API 구현'],
+          ['Uvicorn', 'FastAPI 서버 실행'],
+          ['Pydantic', 'request / response schema 정의'],
+          ['REST API', '프론트엔드 연동 API 구성'],
+          ['PostgreSQL', '서비스 데이터 저장'],
+          ['SQL', '기본 데이터 조회와 관리']
+        ]
+      },
+      {
+        title: 'ML / Data',
+        items: [
+          ['PyTorch', 'NLP 모델 학습'],
+          ['Scikit-learn', 'ML baseline과 metric 계산'],
+          ['Pandas', '데이터 전처리'],
+          ['NumPy', '수치 연산'],
+          ['LightGBM', 'tabular classification'],
+          ['CatBoost', 'tabular classification']
+        ]
+      },
+      {
+        title: 'OCR / Crawling',
+        items: [
+          ['PaddleOCR', '문서 OCR 처리'],
+          ['OpenCV', '이미지 전처리'],
+          ['BeautifulSoup', 'HTML parsing'],
+          ['Selenium', '웹 자동화와 crawling']
+        ]
+      },
+      {
+        title: 'DevOps / Tools',
+        items: [
+          ['Docker', '실행 환경 컨테이너화'],
+          ['Docker Compose', '로컬 서비스 구성'],
+          ['Git', '버전 관리'],
+          ['GitHub', '코드 저장소 관리'],
+          ['Linux CLI', '서버와 개발 환경 조작'],
+          ['Conda / venv', 'Python 환경 관리'],
+          ['VS Code', '개발 환경'],
+          ['Cursor', 'AI 기반 개발 도구'],
+          ['Codex', '코드 수정과 검증 도구'],
+          ['Weights & Biases', '실험 기록']
+        ]
+      }
+    ];
+
+    const researchTopics = [
+      ['vLLM PagedAttention 논문 리뷰', 'Draft / KV cache와 serving 구조 정리 예정'],
+      ['SGLang 논문 리뷰', 'Draft / LLM application runtime 관점 정리 예정'],
+      ['LLM Inference Bottleneck 정리', 'Draft / prefill, decode, batch, streaming 지연 정리 예정'],
+      ['RAG 시스템 평가 방법', 'Draft / 검색 품질과 답변 근거성 평가 정리 예정'],
+      ['Agent Evaluation 자동화 고민', 'Draft / tool call과 task success 평가 방식 정리 예정'],
+      ['LLM Serving Benchmark 구축기', 'Draft / serving benchmark 구현 과정 정리 예정'],
+      ['모델 성능보다 운영 안정성이 중요한 이유', 'Draft / latency, cost, monitoring 관점 정리 예정']
+    ];
+
+    function renderProjects() {
+      const grid = document.getElementById('project-grid');
+      grid.innerHTML = projects.map((project, index) => {
+        const tag = project.comingSoon ? 'article' : 'button';
+        const action = project.comingSoon ? '' : `onclick="openProject('${project.id}')"`;
+        return `
+        <${tag} ${action} class="glass-card group relative overflow-hidden rounded-2xl p-6 text-left animate-slide-up ${project.large ? 'md:col-span-2 md:row-span-2' : ''} ${project.comingSoon ? 'opacity-75' : 'cursor-pointer'}" style="animation-delay:${index * 80}ms">
+          <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-cyan-500/5 opacity-0 transition group-hover:opacity-100"></div>
+          <div class="relative z-10 flex h-full flex-col">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span class="font-mono text-xs text-neutral-400">${project.order}</span>
+                <span class="ml-2 rounded-full border border-black/5 px-2 py-1 text-[10px] uppercase tracking-wider text-neutral-400 dark:border-white/10">${project.label}</span>
+              </div>
+              <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 transition ${project.comingSoon ? '' : 'group-hover:bg-indigo-500 group-hover:text-white'} dark:text-indigo-300">
+              <iconify-icon icon="${project.icon}" width="23"></iconify-icon>
+              </span>
+            </div>
+            <div class="mt-auto pt-8">
+              <h3 class="${project.large ? 'text-3xl md:text-4xl' : 'text-lg'} font-semibold leading-tight text-neutral-950 dark:text-white">${project.title}</h3>
+              <p class="mt-3 text-sm leading-7 text-neutral-500 dark:text-neutral-400">${project.short}</p>
+              <div class="mt-5 flex flex-wrap gap-2">
+                ${project.stack.slice(0, project.large ? 6 : 4).map(item => `<span class="badge">${item}</span>`).join('')}
+              </div>
+              <div class="mt-5 flex items-center gap-2 text-xs font-medium ${project.comingSoon ? 'text-neutral-400' : 'text-indigo-600 dark:text-indigo-300'}">
+                ${project.comingSoon ? '상세 작성 예정' : 'Case Study 보기'}
+                ${project.comingSoon ? '' : '<iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon>'}
+              </div>
+            </div>
+          </div>
+        </${tag}>
+      `;
+      }).join('');
+    }
+
+    function renderSkills() {
+      const grid = document.getElementById('skills-grid');
+      grid.innerHTML = skills.map(group => `
+        <div class="glass-card rounded-2xl p-6">
+          <h3 class="border-b border-black/5 pb-4 font-mono text-xs uppercase tracking-[0.18em] text-neutral-500 dark:border-white/10">${group.title}</h3>
+          <div class="mt-5 grid gap-3 sm:grid-cols-2">
+            ${group.items.map(([name, desc]) => `
+              <div class="rounded-xl border border-black/5 p-3 dark:border-white/10">
+                <div class="text-sm font-semibold text-neutral-900 dark:text-white">${name}</div>
+                <div class="mt-1 text-xs leading-5 text-neutral-500 dark:text-neutral-400">${desc}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderResearch() {
+      const list = document.getElementById('research-list');
+      list.innerHTML = researchTopics.map(([title, desc], index) => `
+        <article class="glass-card rounded-2xl p-6 animate-slide-up" style="animation-delay:${index * 60}ms">
+          <p class="font-mono text-xs text-neutral-400">Draft ${String(index + 1).padStart(2, '0')}</p>
+          <h3 class="mt-4 text-base font-semibold text-neutral-950 dark:text-white">${title}</h3>
+          <p class="mt-3 text-sm leading-7 text-neutral-500 dark:text-neutral-400">${desc}</p>
+        </article>
+      `).join('');
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      html.classList.toggle('dark');
+      icon.setAttribute('icon', html.classList.contains('dark') ? 'lucide:moon' : 'lucide:sun');
+    }
+
+    function navigateTo(sectionId) {
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.add('hidden');
+        section.classList.remove('animate-slide-up');
+      });
+
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.classList.remove('hidden');
+        void target.offsetWidth;
+        target.classList.add('animate-slide-up');
+      }
+
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('data-target') === sectionId);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openProject(projectId) {
+      const project = projects.find(item => item.id === projectId);
+      if (!project) return;
+
+      document.getElementById('detail-icon').setAttribute('icon', project.icon);
+      document.getElementById('detail-kicker').textContent = `${project.order} / Case Study`;
+      document.getElementById('detail-title').textContent = project.title;
+      document.getElementById('detail-overview').textContent = project.overview;
+
+      document.getElementById('detail-stack').innerHTML = project.stack.map(item => `<span class="badge">${item}</span>`).join('');
+      document.getElementById('detail-metrics').innerHTML = project.metrics.map(item => `
+        <div class="border-b border-black/5 pb-3 text-sm leading-6 text-neutral-600 dark:border-white/10 dark:text-neutral-300">${item}</div>
+      `).join('');
+      document.getElementById('detail-sections').innerHTML = Object.entries(project.sections).map(([title, body]) => `
+        <section class="glass-card rounded-2xl p-6">
+          <h2 class="text-sm font-semibold text-neutral-950 dark:text-white">${title}</h2>
+          <p class="mt-3 text-sm leading-7 text-neutral-500 dark:text-neutral-400">${body}</p>
+        </section>
+      `).join('');
+
+      navigateTo('project-detail');
+    }
+
+    const canvas = document.getElementById('network-canvas');
+    const ctx = canvas.getContext('2d');
+    let width = 0;
+    let height = 0;
+    let particles = [];
+    const config = { count: 42, distance: 160, speed: .25 };
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - .5) * config.speed;
+        this.vy = (Math.random() - .5) * config.speed;
+        this.size = Math.random() * 1.4 + .5;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+
+      draw() {
+        const isDark = document.documentElement.classList.contains('dark');
+        ctx.fillStyle = isDark ? 'rgba(255,255,255,.42)' : 'rgba(0,0,0,.32)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      particles = Array.from({ length: config.count }, () => new Particle());
+    }
+
+    function animateCanvas() {
+      ctx.clearRect(0, 0, width, height);
+      const isDark = document.documentElement.classList.contains('dark');
+
+      particles.forEach((particle, index) => {
+        particle.update();
+        particle.draw();
+
+        for (let i = index + 1; i < particles.length; i += 1) {
+          const other = particles[i];
+          const dx = particle.x - other.x;
+          const dy = particle.y - other.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < config.distance) {
+            const opacity = (1 - distance / config.distance) * (isDark ? .12 : .08);
+            ctx.strokeStyle = isDark ? `rgba(255,255,255,${opacity})` : `rgba(0,0,0,${opacity})`;
+            ctx.lineWidth = .5;
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(other.x, other.y);
+            ctx.stroke();
+          }
+        }
+      });
+
+      requestAnimationFrame(animateCanvas);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProjects();
+      renderSkills();
+      renderResearch();
+      document.querySelector('.nav-link[data-target="about"]').classList.remove('active');
+      resizeCanvas();
+      animateCanvas();
+    });
+  </script>
+</body>
+</html>
