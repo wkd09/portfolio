@@ -48,8 +48,8 @@
     }
 
     ::selection {
-      background: rgba(99, 102, 241, 0.22);
-      color: #818cf8;
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
     }
 
     .noise-overlay {
@@ -61,42 +61,77 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
 
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .22;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+      background-size: 54px 54px, 54px 54px;
+      mask-image: linear-gradient(to bottom, black, black 72%, transparent);
+    }
+
     .glass-panel {
-      background: rgba(255, 255, 255, .76);
+      background: rgba(255, 255, 255, .72);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(0, 0, 0, .08);
     }
 
     .dark .glass-panel {
-      background: rgba(15, 17, 18, .7);
+      background: rgba(15, 17, 18, .62);
       border-color: rgba(255, 255, 255, .08);
     }
 
     .glass-card {
-      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.58));
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.55));
       border: 1px solid rgba(0,0,0,.08);
-      transition: border-color .25s ease, transform .25s ease, background .25s ease;
+      transition: border-color .35s cubic-bezier(0.16, 1, 0.3, 1), transform .35s cubic-bezier(0.16, 1, 0.3, 1), background .35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .dark .glass-card {
-      background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
-      border-color: rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.006));
+      border-color: rgba(255,255,255,.06);
     }
 
     .glass-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(99, 102, 241, .38);
+      border-color: rgba(0, 0, 0, .16);
+    }
+
+    .dark .glass-card:hover {
+      border-color: rgba(255,255,255,.16);
+      background: rgba(255,255,255,.025);
+    }
+
+    .nav-link {
+      position: relative;
     }
 
     .nav-link.active {
       color: #111827;
-      background: rgba(0,0,0,.05);
+      background: transparent;
     }
 
     .dark .nav-link.active {
       color: #fff;
-      background: rgba(255,255,255,.08);
+      background: transparent;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: .25rem;
+      width: 4px;
+      height: 4px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: currentColor;
+      box-shadow: 0 0 10px rgba(255,255,255,.35);
     }
 
     .section-title {
@@ -112,11 +147,13 @@
       font-size: 11px;
       line-height: 1.25rem;
       color: rgb(82 82 91);
+      background: rgba(0,0,0,.02);
     }
 
     .dark .badge {
-      border-color: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.10);
       color: rgb(212 212 216);
+      background: rgba(255,255,255,.025);
     }
 
     @media (max-width: 767px) {
@@ -127,16 +164,15 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-[#FAFAFA] text-neutral-900 transition-colors duration-500 dark:bg-dark dark:text-[#EAEAEA]">
+<body class="min-h-screen bg-[#FAFAFA] text-neutral-900 transition-colors duration-700 dark:bg-dark dark:text-[#EAEAEA]">
   <div class="noise-overlay" aria-hidden="true"></div>
-  <div class="fixed left-[-10%] top-[-20%] h-[420px] w-[420px] rounded-full bg-indigo-500/10 blur-[120px] dark:bg-indigo-500/20" aria-hidden="true"></div>
-  <div class="fixed bottom-[-20%] right-[-10%] h-[520px] w-[520px] rounded-full bg-cyan-500/10 blur-[120px] dark:bg-cyan-500/10" aria-hidden="true"></div>
-  <canvas id="network-canvas" class="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-20 dark:opacity-25" aria-hidden="true"></canvas>
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <canvas id="network-canvas" class="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-10 dark:opacity-18" aria-hidden="true"></canvas>
 
   <nav class="fixed left-1/2 top-5 z-40 w-full max-w-fit -translate-x-1/2 px-3" aria-label="주요 메뉴">
     <div class="glass-panel nav-scroll flex items-center gap-1 rounded-full px-1.5 py-1.5 shadow-lg shadow-black/5 dark:shadow-black/20">
       <button onclick="navigateTo('home')" class="flex shrink-0 items-center gap-2 border-r border-black/5 py-2 pl-3 pr-4 text-xs font-semibold tracking-tight dark:border-white/10">
-        <span class="h-2 w-2 rounded-full bg-indigo-500"></span>
+        <span class="h-2 w-2 rounded-full bg-neutral-900 shadow-[0_0_12px_rgba(0,0,0,.18)] dark:bg-white dark:shadow-[0_0_12px_rgba(255,255,255,.35)]"></span>
         JJM.AI
       </button>
       <button onclick="navigateTo('about')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="about">About</button>
@@ -154,9 +190,9 @@
   <main class="relative z-10 mx-auto max-w-6xl px-6 pb-20 pt-32">
     <section id="home" class="page-section flex min-h-[72vh] flex-col justify-center">
       <div class="mb-7 w-fit opacity-0 animate-slide-up">
-        <div class="flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/5 px-3 py-1 backdrop-blur-md">
-          <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
-          <span class="text-[10px] font-medium uppercase tracking-widest text-indigo-700 dark:text-indigo-300">AI Engineer / MLOps / LLMOps</span>
+        <div class="flex items-center gap-2 rounded-full border border-black/10 bg-black/5 px-3 py-1 backdrop-blur-md dark:border-white/10 dark:bg-white/5">
+          <span class="h-1.5 w-1.5 rounded-full bg-neutral-900 dark:bg-white"></span>
+          <span class="text-[10px] font-medium uppercase tracking-widest text-neutral-600 dark:text-neutral-300">AI Engineer / MLOps / LLMOps</span>
         </div>
       </div>
 
@@ -171,7 +207,7 @@
       </p>
 
       <div class="mt-10 flex flex-wrap items-center gap-3 opacity-0 animate-slide-up delay-300">
-        <button onclick="navigateTo('projects')" class="rounded-full bg-neutral-900 px-6 py-3 text-xs font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-black">
+        <button onclick="navigateTo('projects')" class="group relative overflow-hidden rounded-full bg-neutral-900 px-6 py-3 text-xs font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 dark:bg-[#EDEDED] dark:text-black dark:hover:shadow-white/10">
           프로젝트 보기
         </button>
         <button onclick="navigateTo('skills')" class="rounded-full border border-black/10 px-6 py-3 text-xs font-semibold text-neutral-700 transition hover:-translate-y-0.5 hover:bg-black/5 dark:border-white/10 dark:text-neutral-300 dark:hover:bg-white/5">
@@ -201,15 +237,15 @@
 
     <section id="about" class="page-section hidden">
       <div class="mb-12 animate-slide-up">
-        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">About</p>
-        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">운영 가능한 AI 시스템에 관심이 있습니다.</h2>
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">About</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">운영 가능한 AI 시스템에 관심이 있습니다.</h2>
       </div>
 
       <div class="grid gap-8 lg:grid-cols-[1.05fr_.95fr]">
         <div class="glass-card rounded-2xl p-7 md:p-8">
-          <div class="mb-7 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-5">
-            <p class="font-mono text-xs uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-300">Strength / Problem Definition</p>
-            <h3 class="mt-3 text-xl font-semibold leading-8 text-neutral-950 dark:text-white">문제를 기능 단위가 아니라 서비스 병목과 검증 흐름으로 정의합니다.</h3>
+          <div class="mb-7 rounded-2xl border border-black/5 bg-black/[.03] p-5 dark:border-white/10 dark:bg-white/[.035]">
+            <p class="font-mono text-xs uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400">Strength / Problem Definition</p>
+            <h3 class="mt-3 text-xl font-semibold leading-8 text-[#141612] dark:text-[#F7F4EA]">문제를 기능 단위가 아니라 서비스 병목과 검증 흐름으로 정의합니다.</h3>
             <p class="mt-3 text-sm leading-7 text-neutral-600 dark:text-neutral-400">
               Folio에서는 “AI가 답변한다”가 아니라 업로드 파일 처리, OCR 품질, 응답 schema, 프론트엔드 연동 오류를 문제로 나누어 봤고,
               defAPI에서는 “취약점을 찾는다”에서 멈추지 않고 패치 생성, diff 검증, 테스트, 재스캔까지 이어지는 흐름을 문제로 정의했습니다.
@@ -315,10 +351,10 @@
 
     <section id="projects" class="page-section hidden">
       <div class="mb-12 animate-slide-up">
-        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">Projects</p>
-        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">문제 정의와 서비스화 경험을 중심으로 정리했습니다.</h2>
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">Projects</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">문제 정의와 서비스화 경험을 중심으로 정리했습니다.</h2>
         <p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-500 dark:text-neutral-400">
-          Folio와 defAPI는 상세 내용을 연결했고, 나머지 프로젝트는 정리 예정 상태로 표시했습니다.
+          조직 저장소의 팀 프로젝트와 공개 개인 GitHub 저장소를 함께 기준으로 대표 프로젝트만 추려 정리했습니다.
         </p>
       </div>
 
@@ -335,7 +371,7 @@
         <article class="animate-slide-up">
           <div class="glass-card mb-8 rounded-2xl p-8">
             <div class="flex items-start gap-5">
-              <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
+              <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-black/5 text-neutral-700 dark:bg-white/5 dark:text-white">
                 <iconify-icon id="detail-icon" icon="lucide:server" width="30"></iconify-icon>
               </div>
               <div>
@@ -359,8 +395,13 @@
               <div id="detail-metrics" class="mt-4 space-y-3"></div>
             </div>
 
+            <div class="mt-8">
+              <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">Links</h2>
+              <div id="detail-links" class="mt-4 space-y-2"></div>
+            </div>
+
             <div class="mt-8 border-t border-black/5 pt-5 text-xs leading-6 text-neutral-500 dark:border-white/10">
-              프로젝트별 저장소와 배포 링크는 실제 공개 범위를 확인한 뒤 추가하면 됩니다.
+              조직 저장소 프로젝트와 공개 GitHub 저장소를 함께 기준으로 정리했습니다.
             </div>
           </div>
         </aside>
@@ -369,20 +410,19 @@
 
     <section id="skills" class="page-section hidden">
       <div class="mb-12 animate-slide-up">
-        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">Skills</p>
-        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">문제를 구현으로 옮길 때 사용하는 기술 스택</h2>
-        <p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-500 dark:text-neutral-400">
-          스택은 프레임워크, 라이브러리, 도구 중심으로 정리했습니다. 각 기술은 AI Server, 문서 처리, 모델 실험, 배포 환경 구성에 연결됩니다.
+        <h2 class="section-title text-4xl font-semibold text-neutral-950 dark:text-white md:text-5xl">Technical Stack</h2>
+        <p class="mt-6 max-w-2xl text-2xl leading-8 text-neutral-500 dark:text-neutral-400">
+          Tools of the trade.
         </p>
       </div>
 
-      <div id="skills-grid" class="grid gap-4 lg:grid-cols-2"></div>
+      <div id="skills-grid" class="mt-20 grid gap-x-16 gap-y-14 lg:grid-cols-2"></div>
     </section>
 
     <section id="research" class="page-section hidden">
       <div class="mb-12 animate-slide-up">
-        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">Blog / Research</p>
-        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">읽고 실험한 내용을 문제 정의 관점으로 정리합니다.</h2>
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">Blog / Research</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">읽고 실험한 내용을 문제 정의 관점으로 정리합니다.</h2>
         <p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-500 dark:text-neutral-400">
           단순 요약보다 “어떤 병목이나 운영 문제를 해결하려는 기술인가”를 중심으로 정리할 예정입니다.
         </p>
@@ -393,8 +433,8 @@
 
     <section id="contact" class="page-section hidden">
       <div class="mx-auto max-w-3xl text-center animate-slide-up">
-        <p class="font-mono text-xs uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">Contact</p>
-        <h2 class="section-title mt-3 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl">문제를 서비스로 옮기는 AI 엔지니어를 지향합니다.</h2>
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">Contact</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">문제를 서비스로 옮기는 AI 엔지니어를 지향합니다.</h2>
         <p class="mt-6 text-sm leading-7 text-neutral-500 dark:text-neutral-400">
           PDF에서 확인된 공개 연락 채널을 연결했습니다. 프로젝트별 저장소, 배포 주소, 스크린샷은 공개 범위 확인 후 추가하면 됩니다.
         </p>
@@ -438,14 +478,14 @@
         id: 'folio',
         order: '01',
         title: 'Folio',
-        label: 'Featured',
+        label: 'Featured / Organization',
         short: 'AI 기반 포트폴리오 분석 서비스',
         icon: 'lucide:file-search',
         large: true,
-        status: 'Detail Ready',
-        overview: 'PDF 또는 이미지 포트폴리오를 업로드하면 AI가 구조, 기술 스택, 프로젝트 설명, 강점과 부족한 점을 분석해 개선 방향을 제안하는 서비스입니다. FastAPI 기반 AI Server / Backend를 담당했습니다.',
+        overview: 'PDF 또는 이미지 포트폴리오를 업로드하면 AI가 구조, 기술 스택, 프로젝트 설명, 강점과 부족한 점을 분석해 개선 방향을 제안하는 서비스입니다. 조직 저장소에서 진행한 팀 프로젝트이며 FastAPI 기반 AI Server / Backend를 담당했습니다.',
         stack: ['FastAPI', 'OpenAI API', 'Pydantic', 'OCR', 'Python', 'Docker'],
         metrics: ['PDF / 이미지 포트폴리오 업로드', 'OCR / 문서 파싱', '역량 평가, 개선 방향, 성장 로드맵 생성', '경북소프트웨어마이스터고 레벨업 프로그램 및 AI EXPO KOREA 2026 시연 / 전시'],
+        sourceNote: 'Organization 저장소에 있는 팀 프로젝트입니다. 공개 가능한 저장소 링크는 확인 후 연결합니다.',
         sections: {
           Overview: '개발자 포트폴리오를 AI가 분석해 피드백과 개선 방향을 제시하는 웹 서비스입니다.',
           Problem: '학생 개발자가 포트폴리오를 객관적으로 점검받을 기회는 제한적이고, PDF와 이미지 입력은 분석 가능한 텍스트로 정리하기 어렵습니다.',
@@ -460,113 +500,119 @@
         order: '02',
         title: 'defAPI',
         label: 'Security API',
-        short: 'LLM 기반 취약 코드 분석 및 보안 패치 자동화 API',
+        short: 'FastAPI 기반 보안 스캔 및 보고서 생성 MVP',
         icon: 'lucide:shield-check',
-        status: 'Detail Ready',
-        overview: 'Semgrep, Trivy, ZAP 같은 보안 스캐너 결과를 공통 Finding 스키마로 정규화하고, LLM 패치 후보 생성과 diff 검증, 테스트 실행, 재스캔 흐름을 연결하는 FastAPI 기반 보안 분석 MVP입니다.',
-        stack: ['FastAPI', 'LangGraph', 'Pydantic', 'Semgrep', 'Trivy', 'ZAP', 'Docker', 'Pytest'],
-        metrics: ['FastAPI 기반 /scan, /report, /health API', 'scanner JSON 결과를 Finding 모델로 정규화', 'rule-based patch suggestion 및 validation loop', 'GitHub: github.com/junmin0413/defAPI'],
+        overview: '로컬 코드 또는 디렉터리를 Semgrep, Trivy, ZAP placeholder로 스캔하고, 결과를 공통 Finding 모델로 정규화해 보고서를 반환하는 FastAPI 기반 보안 스캔 MVP입니다.',
+        stack: ['Python', 'FastAPI', 'LangGraph', 'Pydantic', 'Semgrep', 'Trivy', 'Docker'],
+        metrics: ['GET /health, POST /scan, GET /report/{scan_id} API 구현', 'LangGraph 기반 scan -> report workflow 구성', 'scanner JSON 결과를 공통 Finding 모델로 정규화', 'LoRA/SFT, DPO 학습 모듈 skeleton 포함'],
+        repoUrl: 'https://github.com/wkd09/defAPI',
         sections: {
-          Overview: '로컬 프로젝트를 대상으로 보안 스캐너를 실행하고, LLM이 수정 가능한 패치 후보를 제안하도록 설계한 보안 자동화 API입니다.',
-          Problem: '보안 스캐너는 취약점 위치와 경고를 찾지만, 실제 수정 방법과 패치 검증은 개발자에게 남는 경우가 많습니다.',
-          Strength: '스캐너 실행, Finding 정규화, patch suggestion, diff 검증, 테스트, 재스캔을 하나의 흐름으로 연결해 문제를 정의했습니다.',
-          'Key Features': '취약 코드 스캔, Finding 정규화, 취약 코드 context 추출, 패치 후보 생성, diff 검증, 테스트 실행, 스캐너 재실행.',
-          'My Role': 'AI / Backend / Security pipeline 설계와 구현. FastAPI API, LangGraph workflow, scanner wrapper, Pydantic model을 작성했습니다.',
-          'What I learned': '보안 자동화는 패치 생성보다 적용 가능성, 경로 검증, 테스트, 재스캔까지 이어지는 검증 루프가 중요합니다.'
+          Overview: '보안 스캐너 실행 결과를 그대로 보여주는 데서 멈추지 않고, API 응답에서 활용하기 쉬운 Finding schema와 summary로 정리하는 백엔드 프로젝트입니다.',
+          Problem: 'Semgrep, Trivy처럼 목적이 다른 스캐너의 출력 형식이 달라 서비스에서 바로 사용하기 어렵고, 스캔 요청과 보고서 조회 흐름도 일관된 API로 묶어야 합니다.',
+          Strength: '스캐너 wrapper, LangGraph workflow, Pydantic model, FastAPI endpoint를 분리해 스캔 파이프라인을 작은 책임 단위로 구성했습니다.',
+          'Key Features': '보안 스캔 요청, 스캔 결과 저장, 보고서 조회, Finding 정규화, severity count 기반 summary, Docker 실행 환경을 구현했습니다.',
+          'My Role': 'FastAPI API, scanner wrapper, Finding model, scan/report workflow, README 문서화를 담당했습니다.',
+          'What I learned': '보안 자동화에서는 탐지 자체보다 결과 정규화, 실행 실패 처리, 원본 프로젝트를 변경하지 않는 안전한 스캔 경계가 중요하다는 점을 배웠습니다.'
         }
       },
       {
-        id: 'llm-serving-benchmark',
+        id: 'dcc',
         order: '03',
-        title: 'LLM Serving Benchmark',
-        label: '정리 예정',
-        short: 'LLM serving 성능 측정 프로젝트 상세 작성 예정',
-        icon: 'lucide:gauge',
-        status: 'Preparing',
-        comingSoon: true,
-        stack: ['Python', 'FastAPI', 'llama.cpp', 'Docker']
+        title: 'DCC GPR Detection',
+        label: 'Vision',
+        short: 'GPR 이미지 기반 지하 객체 탐지 파이프라인',
+        icon: 'lucide:scan-search',
+        overview: '2025 데이터 크리에이터 캠프에서 진행한 GPR(Ground Penetrating Radar) 기반 객체 탐지 프로젝트입니다. xz 단면 이미지를 YOLO 형식으로 정리하고 YOLOv11n으로 지하 구조물과 이상 객체를 탐지했습니다.',
+        stack: ['Python', 'Jupyter Notebook', 'YOLOv11n', 'Ultralytics', 'OpenCV', 'Dataset Split'],
+        metrics: ['xz 평면 GPR 단면을 객체 탐지 입력으로 선택', '5개 클래스: box, patch, pipe, manhole, cavity', 'train / validation / test 분할 후 mAP@IoU50 기준 평가 흐름 구성', '라벨 분포 확인, 바운딩 박스 시각화, YOLO 데이터셋 변환 스크립트 작성'],
+        repoUrl: 'https://github.com/wkd09/DCC',
+        sections: {
+          Overview: 'GPR 단면 이미지와 라벨 데이터를 정리해 지하 구조물 탐지를 실험한 Computer Vision 프로젝트입니다.',
+          Problem: 'GPR 데이터는 깊이 정보와 단면 선택이 중요하고, 원본 라벨을 모델 학습에 사용할 수 있는 YOLO 형식으로 바꾸는 전처리 과정이 필요했습니다.',
+          Strength: '단순 모델 학습보다 데이터 단면 선택, 클래스 분포 확인, 라벨 변환, 학습/검증/테스트 분할까지 전체 Vision 파이프라인을 구성했습니다.',
+          'Key Features': 'JSON 라벨 탐색, 클래스 분포 확인, 바운딩 박스 시각화, YOLO 형식 데이터셋 구성, YOLOv11n 학습/평가 실험을 포함합니다.',
+          'My Role': '데이터 전처리 스크립트와 notebook 실험 흐름을 정리하고, GPR xz 단면을 기준으로 탐지 문제를 구성했습니다.',
+          'What I learned': 'Vision 프로젝트에서는 모델 선택만큼 데이터 표현 방식, 라벨 품질, 평가 split 설계가 성능과 재현성에 큰 영향을 준다는 점을 배웠습니다.'
+        }
       },
       {
-        id: 'java-security-fix',
+        id: 'tech-blog',
         order: '04',
-        title: 'Java Security Fix LLM',
-        label: '정리 예정',
-        short: 'Java 취약 코드 수정 LLM 프로젝트 상세 작성 예정',
-        icon: 'lucide:code-2',
-        status: 'Preparing',
-        comingSoon: true,
-        stack: ['Transformers', 'PEFT', 'vLLM', 'FastAPI']
+        title: 'Technical Blog',
+        label: 'Docs',
+        short: 'Jekyll 기반 AI / LLM 기술 블로그',
+        icon: 'lucide:book-open-text',
+        overview: 'GitHub Pages와 Jekyll 기반으로 AI, LLM, Agent, 논문 리뷰, 구현 기록, Troubleshooting을 정리하는 개인 기술 블로그입니다. 글 템플릿과 카테고리 구조를 만들어 학습 기록을 지속적으로 축적할 수 있게 구성했습니다.',
+        stack: ['Jekyll', 'GitHub Pages', 'SCSS', 'Markdown', 'GitHub Actions'],
+        metrics: ['Minimal Mistakes 기반 Jekyll 블로그 구성', 'study, engineering, research, troubleshooting 카테고리 분리', 'post / research / troubleshooting 작성 템플릿 제공', 'GitHub Actions 기반 Pages 배포 흐름 구성'],
+        repoUrl: 'https://github.com/wkd09/wkd09.github.io',
+        siteUrl: 'https://wkd09.github.io',
+        sections: {
+          Overview: 'AI/LLM 학습과 구현 경험을 글로 남기기 위한 개인 기술 블로그 프로젝트입니다.',
+          Problem: '학습 내용이 코드 조각이나 메모로 흩어지면 나중에 다시 설명하거나 재현하기 어렵기 때문에, 글 구조와 카테고리를 먼저 정리했습니다.',
+          Strength: '논문 리뷰, 구현, troubleshooting을 목적별로 나누고 작성 템플릿을 만들어 기록의 형식을 일정하게 유지했습니다.',
+          'Key Features': 'Jekyll 정적 사이트, GitHub Pages 배포, 카테고리 페이지, 글 작성 템플릿, 이미지 관리 규칙, GitHub Actions workflow를 포함합니다.',
+          'My Role': '블로그 구조 설계, README 작성, 카테고리/템플릿 구성, GitHub Pages 배포 설정을 담당했습니다.',
+          'What I learned': '기술 블로그는 예쁜 페이지보다 꾸준히 쓸 수 있는 정보 구조, 템플릿, 배포 자동화가 더 중요하다는 점을 배웠습니다.'
+        }
       },
       {
-        id: 'political-news-nlp',
+        id: 'transformer-from-scratch',
         order: '05',
-        title: 'Political News NLP',
-        label: '정리 예정',
-        short: '정치 뉴스 성향 분류 NLP 프로젝트 상세 작성 예정',
-        icon: 'lucide:newspaper',
-        status: 'Preparing',
-        comingSoon: true,
-        stack: ['PyTorch', 'BERT', 'Scikit-learn', 'WandB']
+        title: 'Transformer from Scratch',
+        label: 'Study',
+        short: 'Attention과 Encoder/Decoder를 직접 구현한 학습 프로젝트',
+        icon: 'lucide:brain-circuit',
+        overview: 'README는 없지만 코드 구조상 Attention, MultiHeadAttention, Encoder, Decoder, Positional Encoding, Transformer module을 직접 나누어 구현한 Transformer 구조 학습 저장소입니다.',
+        stack: ['Python', 'PyTorch', 'Jupyter Notebook', 'Attention', 'Transformer'],
+        metrics: ['Attention.py, MultiHeadAttention.py로 attention 연산 분리', 'Encoder.py, Decoder.py, transformer.py로 모델 구성요소 구현', 'positional_encode.py로 위치 인코딩 구현', 'attn_visual.ipynb로 attention 시각화 실험'],
+        repoUrl: 'https://github.com/wkd09/transformers',
+        sections: {
+          Overview: 'Transformer 아키텍처의 핵심 구성요소를 직접 코드로 나누어 구현하며 구조를 이해한 학습 프로젝트입니다.',
+          Problem: '라이브러리 모델을 바로 사용하면 attention, positional encoding, encoder/decoder 흐름을 내부적으로 이해하기 어렵습니다.',
+          Strength: '모델 전체를 한 파일에 몰아넣지 않고 Attention, MultiHeadAttention, Encoder, Decoder, Positional Encoding 단위로 쪼개 구현했습니다.',
+          'Key Features': 'Scaled dot-product attention, multi-head attention, encoder/decoder block, positional encoding, attention 시각화 notebook을 포함합니다.',
+          'My Role': 'Transformer 구성요소 구현과 attention 시각화 실험을 진행했습니다.',
+          'What I learned': 'LLM/Transformer를 서비스에 적용하려면 high-level API뿐 아니라 attention mask, encoding, encoder/decoder 연결 구조를 이해해야 한다는 점을 학습했습니다.'
+        }
       }
     ];
 
     const skills = [
       {
-        title: 'AI / LLM',
+        title: 'CORE INTELLIGENCE',
         items: [
-          ['LangChain', 'RAG pipeline 구성'],
-          ['LangGraph', 'LLM workflow 구성'],
-          ['OpenAI API', 'AI 분석 기능 구현'],
-          ['Hugging Face Transformers', 'LLM/NLP 모델 실험'],
-          ['PEFT', 'LoRA fine-tuning 실험'],
-          ['vLLM', 'LLM serving 실험'],
-          ['llama.cpp', '로컬 LLM 서버 구성']
+          { name: 'Python', icon: 'logos:python', level: 88 },
+          { name: 'PyTorch', icon: 'devicon:pytorch', level: 72 },
+          { name: 'Transformers', icon: 'simple-icons:huggingface', level: 68 },
+          { name: 'OpenAI API', icon: 'simple-icons:openai', level: 70 }
         ]
       },
       {
-        title: 'Backend',
+        title: 'BACKEND & API',
         items: [
-          ['FastAPI', 'AI Server API 구현'],
-          ['Uvicorn', 'FastAPI 서버 실행'],
-          ['Pydantic', 'request / response schema 정의'],
-          ['REST API', '프론트엔드 연동 API 구성'],
-          ['PostgreSQL', '서비스 데이터 저장'],
-          ['SQL', '기본 데이터 조회와 관리']
+          { name: 'FastAPI', icon: 'simple-icons:fastapi', level: 82 },
+          { name: 'Pydantic', icon: 'lucide:braces', level: 78 },
+          { name: 'REST API', icon: 'lucide:route', level: 76 },
+          { name: 'LangGraph', icon: 'lucide:workflow', level: 72 }
         ]
       },
       {
-        title: 'ML / Data',
+        title: 'DATA & VISION',
         items: [
-          ['PyTorch', 'NLP 모델 학습'],
-          ['Scikit-learn', 'ML baseline과 metric 계산'],
-          ['Pandas', '데이터 전처리'],
-          ['NumPy', '수치 연산'],
-          ['LightGBM', 'tabular classification'],
-          ['CatBoost', 'tabular classification']
+          { name: 'Jupyter', icon: 'devicon:jupyter', level: 80 },
+          { name: 'Pandas', icon: 'devicon:pandas', level: 72 },
+          { name: 'OpenCV', icon: 'simple-icons:opencv', level: 66 },
+          { name: 'YOLO / Ultralytics', icon: 'lucide:scan-line', level: 62 }
         ]
       },
       {
-        title: 'OCR / Crawling',
+        title: 'INFRASTRUCTURE',
         items: [
-          ['PaddleOCR', '문서 OCR 처리'],
-          ['OpenCV', '이미지 전처리'],
-          ['BeautifulSoup', 'HTML parsing'],
-          ['Selenium', '웹 자동화와 crawling']
-        ]
-      },
-      {
-        title: 'DevOps / Tools',
-        items: [
-          ['Docker', '실행 환경 컨테이너화'],
-          ['Docker Compose', '로컬 서비스 구성'],
-          ['Git', '버전 관리'],
-          ['GitHub', '코드 저장소 관리'],
-          ['Linux CLI', '서버와 개발 환경 조작'],
-          ['Conda / venv', 'Python 환경 관리'],
-          ['VS Code', '개발 환경'],
-          ['Cursor', 'AI 기반 개발 도구'],
-          ['Codex', '코드 수정과 검증 도구'],
-          ['Weights & Biases', '실험 기록']
+          { name: 'Docker', icon: 'devicon:docker', level: 70 },
+          { name: 'Git / GitHub', icon: 'devicon:github', level: 82 },
+          { name: 'GitHub Pages', icon: 'lucide:globe', level: 72 },
+          { name: 'Linux CLI', icon: 'devicon:linux', level: 68 }
         ]
       }
     ];
@@ -588,14 +634,14 @@
         const action = project.comingSoon ? '' : `onclick="openProject('${project.id}')"`;
         return `
         <${tag} ${action} class="glass-card group relative overflow-hidden rounded-2xl p-6 text-left animate-slide-up ${project.large ? 'md:col-span-2 md:row-span-2' : ''} ${project.comingSoon ? 'opacity-75' : 'cursor-pointer'}" style="animation-delay:${index * 80}ms">
-          <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-cyan-500/5 opacity-0 transition group-hover:opacity-100"></div>
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.10),transparent_34%),linear-gradient(135deg,rgba(255,255,255,.04),transparent_42%)] opacity-0 transition group-hover:opacity-100"></div>
           <div class="relative z-10 flex h-full flex-col">
             <div class="flex items-start justify-between gap-4">
               <div>
                 <span class="font-mono text-xs text-neutral-400">${project.order}</span>
                 <span class="ml-2 rounded-full border border-black/5 px-2 py-1 text-[10px] uppercase tracking-wider text-neutral-400 dark:border-white/10">${project.label}</span>
               </div>
-              <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 transition ${project.comingSoon ? '' : 'group-hover:bg-indigo-500 group-hover:text-white'} dark:text-indigo-300">
+              <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-black/5 text-neutral-700 transition ${project.comingSoon ? '' : 'group-hover:bg-neutral-900 group-hover:text-white'} dark:bg-white/5 dark:text-neutral-200 dark:group-hover:bg-white dark:group-hover:text-black">
               <iconify-icon icon="${project.icon}" width="23"></iconify-icon>
               </span>
             </div>
@@ -605,7 +651,7 @@
               <div class="mt-5 flex flex-wrap gap-2">
                 ${project.stack.slice(0, project.large ? 6 : 4).map(item => `<span class="badge">${item}</span>`).join('')}
               </div>
-              <div class="mt-5 flex items-center gap-2 text-xs font-medium ${project.comingSoon ? 'text-neutral-400' : 'text-indigo-600 dark:text-indigo-300'}">
+              <div class="mt-5 flex items-center gap-2 text-xs font-medium ${project.comingSoon ? 'text-neutral-400' : 'text-neutral-700 dark:text-neutral-300'}">
                 ${project.comingSoon ? '상세 작성 예정' : 'Case Study 보기'}
                 ${project.comingSoon ? '' : '<iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon>'}
               </div>
@@ -619,17 +665,24 @@
     function renderSkills() {
       const grid = document.getElementById('skills-grid');
       grid.innerHTML = skills.map(group => `
-        <div class="glass-card rounded-2xl p-6">
-          <h3 class="border-b border-black/5 pb-4 font-mono text-xs uppercase tracking-[0.18em] text-neutral-500 dark:border-white/10">${group.title}</h3>
-          <div class="mt-5 grid gap-3 sm:grid-cols-2">
-            ${group.items.map(([name, desc]) => `
-              <div class="rounded-xl border border-black/5 p-3 dark:border-white/10">
-                <div class="text-sm font-semibold text-neutral-900 dark:text-white">${name}</div>
-                <div class="mt-1 text-xs leading-5 text-neutral-500 dark:text-neutral-400">${desc}</div>
+        <section>
+          <h3 class="border-b border-black/10 pb-4 font-mono text-sm uppercase tracking-[0.18em] text-neutral-500 dark:border-white/15 dark:text-neutral-500">${group.title}</h3>
+          <div class="mt-7 space-y-7">
+            ${group.items.map(item => `
+              <div class="grid grid-cols-[minmax(0,1fr)_112px] items-center gap-5 sm:grid-cols-[minmax(0,1fr)_180px]">
+                <div class="flex min-w-0 items-center gap-4">
+                  <span class="flex h-9 w-9 shrink-0 items-center justify-center text-neutral-700 dark:text-neutral-200">
+                    <iconify-icon icon="${item.icon}" width="32"></iconify-icon>
+                  </span>
+                  <span class="truncate text-xl font-semibold text-neutral-800 dark:text-neutral-200 md:text-2xl">${item.name}</span>
+                </div>
+                <div class="h-2 overflow-hidden rounded-full bg-neutral-900/10 dark:bg-white/10" aria-label="${item.name} 숙련도 ${item.level}%">
+                  <div class="h-full rounded-full bg-neutral-900 dark:bg-white" style="width:${item.level}%"></div>
+                </div>
               </div>
             `).join('')}
           </div>
-        </div>
+        </section>
       `).join('');
     }
 
@@ -684,6 +737,11 @@
       document.getElementById('detail-metrics').innerHTML = project.metrics.map(item => `
         <div class="border-b border-black/5 pb-3 text-sm leading-6 text-neutral-600 dark:border-white/10 dark:text-neutral-300">${item}</div>
       `).join('');
+      document.getElementById('detail-links').innerHTML = [
+        project.repoUrl ? `<a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between rounded-xl border border-black/5 px-4 py-3 text-sm font-medium text-neutral-700 transition hover:border-black/20 hover:text-black dark:border-white/10 dark:text-neutral-300 dark:hover:border-white/25 dark:hover:text-white"><span class="flex items-center gap-2"><iconify-icon icon="lucide:github" width="16"></iconify-icon>GitHub</span><iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></a>` : '',
+        project.siteUrl ? `<a href="${project.siteUrl}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between rounded-xl border border-black/5 px-4 py-3 text-sm font-medium text-neutral-700 transition hover:border-black/20 hover:text-black dark:border-white/10 dark:text-neutral-300 dark:hover:border-white/25 dark:hover:text-white"><span class="flex items-center gap-2"><iconify-icon icon="lucide:globe" width="16"></iconify-icon>Live Site</span><iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></a>` : '',
+        project.sourceNote ? `<div class="rounded-xl border border-black/5 px-4 py-3 text-sm leading-6 text-neutral-500 dark:border-white/10 dark:text-neutral-400">${project.sourceNote}</div>` : ''
+      ].filter(Boolean).join('');
       document.getElementById('detail-sections').innerHTML = Object.entries(project.sections).map(([title, body]) => `
         <section class="glass-card rounded-2xl p-6">
           <h2 class="text-sm font-semibold text-neutral-950 dark:text-white">${title}</h2>
@@ -719,7 +777,7 @@
 
       draw() {
         const isDark = document.documentElement.classList.contains('dark');
-        ctx.fillStyle = isDark ? 'rgba(255,255,255,.42)' : 'rgba(0,0,0,.32)';
+        ctx.fillStyle = isDark ? 'rgba(255,255,255,.34)' : 'rgba(0,0,0,.22)';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -747,7 +805,7 @@
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < config.distance) {
-            const opacity = (1 - distance / config.distance) * (isDark ? .12 : .08);
+            const opacity = (1 - distance / config.distance) * (isDark ? .13 : .09);
             ctx.strokeStyle = isDark ? `rgba(255,255,255,${opacity})` : `rgba(0,0,0,${opacity})`;
             ctx.lineWidth = .5;
             ctx.beginPath();
