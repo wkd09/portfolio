@@ -1,0 +1,6 @@
+# macOS metadata
+.DS_Store
+
+# Local design-review artifacts
+.design-evidence/
+design-qa.md

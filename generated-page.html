@@ -41,6 +41,30 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
+    @font-face {
+      font-family: 'Space Grotesk Local';
+      src: url('./assets/fonts/space-grotesk-400.woff2') format('woff2');
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Space Grotesk Local';
+      src: url('./assets/fonts/space-grotesk-500.woff2') format('woff2');
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Space Grotesk Local';
+      src: url('./assets/fonts/space-grotesk-600.woff2') format('woff2');
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+    }
+
     body {
       font-family: Inter, system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -160,6 +184,199 @@
       .nav-scroll {
         max-width: calc(100vw - 24px);
         overflow-x: auto;
+      }
+    }
+
+    #contact.page-section {
+      min-height: 0;
+    }
+
+    .contact-shell {
+      position: relative;
+      width: 100%;
+      min-height: clamp(560px, calc(100vh - 220px), 720px);
+      overflow: hidden;
+      color: #fff;
+      background: #050505;
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 1rem;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .16);
+      font-family: 'Space Grotesk Local', Pretendard, sans-serif;
+      isolation: isolate;
+    }
+
+    .contact-shell::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: radial-gradient(circle at center, transparent 0 34%, rgba(5, 5, 5, .13) 60%, rgba(5, 5, 5, .58) 100%);
+    }
+
+    .contact-stage {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      touch-action: pan-y;
+      cursor: grab;
+    }
+
+    .contact-stage:active {
+      cursor: grabbing;
+    }
+
+    #contact-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .contact-axis-label {
+      position: absolute;
+      z-index: 2;
+      color: rgba(255, 255, 255, .46);
+      font-size: 9px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow: 0 0 12px rgba(0, 0, 0, .95);
+      pointer-events: none;
+      transition: opacity .3s ease;
+    }
+
+    .contact-axis-label.label-a { left: 47%; top: 24%; transform: rotate(-6deg); }
+    .contact-axis-label.label-b { right: 27%; top: 35%; transform: rotate(5deg); }
+    .contact-axis-label.label-c { left: 31%; bottom: 30%; transform: rotate(4deg); }
+    .contact-axis-label.label-d { right: 40%; bottom: 19%; transform: rotate(-4deg); }
+
+    .contact-lockup a:focus-visible {
+      outline: 1px solid rgba(255, 255, 255, .9);
+      outline-offset: 4px;
+    }
+
+    .contact-lockup {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      display: grid;
+      place-items: center;
+      padding: 0 16px;
+      pointer-events: none;
+    }
+
+    .contact-lockup__row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: clamp(14px, 1.7vw, 30px);
+      color: rgba(255, 255, 255, .78);
+      font-size: clamp(13px, 1.45vw, 18px);
+      font-weight: 500;
+      line-height: 1;
+      white-space: nowrap;
+      text-shadow: 0 0 16px rgba(0, 0, 0, .96), 0 0 5px rgba(0, 0, 0, .92);
+      pointer-events: auto;
+    }
+
+    .contact-lockup__name {
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: .08em;
+    }
+
+    .contact-lockup a {
+      color: rgba(255, 255, 255, .78);
+      letter-spacing: .03em;
+      text-decoration: none;
+      transition: color .2s ease, text-shadow .2s ease;
+    }
+
+    .contact-lockup a:hover {
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, .24), 0 0 16px rgba(0, 0, 0, 1);
+    }
+
+    .contact-hud {
+      position: absolute;
+      right: 22px;
+      bottom: 18px;
+      z-index: 8;
+      color: rgba(255, 255, 255, .34);
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .contact-meta {
+      position: absolute;
+      left: 22px;
+      bottom: 18px;
+      z-index: 8;
+      color: rgba(255, 255, 255, .28);
+      font-size: 9px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    @media (max-width: 720px), (max-height: 620px) {
+      .contact-shell {
+        min-height: 560px;
+      }
+
+      .contact-lockup__row {
+        flex-wrap: wrap;
+        gap: 10px 14px;
+        max-width: 350px;
+        font-size: 13px;
+      }
+
+      .contact-lockup__break {
+        flex-basis: 100%;
+        height: 0;
+      }
+
+      .contact-axis-label {
+        font-size: 7px;
+        letter-spacing: .14em;
+      }
+
+      .contact-axis-label.label-a { left: 49%; top: 33%; }
+      .contact-axis-label.label-b { right: 17%; top: 39%; }
+      .contact-axis-label.label-c { left: 17%; bottom: 35%; }
+      .contact-axis-label.label-d { right: 32%; bottom: 35%; }
+
+      .contact-hud {
+        right: 14px;
+        bottom: 14px;
+        font-size: 9px;
+      }
+
+      .contact-meta {
+        left: 14px;
+        bottom: 14px;
+        font-size: 8px;
+      }
+    }
+
+    @media (min-width: 721px) {
+      .contact-lockup__break {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .contact-axis-label,
+      .contact-lockup a {
+        transition: none;
       }
     }
   </style>
@@ -431,36 +648,34 @@
       <div id="research-list" class="grid gap-4 md:grid-cols-2"></div>
     </section>
 
-    <section id="contact" class="page-section hidden">
-      <div class="mx-auto max-w-3xl text-center animate-slide-up">
+    <section id="contact" class="page-section hidden" aria-labelledby="contact-title">
+      <div class="mb-8 animate-slide-up">
         <p class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">Contact</p>
-        <h2 class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">문제를 서비스로 옮기는 AI 엔지니어를 지향합니다.</h2>
-        <p class="mt-6 text-sm leading-7 text-neutral-500 dark:text-neutral-400">
-          PDF에서 확인된 공개 연락 채널을 연결했습니다. 프로젝트별 저장소, 배포 주소, 스크린샷은 공개 범위 확인 후 추가하면 됩니다.
-        </p>
+        <h2 id="contact-title" class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">프로젝트와 협업 이야기를 기다리고 있습니다.</h2>
+      </div>
 
-        <div class="mt-10 grid min-w-0 gap-4 text-left sm:grid-cols-2 lg:grid-cols-4">
-          <a href="https://github.com/wkd09" target="_blank" rel="noopener noreferrer" class="glass-card min-w-0 overflow-hidden rounded-2xl p-6">
-            <iconify-icon icon="lucide:github" width="22" class="text-neutral-700 dark:text-neutral-300"></iconify-icon>
-            <h3 class="mt-4 text-sm font-semibold text-neutral-950 dark:text-white">GitHub</h3>
-            <p class="mt-2 min-w-0 break-all text-sm leading-6 text-neutral-500">github.com/wkd09</p>
-          </a>
-          <a href="mailto:wkdwnsals0413@gmail.com" class="glass-card min-w-0 overflow-hidden rounded-2xl p-6">
-            <iconify-icon icon="lucide:mail" width="22" class="text-neutral-700 dark:text-neutral-300"></iconify-icon>
-            <h3 class="mt-4 text-sm font-semibold text-neutral-950 dark:text-white">Email</h3>
-            <p class="mt-2 min-w-0 break-all text-sm leading-6 text-neutral-500">wkdwnsals0413@gmail.com</p>
-          </a>
-          <a href="https://wkd09.github.io/" target="_blank" rel="noopener noreferrer" class="glass-card min-w-0 overflow-hidden rounded-2xl p-6">
-            <iconify-icon icon="lucide:book-open" width="22" class="text-neutral-700 dark:text-neutral-300"></iconify-icon>
-            <h3 class="mt-4 text-sm font-semibold text-neutral-950 dark:text-white">Blog</h3>
-            <p class="mt-2 min-w-0 break-all text-sm leading-6 text-neutral-500">wkd09.github.io</p>
-          </a>
-          <a href="https://www.linkedin.com/in/junmin09/" target="_blank" rel="noopener noreferrer" class="glass-card min-w-0 overflow-hidden rounded-2xl p-6">
-            <iconify-icon icon="lucide:linkedin" width="22" class="text-neutral-700 dark:text-neutral-300"></iconify-icon>
-            <h3 class="mt-4 text-sm font-semibold text-neutral-950 dark:text-white">LinkedIn</h3>
-            <p class="mt-2 min-w-0 break-all text-sm leading-6 text-neutral-500">linkedin.com/in/junmin09</p>
-          </a>
+      <div class="contact-shell">
+        <div id="contact-stage" class="contact-stage" aria-hidden="true">
+          <canvas id="contact-canvas"></canvas>
+          <span class="contact-axis-label label-a">FOLIO</span>
+          <span class="contact-axis-label label-b">defAPI</span>
+          <span class="contact-axis-label label-c">AINSTRUCTION</span>
+          <span class="contact-axis-label label-d">YOLO × DETECTRON2</span>
         </div>
+
+        <div class="contact-lockup">
+          <div class="contact-lockup__row">
+            <span class="contact-lockup__name">JANG JUNMIN</span>
+            <a href="mailto:wkdwnsals0413@gmail.com" aria-label="이메일 wkdwnsals0413@gmail.com">wkdwnsals0413@gmail.com</a>
+            <span class="contact-lockup__break" aria-hidden="true"></span>
+            <a href="https://github.com/wkd09" target="_blank" rel="noopener noreferrer">GITHUB</a>
+            <a href="https://wkd09.github.io/" target="_blank" rel="noopener noreferrer">BLOG</a>
+            <a href="https://www.linkedin.com/in/junmin09/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+          </div>
+        </div>
+
+        <div class="contact-meta" aria-hidden="true">MODEL · SERVICE · VALIDATE</div>
+        <div class="contact-hud" aria-hidden="true">DRAG TO EXPLORE</div>
       </div>
     </section>
   </main>
@@ -705,6 +920,8 @@
     }
 
     function navigateTo(sectionId) {
+      const isContact = sectionId === 'contact';
+
       document.querySelectorAll('.page-section').forEach(section => {
         section.classList.add('hidden');
         section.classList.remove('animate-slide-up');
@@ -720,6 +937,8 @@
       document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.toggle('active', link.getAttribute('data-target') === sectionId);
       });
+
+      setContactSceneActive(isContact);
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -792,6 +1011,7 @@
 
     function animateCanvas() {
       ctx.clearRect(0, 0, width, height);
+
       const isDark = document.documentElement.classList.contains('dark');
 
       particles.forEach((particle, index) => {
@@ -819,13 +1039,208 @@
       requestAnimationFrame(animateCanvas);
     }
 
+    const contactCanvas = document.getElementById('contact-canvas');
+    const contactStage = document.getElementById('contact-stage');
+    const contactContext = contactCanvas.getContext('2d');
+    const reduceContactMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let contactSceneActive = false;
+    let contactSceneReady = false;
+    let contactWidth = 0;
+    let contactHeight = 0;
+    let contactPixelRatio = 1;
+    let contactPoints = [];
+    let contactYaw = -.24;
+    let contactPitch = .1;
+    let contactYawTarget = -.24;
+    let contactPitchTarget = .1;
+    let contactPointer = null;
+
+    function makeContactPoints() {
+      const compact = contactWidth <= 720 || contactHeight <= 620;
+      const count = compact ? 1400 : 2400;
+      const points = [];
+
+      for (let index = 0; index < count; index += 1) {
+        let x = Math.random() * 2 - 1;
+        let y = Math.random() * 2 - 1;
+        let z = Math.random() * 2 - 1;
+        const length = Math.abs(x) + Math.abs(y) + Math.abs(z) || 1;
+        const radius = Math.pow(Math.random(), .34);
+
+        x = (x / length) * radius;
+        y = (y / length) * radius * 1.2;
+        z = (z / length) * radius;
+
+        const planePull = .72 + Math.random() * .28;
+        if (index % 3 === 0) x *= planePull;
+        if (index % 3 === 1) y *= planePull;
+        if (index % 3 === 2) z *= planePull;
+
+        points.push({
+          x,
+          y,
+          z,
+          size: .86 + Math.random() * 1.9,
+          alpha: .56 + Math.random() * .44,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+
+      return points;
+    }
+
+    function resizeContactCanvas() {
+      if (!contactCanvas) return;
+      const rect = contactCanvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+
+      contactPixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      contactWidth = rect.width;
+      contactHeight = rect.height;
+      contactCanvas.width = Math.round(contactWidth * contactPixelRatio);
+      contactCanvas.height = Math.round(contactHeight * contactPixelRatio);
+      contactContext.setTransform(contactPixelRatio, 0, 0, contactPixelRatio, 0, 0);
+      contactPoints = makeContactPoints();
+    }
+
+    function rotateContactPoint(point) {
+      const cosYaw = Math.cos(contactYaw);
+      const sinYaw = Math.sin(contactYaw);
+      const cosPitch = Math.cos(contactPitch);
+      const sinPitch = Math.sin(contactPitch);
+      const x1 = point.x * cosYaw - point.z * sinYaw;
+      const z1 = point.x * sinYaw + point.z * cosYaw;
+      const y1 = point.y * cosPitch - z1 * sinPitch;
+      const z2 = point.y * sinPitch + z1 * cosPitch;
+
+      return { x: x1, y: y1, z: z2 };
+    }
+
+    function projectContactPoint(point, scale) {
+      const rotated = rotateContactPoint(point);
+      const perspective = 1 / (1.42 - rotated.z * .3);
+
+      return {
+        x: contactWidth / 2 + rotated.x * scale * perspective,
+        y: contactHeight / 2 + rotated.y * scale * perspective,
+        z: rotated.z,
+        perspective
+      };
+    }
+
+    function drawContactAxis(from, to, scale) {
+      const start = projectContactPoint(from, scale);
+      const end = projectContactPoint(to, scale);
+      const gradient = contactContext.createLinearGradient(start.x, start.y, end.x, end.y);
+      gradient.addColorStop(0, 'rgba(255,255,255,.1)');
+      gradient.addColorStop(.5, 'rgba(255,255,255,.55)');
+      gradient.addColorStop(1, 'rgba(255,255,255,.1)');
+      contactContext.strokeStyle = gradient;
+      contactContext.lineWidth = .75;
+      contactContext.beginPath();
+      contactContext.moveTo(start.x, start.y);
+      contactContext.lineTo(end.x, end.y);
+      contactContext.stroke();
+    }
+
+    function drawContactScene(time = 0) {
+      requestAnimationFrame(drawContactScene);
+      if (!contactSceneActive || !contactWidth || !contactHeight) return;
+
+      if (!reduceContactMotion && !contactPointer) {
+        contactYawTarget += .00045;
+        contactPitchTarget = .08 + Math.sin(time * .00022) * .055;
+      }
+
+      contactYaw += (contactYawTarget - contactYaw) * .055;
+      contactPitch += (contactPitchTarget - contactPitch) * .055;
+      contactContext.clearRect(0, 0, contactWidth, contactHeight);
+
+      const compact = contactWidth <= 720 || contactHeight <= 620;
+      const scale = Math.min(contactWidth, contactHeight) * (compact ? .48 : .62);
+      const glow = contactContext.createRadialGradient(
+        contactWidth / 2,
+        contactHeight / 2,
+        0,
+        contactWidth / 2,
+        contactHeight / 2,
+        scale * .95
+      );
+      glow.addColorStop(0, 'rgba(170,187,210,.055)');
+      glow.addColorStop(.52, 'rgba(120,145,180,.018)');
+      glow.addColorStop(1, 'rgba(5,5,5,0)');
+      contactContext.fillStyle = glow;
+      contactContext.fillRect(0, 0, contactWidth, contactHeight);
+
+      drawContactAxis({ x: -1.05, y: 0, z: 0 }, { x: 1.05, y: 0, z: 0 }, scale);
+      drawContactAxis({ x: 0, y: -1.05, z: 0 }, { x: 0, y: 1.05, z: 0 }, scale);
+      drawContactAxis({ x: 0, y: 0, z: -1.05 }, { x: 0, y: 0, z: 1.05 }, scale);
+
+      const ordered = contactPoints.map(point => ({ point, rotated: rotateContactPoint(point) }))
+        .sort((a, b) => a.rotated.z - b.rotated.z);
+
+      ordered.forEach(({ point, rotated }) => {
+        const perspective = 1 / (1.42 - rotated.z * .3);
+        const x = contactWidth / 2 + rotated.x * scale * perspective;
+        const y = contactHeight / 2 + rotated.y * scale * perspective;
+        const depth = Math.max(0, Math.min(1, (rotated.z + 1) / 2));
+        const shimmer = reduceContactMotion ? 1 : .82 + Math.sin(time * .0016 + point.phase) * .18;
+        const radius = point.size * perspective * (compact ? .8 : 1);
+        const alpha = point.alpha * (.62 + depth * .38) * shimmer;
+
+        contactContext.fillStyle = `rgba(244,247,252,${alpha.toFixed(3)})`;
+        contactContext.beginPath();
+        contactContext.arc(x, y, radius, 0, Math.PI * 2);
+        contactContext.fill();
+      });
+    }
+
+    function setContactSceneActive(active) {
+      contactSceneActive = active;
+      if (active) {
+        requestAnimationFrame(() => resizeContactCanvas());
+      }
+    }
+
+    function initContactScene() {
+      if (contactSceneReady || !contactCanvas || !contactStage) return;
+      contactSceneReady = true;
+      resizeContactCanvas();
+
+      contactStage.addEventListener('pointerdown', event => {
+        if (event.button !== undefined && event.button !== 0) return;
+        contactPointer = { id: event.pointerId, x: event.clientX, y: event.clientY };
+        contactStage.setPointerCapture?.(event.pointerId);
+      });
+
+      contactStage.addEventListener('pointermove', event => {
+        if (!contactPointer || event.pointerId !== contactPointer.id) return;
+        const dx = event.clientX - contactPointer.x;
+        const dy = event.clientY - contactPointer.y;
+        contactPointer.x = event.clientX;
+        contactPointer.y = event.clientY;
+        contactYawTarget += dx * .0065;
+        contactPitchTarget = Math.max(-.62, Math.min(.62, contactPitchTarget + dy * .0045));
+      });
+
+      const releaseContactPointer = event => {
+        if (contactPointer && event.pointerId === contactPointer.id) contactPointer = null;
+      };
+
+      contactStage.addEventListener('pointerup', releaseContactPointer);
+      contactStage.addEventListener('pointercancel', releaseContactPointer);
+      requestAnimationFrame(drawContactScene);
+    }
+
     window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('resize', resizeContactCanvas);
     document.addEventListener('DOMContentLoaded', () => {
       renderProjects();
       renderSkills();
       renderResearch();
       document.querySelector('.nav-link[data-target="about"]').classList.remove('active');
       resizeCanvas();
+      initContactScene();
       animateCanvas();
     });
   </script>
