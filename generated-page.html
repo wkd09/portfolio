@@ -3,8 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AI Engineer, MLOps, LLMOps를 지향하는 장준민의 포트폴리오">
+  <meta name="description" content="장준민의 AI Engineer 포트폴리오. Gotion, defAPI, Folio에서 문제 정의부터 구현, 검증, 한계까지 기록합니다.">
   <title>장준민 | AI Engineer Portfolio</title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "장준민",
+      "jobTitle": "AI Engineer",
+      "knowsAbout": ["AI systems", "LLM agents", "Tool routing", "Backend APIs", "Evaluation"],
+      "sameAs": ["https://github.com/wkd09", "https://wkd09.github.io/", "https://www.linkedin.com/in/junmin09/"]
+    }
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <script>
@@ -39,7 +49,21 @@
     };
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    @font-face {
+      font-family: 'Geist Sans Local';
+      src: url('./assets/fonts/geist-variable.woff2') format('woff2');
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Geist Mono Local';
+      src: url('./assets/fonts/geist-mono-variable.woff2') format('woff2');
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
 
     @font-face {
       font-family: 'Space Grotesk Local';
@@ -98,6 +122,38 @@
       mask-image: linear-gradient(to bottom, black, black 72%, transparent);
     }
 
+    #micro-slats-canvas {
+      position: absolute;
+      inset: 0 0 auto;
+      z-index: 0;
+      width: 100%;
+      height: 600px;
+      pointer-events: none;
+      opacity: .18;
+      mix-blend-mode: screen;
+      mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.86) 54%, transparent 100%);
+    }
+
+    #home {
+      position: relative;
+      isolation: isolate;
+    }
+
+    #home > :not(#micro-slats-canvas) {
+      position: relative;
+      z-index: 1;
+    }
+
+    html:not(.dark) #micro-slats-canvas {
+      opacity: .08;
+      mix-blend-mode: multiply;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #micro-slats-canvas { opacity: .11; }
+      html:not(.dark) #micro-slats-canvas { opacity: .055; }
+    }
+
     .glass-panel {
       background: rgba(255, 255, 255, .72);
       backdrop-filter: blur(14px);
@@ -131,6 +187,55 @@
       background: rgba(255,255,255,.025);
     }
 
+    .border-glow-card {
+      --border-glow-opacity: 0;
+      --border-glow-x: 50%;
+      --border-glow-y: 50%;
+      --border-glow-x2: 50%;
+      --border-glow-y2: 50%;
+      border-color: transparent !important;
+      border-radius: 28px !important;
+      isolation: isolate;
+    }
+
+    .dark .border-glow-card {
+      background: #120f17;
+    }
+
+    .dark .glass-card.border-glow-card:hover {
+      border-color: transparent !important;
+      background: #120f17;
+    }
+
+    .border-glow-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      padding: 1.5px;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: var(--border-glow-opacity);
+      background:
+        radial-gradient(40px circle at var(--border-glow-x) var(--border-glow-y), rgba(192,132,252,.96), transparent 72%),
+        radial-gradient(40px circle at var(--border-glow-x2) var(--border-glow-y2), rgba(244,114,182,.86), transparent 72%),
+        radial-gradient(40px circle at var(--border-glow-x) var(--border-glow-y), rgba(56,189,248,.82), transparent 72%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      transition: opacity .16s ease;
+    }
+
+    .border-glow-card[data-glow-active="true"] {
+      box-shadow: 0 0 40px hsl(40 80% 80% / var(--border-glow-shadow-opacity, 0));
+    }
+
+    .border-glow-card:focus-visible { --border-glow-opacity: .65; --border-glow-shadow-opacity: .14; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .border-glow-card::after { transition: none; }
+    }
+
     .nav-link {
       position: relative;
     }
@@ -145,18 +250,6 @@
       background: transparent;
     }
 
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: .25rem;
-      width: 4px;
-      height: 4px;
-      transform: translateX(-50%);
-      border-radius: 999px;
-      background: currentColor;
-      box-shadow: 0 0 10px rgba(255,255,255,.35);
-    }
 
     .section-title {
       letter-spacing: -.02em;
@@ -379,77 +472,829 @@
         transition: none;
       }
     }
+
+    #skills-grid iconify-icon {
+      filter: brightness(0);
+    }
+
+    .dark #skills-grid iconify-icon {
+      filter: brightness(0) invert(1);
+    }
+
+    .case-study-layout {
+      display: grid;
+      grid-template-columns: 136px minmax(0, 1fr);
+      gap: 56px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .case-study-nav {
+      position: sticky;
+      top: 6rem;
+    }
+
+    .case-study-nav {
+      height: fit-content;
+      border-left: 1px solid rgba(0,0,0,.10);
+      padding-left: 16px;
+    }
+
+    .dark .case-study-nav { border-color: rgba(255,255,255,.12); }
+
+    .case-study-nav button {
+      display: block;
+      width: 100%;
+      padding: 11px 0;
+      color: #737373;
+      text-align: left;
+      font-size: 13px;
+      transition: color .2s ease;
+    }
+
+    .case-study-nav button:hover { color: #111; }
+    .dark .case-study-nav button:hover { color: #fff; }
+    .case-study-nav span { display: inline-block; width: 28px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #888; }
+
+    .case-study-main { min-width: 0; }
+
+    .case-study-header {
+      padding-bottom: 42px;
+      border-bottom: 1px solid rgba(0,0,0,.12);
+    }
+
+    .dark .case-study-header { border-color: rgba(255,255,255,.14); }
+
+    .case-study-title {
+      max-width: 900px;
+      margin-top: 22px;
+      color: #141612;
+      font-family: 'Space Grotesk Local', Inter, sans-serif;
+      font-size: clamp(2.8rem, 5.5vw, 5.25rem);
+      font-weight: 600;
+      letter-spacing: -.065em;
+      line-height: .98;
+    }
+
+    .dark .case-study-title { color: #f8f8f6; }
+
+    .case-study-lede {
+      max-width: 720px;
+      margin-top: 24px;
+      color: #5b5b5b;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+
+    .dark .case-study-lede { color: #aaa; }
+
+    .case-study-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 26px;
+    }
+
+    .case-study-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .case-study-outcomes {
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 38px;
+      margin-top: 48px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(0,0,0,.10);
+    }
+
+    .dark .case-study-outcomes { border-color: rgba(255,255,255,.10); }
+    .case-section-label { color: #8b8b8b; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; }
+    .case-study-outcomes h2 { margin-top: 8px; color: #161616; font-size: 1.2rem; font-weight: 600; letter-spacing: -.03em; }
+    .dark .case-study-outcomes h2 { color: #f5f5f5; }
+    .case-section-heading h2 { margin: 0; color: #161616; font-family: 'JetBrains Mono', monospace; font-size: clamp(1.35rem, 2.2vw, 1.8rem); font-weight: 700; letter-spacing: .045em; line-height: 1.15; text-transform: uppercase; }
+    .dark .case-section-heading h2 { color: #f5f5f5; }
+
+    .case-study-outcomes ul { display: grid; gap: 10px; }
+    .case-study-outcomes li { display: flex; gap: 9px; color: #555; font-size: .9rem; line-height: 1.55; }
+    .case-study-outcomes li::before { content: '↗'; color: #40bcd8; font-weight: 600; }
+    .dark .case-study-outcomes li { color: #c4c4c4; }
+
+    .case-study-section {
+      padding: 68px 0;
+      border-bottom: 1px solid rgba(0,0,0,.12);
+    }
+
+    .dark .case-study-section { border-color: rgba(255,255,255,.12); }
+    .case-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+
+    .case-architecture-flow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .case-architecture-flow > span {
+      min-width: 116px;
+      padding: 18px 12px !important;
+      border: 1px solid rgba(0,0,0,.14) !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      color: #222 !important;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px !important;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .dark .case-architecture-flow > span { border-color: rgba(130,220,238,.42) !important; color: #e7f8fb !important; }
+    .case-architecture-flow iconify-icon { flex: 0 0 auto; color: #40bcd8 !important; }
+
+    .gotion-architecture-comparison { margin-top: 34px; }
+    .gotion-architecture-intro { max-width: 700px; color: #666; font-size: .9rem; line-height: 1.7; }
+    .dark .gotion-architecture-intro { color: #b7b7b7; }
+    .gotion-diagram-block { margin-top: 28px; padding-top: 22px; border-top: 1px solid rgba(0,0,0,.10); }
+    .dark .gotion-diagram-block { border-color: rgba(255,255,255,.10); }
+    .gotion-diagram-caption { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; margin-bottom: 12px; }
+    .gotion-diagram-caption h3 { color: #1c1c1c; font-size: .95rem; font-weight: 600; letter-spacing: -.02em; }
+    .dark .gotion-diagram-caption h3 { color: #f4f4f4; }
+    .gotion-diagram-caption p { color: #8b8b8b; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+    .gotion-diagram-wrap { overflow-x: auto; border: 1px solid rgba(0,0,0,.10); background: rgba(0,0,0,.012); }
+    .dark .gotion-diagram-wrap { border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.012); }
+    .gotion-diagram { display: block; width: 100%; min-width: 720px; height: auto; }
+    .gotion-diagram .node { fill: #fafafa; stroke: rgba(20,20,20,.48); stroke-width: 1; }
+    .gotion-diagram .node-muted { fill: rgba(0,0,0,.025); stroke: rgba(20,20,20,.26); stroke-width: 1; }
+    .gotion-diagram .node-focus { fill: rgba(64,188,216,.10); stroke: #40bcd8; stroke-width: 1.25; }
+    .gotion-diagram .node-security { fill: rgba(64,188,216,.06); stroke: rgba(64,188,216,.72); stroke-width: 1; stroke-dasharray: 4 3; }
+    .gotion-diagram .flow { fill: none; stroke: rgba(20,20,20,.55); stroke-width: 1.2; marker-end: url(#gotion-arrow); }
+    .gotion-diagram .flow-muted { fill: none; stroke: rgba(20,20,20,.36); stroke-width: 1; stroke-dasharray: 4 3; marker-end: url(#gotion-arrow-muted); }
+    .gotion-diagram .node-label { fill: #1a1a1a; font-family: Inter, Pretendard, sans-serif; font-size: 12px; font-weight: 600; text-anchor: middle; }
+    .gotion-diagram .node-sub { fill: #777; font-family: 'JetBrains Mono', monospace; font-size: 9px; text-anchor: middle; }
+    .gotion-diagram .group-label { fill: #7d7d7d; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.2px; }
+    .dark .gotion-diagram .node { fill: #101213; stroke: rgba(225,245,248,.42); }
+    .dark .gotion-diagram .node-muted { fill: rgba(255,255,255,.025); stroke: rgba(255,255,255,.22); }
+    .dark .gotion-diagram .node-focus { fill: rgba(64,188,216,.13); stroke: #70d1e5; }
+    .dark .gotion-diagram .node-security { fill: rgba(64,188,216,.07); stroke: rgba(112,209,229,.70); }
+    .dark .gotion-diagram .flow { stroke: rgba(225,245,248,.58); }
+    .dark .gotion-diagram .flow-muted { stroke: rgba(225,245,248,.34); }
+    .dark .gotion-diagram .node-label { fill: #f0f7f8; }
+    .dark .gotion-diagram .node-sub, .dark .gotion-diagram .group-label { fill: #a4afb1; }
+
+    .case-metrics {
+      display: grid;
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .metric-chart {
+      min-width: 0;
+      padding: 22px 0 20px;
+      border-top: 1px solid rgba(0,0,0,.12);
+    }
+    .dark .metric-chart { border-color: rgba(255,255,255,.14); }
+    .metric-chart__head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 17px; }
+    .metric-chart__title { color: #1a1a1a; font-size: 14px; font-weight: 600; }
+    .dark .metric-chart__title { color: #f5f5f5; }
+    .metric-chart__note { color: #858585; font-size: 11px; line-height: 1.6; text-align: right; }
+    .dark .metric-chart__note { color: #aaa; }
+    .metric-chart__table-wrap { width: 100%; overflow-x: auto; }
+    .metric-chart__table { width: 100%; min-width: 560px; border-collapse: collapse; table-layout: fixed; }
+    .metric-chart__table th, .metric-chart__table td { padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,.07); text-align: left; vertical-align: middle; }
+    .dark .metric-chart__table th, .dark .metric-chart__table td { border-color: rgba(255,255,255,.09); }
+    .metric-chart__table thead th { color: #858585; font: 9px var(--site-mono); letter-spacing: .08em; text-transform: uppercase; }
+    .metric-chart__table thead th:first-child { width: 25%; }
+    .metric-chart__table tbody th { color: #5c5c5c; font-size: 12px; font-weight: 500; }
+    .dark .metric-chart__table tbody th { color: #c5c5c5; }
+    .metric-chart__value { display: block; margin-bottom: 6px; color: #323232; font: 11px var(--site-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .dark .metric-chart__value { color: #ececec; }
+    .metric-chart__track { display: block; width: 100%; height: 5px; overflow: hidden; background: rgba(127,127,127,.16); }
+    .metric-chart__bar { display: block; height: 100%; background: #898d92; }
+    .metric-chart__bar.is-intermediate { background: #b4b8bd; }
+    .metric-chart__bar.is-current { background: #40bcd8; }
+    .metric-chart__legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 0 0 10px 25%; color: #888; font-size: 10px; }
+    .metric-chart__legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    .metric-chart__swatch { width: 8px; height: 8px; background: #898d92; }
+    .metric-chart__swatch.is-intermediate { background: #b4b8bd; }
+    .metric-chart__swatch.is-current { background: #40bcd8; }
+    .metric-chart__footnote { margin-top: 12px; color: #858585; font-size: 11px; line-height: 1.7; }
+    .dark .metric-chart__footnote { color: #aaa; }
+    .metric-chart__status { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 10px; margin-top: 18px; }
+    .metric-chart__stat { padding: 14px 15px; border: 1px solid rgba(0,0,0,.10); }
+    .dark .metric-chart__stat { border-color: rgba(255,255,255,.13); }
+    .metric-chart__stat-label { color: #858585; font: 9px var(--site-mono); letter-spacing: .1em; text-transform: uppercase; }
+    .metric-chart__stat-value { display: block; margin-top: 7px; color: #1c1c1c; font: 20px var(--site-mono); font-variant-numeric: tabular-nums; }
+    .dark .metric-chart__stat-value { color: #f5f5f5; }
+    .metric-chart__empty { margin-top: 26px; padding: 22px; border: 1px solid rgba(0,0,0,.1); color: #777; font-size: 13px; line-height: 1.8; }
+    .dark .metric-chart__empty { border-color: rgba(255,255,255,.13); color: #bbb; }
+
+    .case-story-list { margin-top: 28px; border-top: 1px solid rgba(0,0,0,.12); }
+    .case-story-item { display: grid; grid-template-columns: 152px minmax(0, 1fr); gap: 34px; padding: 32px 0; border-bottom: 1px solid rgba(0,0,0,.10); }
+    .case-story-index { color: #888; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; }
+    .case-story-item h3 { color: #1a1a1a; font-size: 1.08rem; font-weight: 600; letter-spacing: -.025em; }
+    .case-story-item p { max-width: 790px; margin-top: 10px; color: #626262; font-size: .96rem; line-height: 1.85; }
+    .dark .case-story-list, .dark .case-story-item { border-color: rgba(255,255,255,.12); }
+    .dark .case-story-item h3 { color: #f5f5f5; }
+    .dark .case-story-item p { color: #bebebe; }
+    .project-intro-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 28px; border-top: 1px solid rgba(0,0,0,.12); border-left: 1px solid rgba(0,0,0,.12); }
+    .project-intro-card { min-height: 190px; padding: 24px; border-right: 1px solid rgba(0,0,0,.12); border-bottom: 1px solid rgba(0,0,0,.12); }
+    .project-intro-card__label { color: #40bcd8; font: 600 11px/1.4 'JetBrains Mono', monospace; letter-spacing: .12em; }
+    .project-intro-card h3 { margin-top: 24px; color: #1a1a1a; font-size: 1.05rem; font-weight: 600; }
+    .project-intro-card p { margin-top: 10px; color: #626262; font-size: .94rem; line-height: 1.8; }
+    .dark .project-intro-grid, .dark .project-intro-card { border-color: rgba(255,255,255,.12); }
+    .dark .project-intro-card h3 { color: #f5f5f5; }
+    .dark .project-intro-card p { color: #bebebe; }
+
+    .case-implementation-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 0; margin-top: 28px; border-top: 1px solid rgba(0,0,0,.12); border-bottom: 1px solid rgba(0,0,0,.12); }
+    .case-implementation-card { min-width: 0; padding: 22px 24px 24px 0; }
+    .case-implementation-card + .case-implementation-card { padding-left: 24px; border-left: 1px solid rgba(0,0,0,.12); }
+    .case-implementation-grid.has-four-cards { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .case-implementation-grid.has-four-cards .case-implementation-card:nth-child(3) { padding-left: 0; border-left: 0; }
+    .case-implementation-grid.has-four-cards .case-implementation-card:nth-child(n+3) { border-top: 1px solid rgba(0,0,0,.12); }
+    .case-implementation-card__index { color: #858585; font: 10px var(--site-mono); letter-spacing: .12em; }
+    .case-implementation-card h3 { margin-top: 26px; color: #1a1a1a; font-size: 1rem; font-weight: 600; letter-spacing: -.025em; }
+    .case-implementation-card p { margin-top: 10px; color: #626262; font-size: .88rem; line-height: 1.8; }
+    .case-implementation-card__flow { display: block; margin-top: 16px; color: #555960; font: 9px/1.8 var(--site-mono); }
+    .dark .case-implementation-grid,.dark .case-implementation-card + .case-implementation-card { border-color: rgba(255,255,255,.12); }
+    .dark .case-implementation-grid.has-four-cards .case-implementation-card:nth-child(n+3) { border-color: rgba(255,255,255,.12); }
+    .dark .case-implementation-card h3 { color: #f5f5f5; }
+    .dark .case-implementation-card p,.dark .case-implementation-card__flow { color: #bcbec4; }
+
+    .case-choice-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); gap: 48px; margin-top: 30px; }
+    .case-choice-question { color: #4d4d4d; font-size: 1.1rem; font-weight: 500; letter-spacing: -.025em; line-height: 1.65; }
+    .dark .case-choice-question { color: #e6e6e6; }
+    .case-choice-copy { margin-top: 18px; color: #696969; font-size: .94rem; line-height: 1.8; }
+    .dark .case-choice-copy { color: #bcbcbc; }
+    .case-choice-options { border-top: 1px solid rgba(0,0,0,.12); }
+    .case-choice-option { padding: 18px 0; border-bottom: 1px solid rgba(0,0,0,.10); }
+    .case-choice-option strong { display: block; color: #1b1b1b; font-size: .86rem; font-weight: 600; }
+    .case-choice-option p { margin-top: 6px; color: #666; font-size: .86rem; line-height: 1.65; }
+    .dark .case-choice-options, .dark .case-choice-option { border-color: rgba(255,255,255,.12); }
+    .dark .case-choice-option strong { color: #f3f3f3; }
+    .dark .case-choice-option p { color: #b6b6b6; }
+    .case-choice-conclusion { grid-column: 1 / -1; display: grid; grid-template-columns: 152px minmax(0, 1fr); gap: 34px; padding-top: 24px; border-top: 1px solid rgba(64,188,216,.42); }
+    .case-choice-conclusion h3 { color: #40bcd8; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; }
+    .case-choice-conclusion p { max-width: 790px; color: #5d5d5d; font-size: .94rem; line-height: 1.8; }
+    .dark .case-choice-conclusion p { color: #c4c4c4; }
+
+    .troubleshooting-case { padding: 32px 0 4px; border-top: 1px solid rgba(0,0,0,.12); }
+    .troubleshooting-case:last-child { border-bottom: 1px solid rgba(0,0,0,.12); padding-bottom: 32px; }
+    .troubleshooting-title { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 18px; }
+    .troubleshooting-title span { color: #40bcd8; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+    .troubleshooting-title h3 { color: #1a1a1a; font-size: 1.2rem; font-weight: 600; letter-spacing: -.03em; }
+    .troubleshooting-steps { margin: 28px 0 0 74px; }
+    .troubleshooting-step { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 22px; padding: 17px 0; border-top: 1px solid rgba(0,0,0,.08); }
+    .troubleshooting-step:first-child { border-top: 0; padding-top: 0; }
+    .troubleshooting-step p:first-child { color: #686868; font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: .02em; }
+    .troubleshooting-step p:last-child { color: #606060; font-size: .93rem; line-height: 1.8; }
+    .dark .troubleshooting-case, .dark .troubleshooting-case:last-child, .dark .troubleshooting-step { border-color: rgba(255,255,255,.12); }
+    .dark .troubleshooting-title h3 { color: #f5f5f5; }
+    .dark .troubleshooting-step p:first-child { color: #b8b8b8; }
+    .dark .troubleshooting-step p:last-child { color: #c1c1c1; }
+
+    .case-evidence-inline {
+      margin-top: 54px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(0,0,0,.12);
+    }
+    .dark .case-evidence-inline { border-color: rgba(255,255,255,.14); }
+    .case-evidence-inline__header { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+    .case-evidence-inline__note { color: #858585; font-size: 12px; line-height: 1.7; }
+    .dark .case-evidence-inline__note { color: #aaa; }
+    .case-evidence-inline #detail-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 18px; }
+    .case-evidence-inline #detail-links > * { margin: 0 !important; border-radius: 0 !important; }
+
+    :root { color-scheme: dark; --site-bg: #0b0c0e; --site-fg: #fafbfd; --site-muted: #a3a5aa; --site-line: rgba(235,238,244,.16); --site-mono: 'Geist Mono Local', ui-monospace, monospace; }
+    html, body { background: var(--site-bg) !important; color: var(--site-fg); }
+    body { font-family: 'Geist Sans Local', 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .font-mono, code, pre { font-family: var(--site-mono) !important; }
+    .grid-overlay { display: none; }
+    .noise-overlay { opacity: .012; }
+    #micro-slats-canvas { display: none !important; }
+    main { max-width: 1440px !important; padding-top: 112px !important; padding-inline: clamp(22px, 3.6vw, 52px) !important; }
+    #site-nav { position: fixed; inset: 0 0 auto; z-index: 60; min-height: 72px; border-bottom: 1px solid var(--site-line); background: rgba(11,12,14,.91); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+    .nav-inner { width: min(100%, 1440px); min-height: 72px; margin: 0 auto; padding: 0 clamp(22px, 3.6vw, 52px); display: flex; align-items: center; gap: 26px; }
+    .site-brand { display: inline-flex; align-items: baseline; gap: 14px; color: var(--site-fg); text-decoration: none; white-space: nowrap; }
+    .site-brand strong { font-size: 14px; font-weight: 650; letter-spacing: -.04em; }
+    .site-brand span { color: #84878e; font-size: 11px; }
+    .nav-links { display: flex; align-items: center; justify-content: flex-end; gap: clamp(14px, 2.2vw, 32px); margin-left: auto; }
+    .nav-links button, .nav-links a { color: #b7b9bf; background: none; border: 0; padding: 8px 0; font-size: 12px; text-decoration: none; transition: color .18s ease; }
+    .nav-links button:hover, .nav-links a:hover, .nav-links .active { color: white; }
+    #home.page-section { display: block; min-height: 0; }
+    #home.page-section.hidden { display: none !important; }
+    #home > .home-hero { min-height: min(690px, calc(100vh - 112px)); display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(390px, .95fr); align-items: center; gap: clamp(28px, 5vw, 76px); padding: 30px 0 62px; }
+    .home-kicker, .section-eyebrow { color: #a7a9af; font: 10px var(--site-mono); letter-spacing: .19em; text-transform: uppercase; }
+    .home-kicker { margin-bottom: 27px; }
+    .home-title { max-width: 760px; color: #fafbfd; font-size: clamp(3.7rem, 6.2vw, 6.3rem); font-weight: 620; letter-spacing: -.085em; line-height: .91; }
+    .home-title span { color: #a5a8af; }
+    .home-deck { max-width: 600px; margin-top: 29px; color: #b6b8be; font-size: clamp(15px, 1.35vw, 18px); line-height: 1.75; }
+    .home-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 31px; }
+    .home-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 20px; border: 1px solid #f4f5f7; background: #f4f5f7; color: #101114; font-size: 12px; font-weight: 620; text-decoration: none; transition: transform .2s ease, background .2s ease; }
+    .home-cta:hover { transform: translateY(-2px); background: #dfe1e5; }
+    .home-cta.secondary { color: #f4f5f7; background: transparent; border-color: rgba(245,247,250,.38); }
+    .home-cta.text-link { min-height: auto; padding: 8px 0; border: 0; background: none; color: #c9cbd0; text-decoration: underline; text-underline-offset: 4px; }
+    .hero-visual { min-width: 0; }
+    .hero-motion { position: relative; min-height: 500px; height: clamp(390px, 45vw, 574px); overflow: hidden; border: 1px solid rgba(255,255,255,.075); background: radial-gradient(ellipse at 50% 48%, rgba(255,255,255,.035), transparent 55%); }
+    .hero-motion canvas { display: block; width: 100%; height: 100%; }
+    .hero-motion__label { position: absolute; z-index: 1; color: #858890; font: 9px var(--site-mono); letter-spacing: .14em; text-transform: uppercase; pointer-events: none; }
+    .hero-motion__label.top { inset: 16px auto auto 17px; }
+    .hero-motion__label.bottom { inset: auto 16px 15px; display: flex; justify-content: space-between; gap: 8px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.12); }
+    .home-signal { display: flex; justify-content: space-between; gap: 20px; padding: 18px 0; border-top: 1px solid var(--site-line); border-bottom: 1px solid var(--site-line); color: #a1a3aa; font: 9px var(--site-mono); letter-spacing: .16em; text-transform: uppercase; }
+    .home-chapter { padding: clamp(72px, 9vw, 132px) 0; border-bottom: 1px solid var(--site-line); }
+    .chapter-head { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 38px; }
+    .chapter-head h2 { max-width: 860px; margin-top: 14px; color: #f8f9fb; font-size: clamp(2.1rem, 4.3vw, 4.2rem); font-weight: 560; letter-spacing: -.075em; line-height: 1.04; }
+    .chapter-head p { max-width: 350px; color: #999ca3; font-size: 12px; line-height: 1.7; }
+    .thesis-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border-top: 1px solid var(--site-line); }
+    .thesis-item { padding: 22px 26px 0 0; }
+    .thesis-item + .thesis-item { padding-left: 26px; border-left: 1px solid var(--site-line); }
+    .thesis-item h3 { color: #eef0f3; font-size: 16px; font-weight: 570; letter-spacing: -.035em; }
+    .thesis-item p { margin-top: 8px; color: #9699a0; font-size: 13px; line-height: 1.75; }
+    .capability-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border-top: 1px solid var(--site-line); border-bottom: 1px solid var(--site-line); }
+    .capability-card { min-height: 220px; padding: 22px 28px 26px 0; }
+    .capability-card + .capability-card { padding-left: 28px; border-left: 1px solid var(--site-line); }
+    .capability-card__index { color: #8bd3ff; font: 9px var(--site-mono); letter-spacing: .12em; }
+    .capability-card h3 { margin-top: 30px; color: #f1f3f6; font-size: 20px; font-weight: 580; letter-spacing: -.045em; }
+    .capability-card p { margin-top: 10px; color: #a4a7af; font-size: 13px; line-height: 1.8; }
+    .capability-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+    .capability-card__tags span { padding: 5px 7px; border: 1px solid var(--site-line); color: #bfc3ca; font: 8px var(--site-mono); letter-spacing: .04em; }
+    .home-stack-heading { margin-bottom: clamp(34px,5vw,64px); }
+    .home-stack-title { margin-top: 14px; color: #f4f5f7; font-size: clamp(2.6rem,5vw,4rem); font-weight: 590; letter-spacing: -.075em; line-height: 1; }
+    .home-stack-subtitle { margin-top: 14px; color: #a4a7ae; font-size: clamp(16px,1.7vw,21px); }
+    .home-stack-grid { display: grid; grid-template-columns: minmax(0,1fr); border-top: 1px solid var(--site-line); }
+    .home-stack-group { display: grid; grid-template-columns: minmax(150px,.32fr) minmax(0,1fr); align-items: center; gap: 24px; min-height: 72px; padding: 13px 0; border-bottom: 1px solid var(--site-line); }
+    .home-stack-group__title { color: #8c8f96; font: 11px var(--site-mono); letter-spacing: .14em; text-transform: uppercase; }
+    .home-stack-items { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
+    .home-stack-item { display: inline-flex; align-items: center; gap: 9px; min-height: 32px; color: #e7e8eb; font-size: 15px; font-weight: 500; letter-spacing: -.015em; white-space: nowrap; }
+    .home-stack-item iconify-icon { flex: 0 0 auto; color: #dce5f0; filter: grayscale(1) brightness(1.35) !important; }
+    .home-chapter[id], #home-projects { scroll-margin-top: 110px; }
+    .project-showcase { display: block; }
+    .project-registry { border-top: 1px solid var(--site-line); }
+    .project-registry__header,.project-registry__row { display: grid; grid-template-columns: minmax(145px,.72fr) minmax(0,1.2fr) minmax(0,1.2fr) minmax(185px,.88fr) 24px; column-gap: clamp(16px,2.6vw,38px); align-items: center; }
+    .project-registry__header { min-height: 46px; color: #858890; font: 9px var(--site-mono); letter-spacing: .13em; text-transform: uppercase; }
+    .project-registry__row { width: 100%; min-height: 156px; padding: 22px 0; border: 0; border-top: 1px solid var(--site-line); background: transparent; color: inherit; text-align: left; cursor: pointer; transition: padding .2s ease, background .2s ease; }
+    .project-registry__row:last-child { border-bottom: 1px solid var(--site-line); }
+    .project-registry__row:hover { padding-inline: 12px; background: rgba(255,255,255,.025); }
+    .project-registry__row:focus-visible { outline: 2px solid #8bd3ff; outline-offset: 3px; }
+    .project-registry__project { display: grid; align-content: center; gap: 8px; }
+    .project-registry__project small,.project-registry__cell small,.project-registry__verify small { color: #888b92; font: 9px/1.5 var(--site-mono); letter-spacing: .1em; text-transform: uppercase; }
+    .project-registry__project strong { color: #f3f4f6; font-size: clamp(21px,2.3vw,29px); font-weight: 560; letter-spacing: -.055em; }
+    .project-registry__project em { color: #a3a5ac; font-size: 10px; font-style: normal; line-height: 1.55; }
+    .project-registry__cell { display: grid; align-content: center; gap: 9px; }
+    .project-registry__cell span { color: #b4b6bd; font-size: 11px; line-height: 1.8; }
+    .project-registry__verify { display: grid; gap: 8px; }
+    .project-registry__verify strong { color: #f1f4f8; font: 550 clamp(14px,1.5vw,18px)/1.35 var(--site-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .project-registry__verify small { letter-spacing: .02em; text-transform: none; }
+    .project-registry__arrow { justify-self: end; color: #d6d8de; font-size: 18px; transition: transform .2s ease,color .2s ease; }
+    .project-registry__row:hover .project-registry__arrow { transform: translate(3px,-3px); color: #8bd3ff; }
+    .source-note { margin-top: 16px; color: #7f8289; font: 9px/1.7 var(--site-mono); }
+    .workflow { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); border-top: 1px solid var(--site-line); border-bottom: 1px solid var(--site-line); }
+    .workflow-step { position: relative; min-height: 152px; padding: 20px 20px 20px 0; }
+    .workflow-step + .workflow-step { padding-left: 20px; border-left: 1px solid var(--site-line); }
+    .workflow-step span { color: #888b92; font: 9px var(--site-mono); }
+    .workflow-step h3 { margin-top: 30px; color: #f4f5f7; font-size: 15px; font-weight: 550; }
+    .workflow-step p { margin-top: 7px; color: #999ba2; font-size: 11px; line-height: 1.65; }
+    .machine-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .machine-card { min-width: 0; border: 1px solid var(--site-line); background: rgba(255,255,255,.018); }
+    .machine-card__head { display: flex; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--site-line); }
+    .machine-card__head strong { color: #e9eaed; font-size: 12px; font-weight: 520; }
+    .machine-card__head span { color: #7e8188; font: 8px var(--site-mono); letter-spacing: .12em; }
+    .machine-card__body { padding: 18px; }
+    .machine-card__body p { color: #aeb0b6; font-size: 12px; line-height: 1.75; }
+    .machine-card__body pre { margin: 0; color: #b9bbc1; font: 10px/1.8 var(--site-mono); white-space: pre-wrap; }
+    .machine-divider { display: none; }
+    .notes-list { border-top: 1px solid var(--site-line); }
+    .notes-row { display: grid; grid-template-columns: 116px minmax(0,1fr) 92px 20px; align-items: center; gap: 22px; min-height: 112px; padding: 18px 0; border-bottom: 1px solid var(--site-line); color: inherit; text-decoration: none; }
+    .notes-row__meta { display: grid; gap: 8px; }
+    .notes-row__meta span, .notes-row__reading { color: #8a8d94; font: 9px var(--site-mono); letter-spacing: .1em; text-transform: uppercase; }
+    .notes-row__meta time { color: #74777e; font: 9px var(--site-mono); }
+    .notes-row__copy strong { color: #ecedf0; font-size: 16px; font-weight: 540; letter-spacing: -.03em; }
+    .notes-row__copy p { margin-top: 7px; color: #989ba2; font-size: 12px; line-height: 1.65; }
+    .notes-row__arrow { color: #aeb0b6; transition: transform .2s ease, color .2s ease; }
+    .notes-row:hover .notes-row__copy strong, .notes-row:hover .notes-row__arrow { color: #fff; }
+    .notes-row:hover .notes-row__arrow { transform: translate(3px,-3px); }
+    .about-strip { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(260px,.7fr); gap: 60px; }
+    .about-strip__copy { max-width: 730px; color: #b5b7bd; font-size: 15px; line-height: 1.9; }
+    .about-strip__facts { display: grid; gap: 8px; align-content: start; }
+    .about-strip__facts div { padding: 12px 14px; border: 1px solid var(--site-line); color: #a8abb1; font: 9px/1.7 var(--site-mono); letter-spacing: .06em; text-transform: uppercase; }
+    .direct-line { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 36px; min-height: 300px; padding: clamp(32px,6vw,76px); border: 1px solid rgba(139,211,255,.48); background: radial-gradient(ellipse at 12% 50%, rgba(74,158,232,.16), transparent 62%), rgba(255,255,255,.018); box-shadow: 0 0 64px rgba(57,145,220,.09); overflow: hidden; }
+    .direct-line__copy { position: relative; z-index: 1; max-width: 820px; }
+    .direct-line .section-eyebrow { color: #8bd3ff; }
+    .direct-line > .section-eyebrow { max-width: 190px; padding-left: 16px; border-left: 1px solid rgba(139,211,255,.45); font-size: 11px; line-height: 1.8; letter-spacing: .12em; }
+    .direct-line h2 { margin-top: 16px; color: #f7f8fa; font-size: clamp(2.5rem,5vw,4.4rem); font-weight: 650; letter-spacing: -.075em; line-height: 1.02; }
+    .direct-line p { margin-top: 18px; color: #c0c5cd; font-size: 15px; line-height: 1.75; }
+    .direct-line__links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .home-audit { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--site-line); }
+    .home-audit__item { min-height: 94px; padding: 18px; }
+    .home-audit__item + .home-audit__item { border-left: 1px solid var(--site-line); }
+    .home-audit__item span { color: #81848b; font: 8px var(--site-mono); letter-spacing: .12em; text-transform: uppercase; }
+    .home-audit__item strong { display: block; margin-top: 9px; color: #f1f2f4; font: 18px var(--site-mono); }
+    .home-footer { display: flex; justify-content: space-between; gap: 20px; padding: 24px 0 0; color: #8a8d94; font-size: 10px; }
+    .home-chapter, .home-signal, .home-hero { position: relative; z-index: 1; }
+    /* Keep the full portfolio on one editorial, monochrome design system. */
+    .glass-card, .dark .glass-card { border: 1px solid var(--site-line) !important; border-radius: 0 !important; background: #101114 !important; box-shadow: none !important; }
+    .glass-card:hover, .dark .glass-card:hover { border-color: rgba(255,255,255,.32) !important; box-shadow: none !important; }
+    .border-glow-card::before, .border-glow-card::after { display: none !important; }
+    .border-glow-card { border-radius: 0 !important; }
+    #project-grid { display: block !important; border-top: 1px solid var(--site-line); }
+    .project-row { display: grid; width: 100%; grid-template-columns: minmax(125px,.38fr) minmax(0,1.2fr) minmax(230px,.78fr); gap: 30px; align-items: center; min-height: 176px; padding: 24px 0; border: 0; border-bottom: 1px solid var(--site-line); background: transparent; color: inherit; text-align: left; cursor: pointer; transition: padding .2s ease, background .2s ease; }
+    .project-row:hover { padding-inline: 12px; background: rgba(255,255,255,.025); }
+    .project-row__index { display: flex; align-self: start; align-items: center; justify-content: space-between; gap: 12px; color: #858890; font: 9px var(--site-mono); letter-spacing: .1em; text-transform: uppercase; }
+    .project-row__icon { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border: 1px solid var(--site-line); color: #d7d9de; }
+    .project-row__main h3 { color: #f5f6f8; font-size: 24px; font-weight: 560; letter-spacing: -.05em; }
+    .project-row__main p { max-width: 690px; margin-top: 8px; color: #a6a8af; font-size: 12px; line-height: 1.8; }
+    .project-row__meta { display: grid; justify-items: start; gap: 15px; }
+    .project-row__stack { display: flex; flex-wrap: wrap; gap: 6px; }
+    .project-row__stack .badge { padding: 5px 7px; font-size: 9px; }
+    .project-row__action { display: inline-flex; align-items: center; gap: 7px; color: #d8dade; font-size: 10px; }
+    #project-grid .badge, .badge { border-radius: 0 !important; background: rgba(255,255,255,.04) !important; color: #b6b8be !important; }
+    .case-study-nav { position: sticky; top: 100px; }
+    .case-study-nav button { border-radius: 0 !important; }
+    .page-section iconify-icon { filter: grayscale(1) brightness(1.35); }
+    .gotion-diagram .node-focus { fill: rgba(255,255,255,.055) !important; stroke: rgba(255,255,255,.56) !important; }
+    .gotion-diagram .node-security { fill: rgba(255,255,255,.025) !important; stroke: rgba(255,255,255,.42) !important; }
+    .case-choice-conclusion { border-top-color: var(--site-line) !important; }
+    @media (max-width: 900px) {
+      #home > .home-hero { grid-template-columns: minmax(0,1fr); min-height: 0; gap: 28px; padding-top: 40px; }
+      .hero-visual { max-width: 680px; }
+      .project-registry__header,.project-registry__row { grid-template-columns: minmax(120px,.68fr) minmax(0,1fr) minmax(0,1fr) minmax(155px,.8fr) 18px; column-gap: 14px; }
+      .project-registry__cell span { font-size: 10px; }
+      .workflow { grid-template-columns: repeat(5,minmax(130px,1fr)); overflow-x: auto; }
+      .home-stack-group { grid-template-columns: minmax(130px,.38fr) minmax(0,1fr); gap: 18px; }
+    }
+    @media (max-width: 620px) {
+      main { padding-top: 130px !important; padding-inline: 22px !important; }
+      #site-nav, .nav-inner { min-height: 84px; }
+      .nav-inner { align-content: center; flex-wrap: wrap; gap: 0 10px; padding-block: 10px; }
+      .site-brand { width: 100%; height: 28px; align-items: center; }
+      .site-brand span { display: none; }
+      .nav-links { width: 100%; justify-content: flex-start; gap: 20px; overflow-x: auto; margin: 0; scrollbar-width: none; }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links button, .nav-links a { flex: 0 0 auto; padding: 5px 0; font-size: 11px; }
+      #home > .home-hero { padding: 18px 0 40px; gap: 18px; }
+      .home-kicker { margin-bottom: 21px; font-size: 9px; }
+      .home-title { max-width: 520px; font-size: clamp(3.25rem,15vw,4.8rem); line-height: .93; }
+      .home-deck { margin-top: 20px; font-size: 14px; line-height: 1.7; }
+      .home-actions { gap: 8px; margin-top: 22px; }
+      .home-cta { min-height: 42px; padding-inline: 14px; font-size: 10px; }
+      .hero-motion { min-height: 330px; height: min(92vw, 430px); }
+      .hero-motion__label { font-size: 8px; }
+      .hero-motion__label.top { inset: 12px auto auto 12px; }
+      .hero-motion__label.bottom { inset: auto 12px 12px; gap: 5px; }
+      .home-signal { overflow: hidden; white-space: nowrap; font-size: 8px; letter-spacing: .1em; }
+      .home-signal span:nth-child(3) { display: none; }
+      .home-chapter { padding: 74px 0; }
+      .chapter-head { display: block; margin-bottom: 28px; }
+      .chapter-head h2 { font-size: 2.45rem; }
+      .chapter-head p { margin-top: 14px; }
+      .thesis-grid { grid-template-columns: 1fr; }
+      .thesis-item, .thesis-item + .thesis-item { padding: 17px 0; border-left: 0; border-bottom: 1px solid var(--site-line); }
+      .capability-grid { grid-template-columns: 1fr; }
+      .capability-card, .capability-card + .capability-card { min-height: 0; padding: 20px 0; border-left: 0; border-bottom: 1px solid var(--site-line); }
+      .capability-card h3 { margin-top: 15px; }
+      .home-stack-group { grid-template-columns: 1fr; gap: 8px; min-height: 0; padding: 14px 0; }
+      .home-stack-item { gap: 7px; padding-right: 12px; font-size: 13px; }
+      .project-registry__header { display: none; }
+      .project-registry__row { grid-template-columns: repeat(3,minmax(0,1fr)) 18px; gap: 14px 10px; padding: 19px 0; }
+      .project-registry__project { grid-column: 1 / -1; display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; }
+      .project-registry__project strong { font-size: 24px; }
+      .project-registry__project em { margin-left: auto; }
+      .project-registry__cell small { font-size: 8px; }
+      .project-registry__cell span { font-size: 10px; line-height: 1.65; }
+      .project-registry__verify { grid-column: 1 / 4; grid-row: 3; }
+      .project-registry__arrow { grid-column: 4; grid-row: 3; }
+      .workflow { grid-template-columns: 1fr; overflow: visible; }
+      .workflow-step, .workflow-step + .workflow-step { min-height: 0; padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--site-line); }
+      .workflow-step h3 { margin-top: 12px; }
+      .machine-pair { grid-template-columns: 1fr; gap: 12px; }
+      .notes-row { grid-template-columns: 64px minmax(0,1fr) 16px; gap: 12px; min-height: 0; padding: 16px 0; }
+      .notes-row__meta { gap: 6px; }
+      .notes-row__meta span, .notes-row__meta time { font-size: 8px; letter-spacing: 0; }
+      .notes-row__copy strong { font-size: 13px; line-height: 1.5; }
+      .notes-row__copy p { margin-top: 5px; font-size: 11px; }
+      .notes-row__reading { display: none; }
+      .about-strip { grid-template-columns: 1fr; gap: 25px; }
+      .about-strip__copy { font-size: 13px; }
+      .direct-line { display: block; min-height: 0; padding: 22px; }
+      .home-audit { grid-template-columns: 1fr; }
+      .home-audit__item { min-height: 0; padding: 15px; }
+      .home-audit__item + .home-audit__item { border-top: 1px solid var(--site-line); border-left: 0; }
+      .home-footer { flex-direction: column; gap: 8px; }
+    }
+
+    @media (max-width: 1100px) {
+      .case-study-layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
+      .case-study-nav { display: none; }
+    }
+
+    @media (max-width: 760px) {
+      .case-study-layout { display: block; }
+      .case-evidence-inline { margin-top: 38px; }
+      .case-evidence-inline__header { display: block; }
+      .case-evidence-inline__note { margin-top: 8px; }
+      .case-study-outcomes { grid-template-columns: 1fr; gap: 18px; }
+      .case-choice-grid { grid-template-columns: 1fr; }
+      .metric-chart__head { display: block; }
+      .metric-chart__note { margin-top: 6px; text-align: left; }
+      .metric-chart__legend { margin-left: 0; }
+      .case-story-item, .case-choice-conclusion, .troubleshooting-step { grid-template-columns: 1fr; gap: 10px; }
+      .case-implementation-grid,.case-implementation-grid.has-four-cards { grid-template-columns: 1fr; }
+      .case-implementation-card,.case-implementation-card + .case-implementation-card { padding: 20px 0; border-left: 0; border-bottom: 1px solid rgba(0,0,0,.12); }
+      .case-implementation-grid.has-four-cards .case-implementation-card { padding: 20px 0; border: 0; border-bottom: 1px solid rgba(0,0,0,.12); }
+      .case-implementation-grid.has-four-cards .case-implementation-card:nth-child(n+3) { border-top: 0; }
+      .case-implementation-grid.has-four-cards .case-implementation-card:last-child { border-bottom: 0; }
+      .case-implementation-card:last-child { border-bottom: 0; }
+      .dark .case-implementation-card,.dark .case-implementation-card + .case-implementation-card { border-color: rgba(255,255,255,.12); }
+      .case-implementation-card h3 { margin-top: 12px; }
+      .troubleshooting-steps { margin-left: 0; }
+      .project-intro-grid { grid-template-columns: 1fr; }
+      .project-intro-card { min-height: auto; }
+      .gotion-diagram-caption { display: block; }
+      .gotion-diagram-caption p { margin-top: 5px; }
+      .project-row { grid-template-columns: 1fr; gap: 12px; min-height: 0; }
+      .project-row__meta { gap: 10px; }
+    }
+    /* Selected orbit direction: let the work lead while celestial detail stays atmospheric. */
+    #home > .home-hero {
+      position: relative;
+      display: flex;
+      min-height: min(470px, calc(100vh - 320px));
+      align-items: center;
+      padding: 20px 0 32px;
+      isolation: isolate;
+      overflow: hidden;
+    }
+    #home.page-section { display: flex; flex-direction: column; }
+    #home > .home-hero { order: 1; }
+    #home > .home-signal { order: 2; }
+    #home > #home-projects { order: 3; }
+    #home > .home-chapter[aria-labelledby="notes-title"] { order: 4; }
+    #home > .home-chapter[aria-labelledby="stack-title"] { order: 5; }
+    #home > .home-chapter[aria-labelledby="contact-home-title"] { order: 6; }
+    #home > .home-footer { order: 7; }
+    #home > #home-projects { padding-top: clamp(38px, 4.2vw, 66px); }
+    #home-projects .chapter-head h2 { max-width: none; font-size: clamp(2.1rem, 3.4vw, 3.5rem); line-height: 1.08; }
+    .home-copy { position: relative; z-index: 2; width: min(58%, 760px); }
+    .home-title { max-width: 760px; font-size: clamp(3.5rem, 5vw, 4.6rem); line-height: .98; }
+    .home-title .accent-sky,
+    .home-title .accent-cool { color: #8bd3ff; }
+    .mobile-title-break { display: none; }
+    .hero-visual {
+      position: absolute;
+      z-index: 1;
+      inset: -4% -4% -2% 28%;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: .92;
+      mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.32) 14%, #000 38%, #000 100%);
+    }
+    .hero-visual__artwork {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 58% 50%;
+      animation: orbit-drift 26s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes orbit-drift {
+      from { transform: scale(1.025) translate3d(-.5%, .25%, 0); }
+      to { transform: scale(1.075) translate3d(.75%, -.35%, 0); }
+    }
+    .home-evidence {
+      display: flex;
+      width: min(100%, 590px);
+      gap: clamp(20px, 3.2vw, 46px);
+      margin-top: 32px;
+      padding-top: 17px;
+      border-top: 1px solid rgba(235,238,244,.18);
+    }
+    .home-evidence__item { min-width: 0; }
+    .home-evidence__label { color: #a2a5ad; font: 9px var(--site-mono); letter-spacing: .12em; text-transform: uppercase; }
+    .home-evidence__value { display: block; margin-top: 7px; color: #f8f9fb; font: 600 clamp(17px, 2vw, 23px) var(--site-mono); letter-spacing: -.055em; white-space: nowrap; }
+    .home-evidence__value em { color: #79c4ff; font-style: normal; }
+    .home-evidence__caption { display: block; margin-top: 4px; color: #a4a7af; font-size: 10px; }
+    @media (max-width: 900px) {
+      #home > .home-hero { min-height: 0; padding: 48px 0 44px; }
+      .home-copy { width: min(72%, 700px); }
+      .home-title { font-size: clamp(2.9rem, 5.6vw, 4.25rem); }
+      .hero-visual { inset-inline-start: 22%; opacity: .72; }
+    }
+    @media (max-width: 620px) {
+      #home > .home-hero { min-height: 0; padding-block: 40px 34px; }
+      .home-copy { width: 100%; }
+      .home-title { font-size: clamp(2.85rem, 12vw, 4.2rem); line-height: 1.02; }
+      .mobile-title-break { display: block; }
+      .hero-visual { inset: 0 -24% 0 5%; opacity: .38; mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.16) 30%, #000 100%); }
+      .home-evidence { gap: 15px; margin-top: 27px; }
+      .home-evidence__label { font-size: 7px; letter-spacing: .08em; }
+      .home-evidence__value { font-size: clamp(15px, 4.2vw, 19px); }
+      .home-evidence__caption { font-size: 9px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-visual__artwork { animation: none; }
+    }
+
+    /* Reference-led hero: oversized condensed type, a quiet particle wave, and compact controls. */
+    #site-nav { min-height: 78px; overflow: visible; background: rgba(8,10,12,.94); border-bottom-color: rgba(255,255,255,.1); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+    #site-nav::before { content: none; }
+    .nav-inner { position: relative; min-height: 78px; }
+    .site-brand { gap: 0; }
+    .site-brand strong { font-family: Impact, 'Arial Narrow', 'Helvetica Neue', sans-serif; font-size: 19px; font-weight: 800; letter-spacing: -.035em; }
+    .site-brand strong span { color: #8bd3ff; }
+    .site-brand > span { display: none; }
+    .site-brand { position: relative; padding-left: 0; }
+    .site-brand::before { content: none; }
+    .nav-links { gap: clamp(18px,2.3vw,32px); padding: 0; border: 0; border-radius: 0; background: transparent; }
+    .nav-links .nav-link { position: relative; padding: 12px 0; border-radius: 0; color: #aeb3bb; font: 10px var(--site-mono); letter-spacing: .045em; text-transform: uppercase; white-space: nowrap; transition: color .18s ease; }
+    .nav-links .nav-link::after { content: ''; position: absolute; right: 0; bottom: 4px; left: 0; height: 1px; background: #8bd3ff; transform: scaleX(0); transform-origin: left; transition: transform .18s ease; }
+    .nav-links .nav-link:hover { color: #fff; }
+    .nav-links .nav-link.active { color: #fff; background: transparent; box-shadow: none; }
+    .nav-links .nav-link.active::after, .nav-links .nav-link:hover::after { transform: scaleX(1); }
+    .nav-links .nav-link:focus-visible { outline: 1px solid #8bd3ff; outline-offset: 2px; }
+    .nav-controls { display: flex; align-items: center; gap: 7px; margin-left: 2px; padding-left: 0; border-left: 0; }
+    .nav-toggle { display: inline-grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; background: transparent; color: #c5cbd3; transition: color .2s ease, border-color .2s ease, background .2s ease; }
+    .nav-toggle:hover, .nav-toggle:focus-visible { color: #fff; border-color: rgba(139,211,255,.65); background: rgba(139,211,255,.07); outline: none; }
+    .nav-toggle iconify-icon { font-size: 15px; }
+    #home > .home-hero { display: flex; min-height: min(760px, calc(100svh - 78px)); align-items: center; padding: 32px 0 48px; overflow: visible; }
+    .home-copy { width: 100%; max-width: 1240px; }
+    .home-kicker { margin-bottom: 23px; color: #b4b6bc; font-size: 10px; letter-spacing: .16em; }
+    .home-title { max-width: none; color: #f4f4f2; font-family: Impact, 'Arial Narrow', 'Helvetica Neue', sans-serif; font-size: clamp(6.5rem, 14.5vw, 13rem); font-weight: 900; letter-spacing: -.055em; line-height: .86; text-transform: uppercase; }
+    .home-title .display-line { display: block; white-space: nowrap; }
+    .home-title .display-line:first-child { color: #f4f4f2; }
+    .home-title .display-muted { color: #73757a; }
+    .home-title .display-period { color: #8bd3ff; }
+    .home-deck { max-width: 700px; margin-top: 30px; color: #b6b8be; font-size: clamp(14px, 1.1vw, 16px); line-height: 1.8; }
+    .home-actions { margin-top: 23px; }
+    .home-evidence { max-width: 650px; margin-top: 24px; padding-top: 13px; gap: clamp(20px, 4vw, 58px); }
+    .hero-visual { position: absolute; z-index: 0; inset: -12% auto -12% 50%; width: 100vw; min-width: 0; overflow: hidden; pointer-events: none; opacity: .62; transform: translateX(-50%); mask-image: linear-gradient(180deg, transparent 0%, #000 15%, #000 82%, transparent 100%); }
+    .hero-visual__artwork { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; animation: aurora-flow 52s ease-in-out infinite alternate; mix-blend-mode: screen; will-change: transform, opacity; }
+    .hero-visual__artwork--echo { opacity: .42; filter: blur(16px) saturate(1.12); animation: aurora-echo 68s ease-in-out infinite alternate; }
+    @keyframes aurora-flow { from { transform: scale(1.04) translate3d(-1.1%, .3%, 0); opacity: .60; } to { transform: scale(1.09) translate3d(1.4%, -.7%, 0); opacity: .72; } }
+    @keyframes aurora-echo { from { transform: scale(1.1) translate3d(1.1%, -.25%, 0); } to { transform: scale(1.16) translate3d(-1%, .75%, 0); } }
+    .home-signal { position: relative; z-index: 1; }
+    html:not(.dark) { color-scheme: light; --site-bg: #f1f2f3; --site-fg: #111317; --site-muted: #62666d; --site-line: rgba(17,19,23,.16); }
+    html:not(.dark) body { background: var(--site-bg) !important; color: var(--site-fg); }
+    html:not(.dark) #site-nav { background: rgba(245,246,247,.96); border-bottom-color: rgba(17,19,23,.13); box-shadow: 0 8px 24px rgba(17,19,23,.06); }
+    html:not(.dark) .nav-links { border: 0; background: transparent; }
+    html:not(.dark) .nav-links .nav-link { color: #555a63; }
+    html:not(.dark) .nav-links .nav-link:hover { color: #111317; background: transparent; }
+    html:not(.dark) .nav-links .nav-link.active { color: #075b7c; background: transparent; box-shadow: none; }
+    html:not(.dark) .nav-links .nav-link::after { background: #1687ad; }
+    html:not(.dark) .site-brand, html:not(.dark) .nav-links .nav-link { color: #191b20; }
+    html:not(.dark) .nav-links .nav-link:hover, html:not(.dark) .nav-links .active { color: #000; }
+    html:not(.dark) .nav-toggle { color: #30343a; }
+    html:not(.dark) .home-title { color: #111317; }
+    html:not(.dark) .home-title .display-muted { color: #777b82; }
+    html:not(.dark) .home-kicker, html:not(.dark) .home-deck, html:not(.dark) .home-evidence__caption { color: #555a61; }
+    html:not(.dark) .hero-visual { opacity: .24; mix-blend-mode: screen; }
+    html:not(.dark) .home-cta.secondary { color: #17191d; border-color: rgba(17,19,23,.38); }
+    html:not(.dark) .home-cta.text-link { color: #30343a; }
+    html:not(.dark) .home-evidence__value, html:not(.dark) .chapter-head h2, html:not(.dark) .thesis-item h3, html:not(.dark) .capability-card h3, html:not(.dark) .workflow-step h3, html:not(.dark) .notes-row__copy strong, html:not(.dark) .direct-line h2 { color: #15171b; }
+    html:not(.dark) .chapter-head p, html:not(.dark) .thesis-item p, html:not(.dark) .capability-card p, html:not(.dark) .capability-card__tags span, html:not(.dark) .workflow-step p, html:not(.dark) .notes-row__copy p, html:not(.dark) .direct-line p, html:not(.dark) .about-strip__copy, html:not(.dark) .home-stack-subtitle { color: #555960; }
+    html:not(.dark) .home-stack-title { color: #15171b; }
+    html:not(.dark) .home-stack-group__title { color: #62666d; }
+    html:not(.dark) .home-stack-item { color: #202329; }
+    html:not(.dark) .project-registry__project strong, html:not(.dark) .project-registry__verify strong { color: #17191d; }
+    html:not(.dark) .project-registry__project em, html:not(.dark) .project-registry__cell span { color: #555960; }
+    html:not(.dark) .project-registry__project small, html:not(.dark) .project-registry__cell small, html:not(.dark) .project-registry__verify small { color: #6c7077; }
+    html:not(.dark) .project-registry__arrow { color: #30343a; }
+    html:not(.dark) .glass-card, html:not(.dark) .machine-card { background: #f8f8f7 !important; border-color: rgba(17,19,23,.16) !important; }
+    html:not(.dark) .project-row__main h3 { color: #15171b; }
+    html:not(.dark) .project-row__main p { color: #555960; }
+    html:not(.dark) .about-strip__facts div { color: #40444b; }
+    @media (max-width: 900px) {
+      #home > .home-hero { min-height: min(700px, calc(100svh - 78px)); }
+      .home-title { font-size: clamp(6rem, 14vw, 10rem); }
+      .hero-visual { inset-inline-start: 50%; opacity: .48; }
+    }
+    @media (max-width: 620px) {
+      #site-nav, .nav-inner { min-height: 82px; }
+      .nav-inner { gap: 0 8px; }
+      .site-brand { width: auto; height: 36px; margin-right: auto; }
+      .site-brand strong { font-size: 17px; }
+      .nav-links { width: calc(100% - 90px); gap: 16px; margin: 0; }
+      .nav-links .nav-link { font-size: 9px; }
+      .nav-controls { gap: 5px; }
+      .nav-toggle { width: 32px; height: 32px; }
+      main { padding-top: 118px !important; }
+      #home > .home-hero { min-height: min(700px, calc(100svh - 82px)); padding: 25px 0 36px; }
+      .home-kicker { margin-bottom: 20px; font-size: 8px; }
+      .home-title { font-size: clamp(5.2rem, 20vw, 8.3rem); line-height: .86; }
+      .home-deck { max-width: 510px; margin-top: 25px; font-size: 13px; }
+      .home-evidence { gap: 16px; }
+      .home-evidence__label { font-size: 7px; }
+      .home-evidence__value { font-size: 17px; }
+      .hero-visual { inset: -8% auto -8% 50%; width: 100vw; opacity: .34; }
+    }
+    @media (prefers-reduced-motion: reduce) { .hero-visual__artwork { animation: none; } }
   </style>
 </head>
 <body class="min-h-screen bg-[#FAFAFA] text-neutral-900 transition-colors duration-700 dark:bg-dark dark:text-[#EAEAEA]">
   <div class="noise-overlay" aria-hidden="true"></div>
   <div class="grid-overlay" aria-hidden="true"></div>
-  <canvas id="network-canvas" class="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-10 dark:opacity-18" aria-hidden="true"></canvas>
-
-  <nav class="fixed left-1/2 top-5 z-40 w-full max-w-fit -translate-x-1/2 px-3" aria-label="주요 메뉴">
-    <div class="glass-panel nav-scroll flex items-center gap-1 rounded-full px-1.5 py-1.5 shadow-lg shadow-black/5 dark:shadow-black/20">
-      <button onclick="navigateTo('home')" class="flex shrink-0 items-center gap-2 border-r border-black/5 py-2 pl-3 pr-4 text-xs font-semibold tracking-tight dark:border-white/10">
-        <span class="h-2 w-2 rounded-full bg-neutral-900 shadow-[0_0_12px_rgba(0,0,0,.18)] dark:bg-white dark:shadow-[0_0_12px_rgba(255,255,255,.35)]"></span>
-        JJM.AI
-      </button>
-      <button onclick="navigateTo('about')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="about">About</button>
-      <button onclick="navigateTo('projects')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="projects">Projects</button>
-      <button onclick="navigateTo('skills')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="skills">Skills</button>
-      <button onclick="navigateTo('research')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="research">Research</button>
-      <button onclick="navigateTo('contact')" class="nav-link shrink-0 rounded-full px-4 py-2 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-black/5 hover:text-black dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" data-target="contact">Contact</button>
-      <span class="mx-1 h-4 w-px shrink-0 bg-black/5 dark:bg-white/10"></span>
-      <button onclick="toggleTheme()" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-black/5 dark:text-neutral-400 dark:hover:bg-white/5" aria-label="테마 전환">
-        <iconify-icon id="theme-icon" icon="lucide:moon" width="14"></iconify-icon>
-      </button>
+  <nav id="site-nav" aria-label="주요 메뉴">
+    <div class="nav-inner">
+      <a class="site-brand" href="#home" aria-label="장준민 포트폴리오 홈" onclick="navigateTo('home'); return false;">
+        <strong>JANGJUNMIN<span aria-hidden="true">./</span></strong>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" data-target="home" href="#home" onclick="navigateTo('home')">01 / Home</a>
+        <a class="nav-link" data-target="projects" href="#home-projects" onclick="navigateTo('projects')">02 / Work</a>
+        <a class="nav-link" data-target="research" href="#home-notes" onclick="navigateTo('research')">03 / Notes</a>
+        <a class="nav-link" data-target="skills" href="#home-stack" onclick="navigateTo('skills')">04 / Stack</a>
+        <a class="nav-link" data-target="contact" href="#home-contact" onclick="navigateTo('contact')">05 / Contact</a>
+      </div>
+      <div class="nav-controls" aria-label="화면 설정">
+        <button id="theme-toggle" class="nav-toggle" type="button" aria-label="화이트 모드 켜기" aria-pressed="false" onclick="toggleTheme()"><iconify-icon id="theme-icon" icon="lucide:sun" aria-hidden="true"></iconify-icon></button>
+      </div>
     </div>
   </nav>
 
-  <main class="relative z-10 mx-auto max-w-6xl px-6 pb-20 pt-32">
-    <section id="home" class="page-section flex min-h-[72vh] flex-col justify-center">
-      <div class="mb-7 w-fit opacity-0 animate-slide-up">
-        <div class="flex items-center gap-2 rounded-full border border-black/10 bg-black/5 px-3 py-1 backdrop-blur-md dark:border-white/10 dark:bg-white/5">
-          <span class="h-1.5 w-1.5 rounded-full bg-neutral-900 dark:bg-white"></span>
-          <span class="text-[10px] font-medium uppercase tracking-widest text-neutral-600 dark:text-neutral-300">AI Engineer / MLOps / LLMOps</span>
+  <main class="relative z-10 mx-auto max-w-[1440px] px-6 pb-24 pt-32">
+    <section id="home" class="page-section">
+      <canvas id="micro-slats-canvas" aria-hidden="true"></canvas>
+      <div class="home-hero">
+        <div class="home-copy">
+          <p class="home-kicker">AI SYSTEMS · AGENT ENGINEERING</p>
+          <h1 class="home-title" aria-label="AI Engineer"><span class="display-line">AI</span><span class="display-line display-muted">ENGINEER<span class="display-period">.</span></span></h1>
+          <p class="home-deck">문제를 정의하고, 성능과 신뢰를 검증해 안정적인 서비스를 만듭니다. Agent 라우팅·문서 처리·API에서 가설과 실험으로 시스템의 변화를 확인합니다.</p>
+          <div class="home-actions">
+            <button class="home-cta" onclick="navigateTo('projects')">프로젝트 기록 보기 <iconify-icon icon="lucide:arrow-up-right" width="14" aria-hidden="true"></iconify-icon></button>
+            <a class="home-cta text-link" href="https://github.com/wkd09" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </div>
+          <div class="home-evidence" aria-label="Gotion 평가 결과">
+            <div class="home-evidence__item"><span class="home-evidence__label">GOTION / TOOL SELECTION</span><strong class="home-evidence__value">42% → <em>79%</em></strong><span class="home-evidence__caption">Tool 선택 정확도</span></div>
+            <div class="home-evidence__item"><span class="home-evidence__label">GOTION / TASK SUCCESS</span><strong class="home-evidence__value">63% → <em>88%</em></strong><span class="home-evidence__caption">Task 성공률</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <img class="hero-visual__artwork" src="./assets/images/portfolio-aurora-background.png" alt="">
+          <img class="hero-visual__artwork hero-visual__artwork--echo" src="./assets/images/portfolio-aurora-background.png" alt="">
         </div>
       </div>
 
-      <h1 class="section-title max-w-5xl text-3xl font-semibold leading-[1.25] text-neutral-950 opacity-0 animate-slide-up delay-100 dark:text-white md:text-5xl">
-        LLM과 AI 시스템을 실제 서비스로 연결하고, 모델 서빙과 검증까지 고민하는 AI 엔지니어를 지향합니다.
-      </h1>
+      <div class="home-signal" aria-label="주요 엔지니어링 주제"><span>AI SYSTEMS</span><span>AGENT ROUTING</span><span>STRUCTURED OUTPUT</span><span>EVALUATION</span><span>PRODUCTION API</span></div>
 
-      <p class="mt-8 max-w-3xl text-base leading-8 text-neutral-600 opacity-0 animate-slide-up delay-200 dark:text-neutral-400 md:text-lg">
-        모델 성능뿐 아니라 운영 환경에서의 안정성, 응답 속도, 평가 자동화까지 함께 고민합니다.
-        FastAPI, Docker, Vector DB, LangChain/LangGraph, vLLM를 활용해
-        LLM 서비스와 RAG 시스템을 실제 사용 가능한 구조로 구현하는 데 관심이 있습니다.
-      </p>
+      <section id="home-projects" class="home-chapter" aria-labelledby="registry-title">
+        <div class="chapter-head"><div><p class="section-eyebrow">01 / SELECTED WORKS</p><h2 id="registry-title">프로젝트</h2></div><p>무엇이 막혔는지, 어떤 선택을 했는지, 확인된 변화는 무엇인지 케이스 스터디로 정리했습니다.</p></div>
+        <div class="project-showcase">
+          <div class="project-registry" aria-label="프로젝트별 문제 해결 기록">
+            <div class="project-registry__header" aria-hidden="true">
+              <span>Project</span><span>Problem</span><span>Decision</span><span>Verification</span><span></span>
+            </div>
+            <button class="project-registry__row" type="button" data-project-id="gotion-agent" aria-label="Gotion 상세 케이스 스터디 열기" onclick="openProject('gotion-agent')">
+              <span class="project-registry__project"><small>01 / AGENT SYSTEMS</small><strong>Gotion</strong><em>LLM Agent · Tool Routing</em></span>
+              <span class="project-registry__cell"><small>Problem</small><span>일정 요청이 퀴즈 Tool로, 기억 저장 요청이 일반 대화로 잘못 라우팅됐습니다.</span></span>
+              <span class="project-registry__cell"><small>Decision</small><span>역할 기반 파이프라인으로 분리하고, 요청별 후보 Tool schema만 Planner에 전달했습니다.</span></span>
+              <span class="project-registry__verify"><strong>42% → 79%</strong><small>Tool 선택 정확도 · Task 성공 63% → 88%</small></span>
+              <span class="project-registry__arrow" aria-hidden="true">↗</span>
+            </button>
+            <button class="project-registry__row" type="button" data-project-id="defapi" aria-label="defAPI 상세 케이스 스터디 열기" onclick="openProject('defapi')">
+              <span class="project-registry__project"><small>02 / SECURITY WORKFLOW</small><strong>defAPI</strong><em>Security Scan · Repair Workflow</em></span>
+              <span class="project-registry__cell"><small>Problem</small><span>Semgrep·Trivy·CodeQL의 결과 형식이 달라 후속 분석 흐름이 분기됐습니다.</span></span>
+              <span class="project-registry__cell"><small>Decision</small><span>Scanner wrapper와 공통 Finding schema를 두어 결과 정규화 경계를 만들었습니다.</span></span>
+              <span class="project-registry__verify"><strong>3 scanners · 5 fixtures</strong><small>회귀 케이스 검증 · 개선 수치 미주장</small></span>
+              <span class="project-registry__arrow" aria-hidden="true">↗</span>
+            </button>
+            <button class="project-registry__row" type="button" data-project-id="folio" aria-label="Folio 상세 케이스 스터디 열기" onclick="openProject('folio')">
+              <span class="project-registry__project"><small>03 / DOCUMENT INTELLIGENCE</small><strong>Folio</strong><em>Document Analysis · OCR</em></span>
+              <span class="project-registry__cell"><small>Problem</small><span>PDF·이미지별 추출 결과 차이가 분석 파이프라인을 복잡하게 했습니다.</span></span>
+              <span class="project-registry__cell"><small>Decision</small><span>공통 token schema로 입력을 정규화하고 독립 분석 요청을 병렬화했습니다.</span></span>
+              <span class="project-registry__verify"><strong>40.57s → 22.339s</strong><small>응답 시간 · Prompt token 1,588 → 959</small></span>
+              <span class="project-registry__arrow" aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </div>
+        <p class="source-note">검증 수치는 각 프로젝트 기록의 평가 방식과 함께 상세 페이지에서 확인할 수 있습니다. defAPI는 비교 전후 수치가 없어 성능 향상을 주장하지 않습니다.</p>
+      </section>
 
-      <div class="mt-10 flex flex-wrap items-center gap-3 opacity-0 animate-slide-up delay-300">
-        <button onclick="navigateTo('projects')" class="group relative overflow-hidden rounded-full bg-neutral-900 px-6 py-3 text-xs font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 dark:bg-[#EDEDED] dark:text-black dark:hover:shadow-white/10">
-          프로젝트 보기
-        </button>
-        <button onclick="navigateTo('skills')" class="rounded-full border border-black/10 px-6 py-3 text-xs font-semibold text-neutral-700 transition hover:-translate-y-0.5 hover:bg-black/5 dark:border-white/10 dark:text-neutral-300 dark:hover:bg-white/5">
-          기술 스택 확인
-        </button>
-      </div>
+      <section id="home-notes" class="home-chapter" aria-labelledby="notes-title">
+        <div class="chapter-head"><div><p class="section-eyebrow">02 / TECHNICAL BLOG</p><h2 id="notes-title">기술 블로그에서 다룬 내용.</h2></div><p>LLM 서빙과 캐시, 병렬화에서 다룬 구조와 선택의 이유를 구현 관점으로 정리했습니다.</p></div>
+        <div class="notes-list">
+          <a class="notes-row" href="https://wkd09.github.io/engineering/2026/09/09/disaggregated-serving.html" target="_blank" rel="noopener noreferrer"><div class="notes-row__meta"><span>INFERENCE</span><time datetime="2026-09-09">2026.09.09</time></div><div class="notes-row__copy"><strong>Disaggregated Serving — Prefill과 Decode를 분리하는 추론 구조</strong><p>두 단계의 계산 특성이 다른 점에서 출발해, 추론 서버를 분리하는 아키텍처를 정리했습니다.</p></div><span class="notes-row__reading">10 MIN READ</span><span class="notes-row__arrow" aria-hidden="true">↗</span></a>
+          <a class="notes-row" href="https://wkd09.github.io/engineering/2026/08/21/llm-caching-cost-optimization.html" target="_blank" rel="noopener noreferrer"><div class="notes-row__meta"><span>CACHING</span><time datetime="2026-08-21">2026.08.21</time></div><div class="notes-row__copy"><strong>LLM Caching — Prompt Cache와 Semantic Cache</strong><p>반복되거나 의미가 유사한 요청에서 캐시를 적용하는 방식과 비용 절감 관점을 비교합니다.</p></div><span class="notes-row__reading">11 MIN READ</span><span class="notes-row__arrow" aria-hidden="true">↗</span></a>
+          <a class="notes-row" href="https://wkd09.github.io/engineering/2026/08/11/radix-attention.html" target="_blank" rel="noopener noreferrer"><div class="notes-row__meta"><span>KV CACHE</span><time datetime="2026-08-11">2026.08.11</time></div><div class="notes-row__copy"><strong>RadixAttention — Prefix KV Cache 재사용</strong><p>System prompt와 Tool 정의처럼 여러 요청이 공유하는 prefix를 Radix Tree로 재사용하는 방법을 기록했습니다.</p></div><span class="notes-row__reading">21 MIN READ</span><span class="notes-row__arrow" aria-hidden="true">↗</span></a>
+          <a class="notes-row" href="https://wkd09.github.io/engineering/2026/07/19/qwen3-parallelism-lab.html" target="_blank" rel="noopener noreferrer"><div class="notes-row__meta"><span>EXPERIMENT</span><time datetime="2026-07-19">2026.07.19</time></div><div class="notes-row__copy"><strong>Qwen3-4B 병렬화 실습 — LoRA, DDP, FSDP, TP, vLLM</strong><p>각 병렬화·서빙 방식이 학습 시간, 메모리, 모델 계산에서 어떤 문제를 다루는지 실습으로 구분했습니다.</p></div><span class="notes-row__reading">7 MIN READ</span><span class="notes-row__arrow" aria-hidden="true">↗</span></a>
+        </div>
+        <a class="reader-open" href="https://wkd09.github.io/engineering/" target="_blank" rel="noopener noreferrer">구현 노트 전체 보기 ↗</a>
+      </section>
 
-      <div class="mt-20 grid gap-4 border-t border-black/5 pt-8 opacity-0 animate-fade-in delay-500 dark:border-white/5 sm:grid-cols-2 lg:grid-cols-4">
-        <div>
-          <div class="font-mono text-2xl font-semibold text-neutral-950 dark:text-white">Problem</div>
-          <div class="mt-1 text-[10px] uppercase tracking-widest text-neutral-500">문제 정의부터 시작</div>
-        </div>
-        <div>
-          <div class="font-mono text-2xl font-semibold text-neutral-950 dark:text-white">Service</div>
-          <div class="mt-1 text-[10px] uppercase tracking-widest text-neutral-500">LLM을 제품 흐름으로 연결</div>
-        </div>
-        <div>
-          <div class="font-mono text-2xl font-semibold text-neutral-950 dark:text-white">Serving</div>
-          <div class="mt-1 text-[10px] uppercase tracking-widest text-neutral-500">API / 모델 서빙 구현</div>
-        </div>
-        <div>
-          <div class="font-mono text-2xl font-semibold text-neutral-950 dark:text-white">Validate</div>
-          <div class="mt-1 text-[10px] uppercase tracking-widest text-neutral-500">응답 구조와 결과 검증</div>
-        </div>
-      </div>
+      <section id="home-stack" class="home-chapter" aria-labelledby="stack-title">
+        <div class="home-stack-heading"><p class="section-eyebrow">03 / CORE STACK</p><h2 id="stack-title" class="home-stack-title">Technical Stack</h2><p class="home-stack-subtitle">AI 기능을 시스템과 서비스로 연결할 때 사용하는 핵심 도구입니다.</p></div>
+        <div id="home-stack-list" class="home-stack-grid" aria-label="핵심 기술 스택"></div>
+      </section>
+
+      <section id="home-contact" class="home-chapter" aria-labelledby="contact-home-title">
+        <div class="direct-line"><div class="direct-line__copy"><p class="section-eyebrow">04 / CONTACT</p><h2 id="contact-home-title">AI 프로젝트 이야기를 나눠요.</h2><p>Agent와 LLM 서비스를 설계하고 구현하며 마주한 문제, 기술 선택의 이유와 검증 방법에 관해 이야기하고 싶다면 이메일로 연락해 주세요.</p><div class="direct-line__links"><a class="home-cta" href="mailto:wkdwnsals0413@gmail.com">이메일로 연락하기 <iconify-icon icon="lucide:arrow-up-right" width="14" aria-hidden="true"></iconify-icon></a><a class="home-cta secondary" href="https://github.com/wkd09" target="_blank" rel="noopener noreferrer">GitHub</a><a class="home-cta secondary" href="https://wkd09.github.io/" target="_blank" rel="noopener noreferrer">기술 블로그</a><a class="home-cta secondary" href="https://www.linkedin.com/in/junmin09/" target="_blank" rel="noopener noreferrer">LinkedIn</a></div></div><span class="section-eyebrow" aria-hidden="true">AGENT SYSTEMS · LLM SERVING · BACKEND</span></div>
+      </section>
+
+      <div class="home-footer"><span>© 2026 장준민 · AI Engineer</span><span>PROBLEM / DECISION / IMPLEMENTATION / VERIFICATION / LIMITATION</span></div>
     </section>
 
     <section id="about" class="page-section hidden">
@@ -500,11 +1345,6 @@
               <p class="mt-2 text-sm font-semibold text-neutral-900 dark:text-white">응답과 결과 검증</p>
               <p class="mt-2 text-sm leading-6 text-neutral-500">Pydantic schema, API contract, 테스트 흐름을 함께 고려</p>
             </div>
-            <div class="rounded-2xl border border-black/5 p-5 dark:border-white/10">
-              <p class="font-mono text-xs text-neutral-400">Growth</p>
-              <p class="mt-2 text-sm font-semibold text-neutral-900 dark:text-white">창업 / 서비스화 경험</p>
-              <p class="mt-2 text-sm leading-6 text-neutral-500">아이디어를 지원사업, 시연, 실제 서비스 구조로 연결</p>
-            </div>
           </div>
         </div>
 
@@ -531,17 +1371,12 @@
           </div>
 
           <div class="glass-card rounded-2xl p-6">
-            <h3 class="text-sm font-semibold text-neutral-950 dark:text-white">선정 / 지원 / 전시</h3>
+            <h3 class="text-sm font-semibold text-neutral-950 dark:text-white">활동 / 성과 / 전시</h3>
             <div class="mt-5 space-y-4">
               <div>
-                <p class="font-mono text-xs text-neutral-400">Startup</p>
-                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">경북 유망 기업 창업 사업 선정</p>
-                <p class="mt-1 text-sm leading-6 text-neutral-500">a+end 창업 준비, 2,000만원 지원금</p>
-              </div>
-              <div>
-                <p class="font-mono text-xs text-neutral-400">Talent Program</p>
-                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">인재 양성 사업 선정</p>
-                <p class="mt-1 text-sm leading-6 text-neutral-500">AI 서비스 개발 역량 기반, 500만원 지원금</p>
+                <p class="font-mono text-xs text-neutral-400">AX Talent War</p>
+                <p class="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">AX 인재전쟁 상위 10% 이상</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-500">무신사의 실제 기업 문제를 정의하고 해결해보았습니다.</p>
               </div>
               <div>
                 <p class="font-mono text-xs text-neutral-400">Program</p>
@@ -569,9 +1404,9 @@
     <section id="projects" class="page-section hidden">
       <div class="mb-12 animate-slide-up">
         <p class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">Projects</p>
-        <h2 class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">문제 정의와 서비스화 경험을 중심으로 정리했습니다.</h2>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">문제 정의, 해결 과정, 검증 기록을 중심으로 정리했습니다.</h2>
         <p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-500 dark:text-neutral-400">
-          조직 저장소의 팀 프로젝트와 공개 개인 GitHub 저장소를 함께 기준으로 대표 프로젝트만 추려 정리했습니다.
+          조직 저장소의 팀 프로젝트와 공개 개인 GitHub 저장소를 확인하고, 주장할 수 있는 근거와 아직 보완해야 할 검증을 구분했습니다.
         </p>
       </div>
 
@@ -584,44 +1419,187 @@
         프로젝트 목록으로
       </button>
 
-      <div class="grid gap-10 lg:grid-cols-[1fr_320px]">
-        <article class="animate-slide-up">
-          <div class="glass-card mb-8 rounded-2xl p-8">
-            <div class="flex items-start gap-5">
-              <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-black/5 text-neutral-700 dark:bg-white/5 dark:text-white">
-                <iconify-icon id="detail-icon" icon="lucide:server" width="30"></iconify-icon>
-              </div>
-              <div>
-                <p id="detail-kicker" class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-400"></p>
-                <h1 id="detail-title" class="section-title mt-2 text-3xl font-semibold text-neutral-950 dark:text-white md:text-5xl"></h1>
-                <p id="detail-overview" class="mt-5 text-base leading-8 text-neutral-600 dark:text-neutral-400"></p>
-              </div>
-            </div>
-          </div>
-
-          <div id="detail-sections" class="grid gap-4 md:grid-cols-2"></div>
-        </article>
-
-        <aside class="animate-slide-up lg:sticky lg:top-24 lg:self-start">
-          <div class="glass-card rounded-2xl p-6">
-            <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">Tech Stack</h2>
-            <div id="detail-stack" class="mt-4 flex flex-wrap gap-2"></div>
-
-            <div class="mt-8">
-              <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">Result / Metric</h2>
-              <div id="detail-metrics" class="mt-4 space-y-3"></div>
-            </div>
-
-            <div class="mt-8">
-              <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">Links</h2>
-              <div id="detail-links" class="mt-4 space-y-2"></div>
-            </div>
-
-            <div class="mt-8 border-t border-black/5 pt-5 text-xs leading-6 text-neutral-500 dark:border-white/10">
-              조직 저장소 프로젝트와 공개 GitHub 저장소를 함께 기준으로 정리했습니다.
-            </div>
-          </div>
+      <div class="case-study-layout">
+        <aside class="case-study-nav animate-slide-up" aria-label="프로젝트 상세 목차">
+          <button onclick="scrollProjectDetail('detail-overview-section')"><span>01</span> Overview</button>
+          <button onclick="scrollProjectDetail('detail-case-study')"><span>02</span> Case study</button>
+          <button onclick="scrollProjectDetail('detail-implementation')"><span>03</span> Core build</button>
+          <button onclick="scrollProjectDetail('detail-architecture')"><span>04</span> Architecture</button>
+          <button onclick="scrollProjectDetail('detail-technical-choice')"><span>05</span> Tech choice</button>
+          <button onclick="scrollProjectDetail('detail-evaluation')"><span>06</span> Evaluation</button>
+          <button onclick="scrollProjectDetail('detail-troubleshooting')"><span>07</span> Troubleshooting</button>
         </aside>
+
+        <article class="case-study-main animate-slide-up">
+          <header id="detail-overview-section" class="case-study-header">
+            <div class="flex items-center gap-3">
+              <span class="flex h-8 w-8 items-center justify-center border border-black/10 text-neutral-700 dark:border-white/15 dark:text-white"><iconify-icon id="detail-icon" icon="lucide:server" width="17"></iconify-icon></span>
+              <p id="detail-kicker" class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-400"></p>
+            </div>
+            <h1 id="detail-title" class="case-study-title"></h1>
+            <p id="detail-overview" class="case-study-lede"></p>
+            <div id="detail-meta" class="case-study-meta"></div>
+            <div id="detail-header-stack" class="case-study-stack"></div>
+            <div class="case-study-outcomes">
+              <div>
+                <p class="case-section-label">Key outcomes</p>
+              </div>
+              <ul id="detail-highlights"></ul>
+            </div>
+          </header>
+
+          <section id="detail-case-study" class="case-study-section">
+            <div class="case-section-heading">
+              <h2 id="detail-case-study-title">문제 해결 사례</h2>
+            </div>
+            <div id="detail-sections" class="case-story-list"></div>
+          </section>
+
+          <section id="detail-implementation" class="case-study-section hidden">
+            <div class="case-section-heading">
+              <h2>Implementation</h2>
+            </div>
+            <div id="detail-implementation-grid" class="case-implementation-grid"></div>
+          </section>
+
+          <section id="detail-architecture" class="case-study-section">
+            <div class="case-section-heading">
+              <h2>System Architecture</h2>
+            </div>
+            <div id="detail-architecture-flow" class="case-architecture-flow"></div>
+
+            <div id="detail-architecture-comparison" class="gotion-architecture-comparison hidden">
+              <p class="gotion-architecture-intro">
+                핵심 변경은 Planner가 모든 판단을 떠안던 구조를, 요청 해석·권한·계획·검증·실행으로 분리한 것입니다. 멀티턴 문맥은 Context Manager가 최신 발화와 질문 관련 과거 정보를 예산 안에서 조립해 Planner와 답변 Tool에 함께 전달합니다. Registry는 Tool schema·category·실행 정보를 각 단계에 필요한 만큼만 제공합니다.
+              </p>
+
+              <figure class="gotion-diagram-block">
+                <figcaption class="gotion-diagram-caption">
+                  <h3>기존 구조 — Planner에 집중된 책임</h3>
+                  <p>Before / overloaded planner</p>
+                </figcaption>
+                <div class="gotion-diagram-wrap">
+                  <svg class="gotion-diagram" viewBox="0 0 1000 280" role="img" aria-label="기존 Gotion Agent 구조. graph가 Planner로 전달되고, Planner가 intent 판단, 라우팅, 권한·보안, tool 선택, 실행 계획 생성, 인자 보정과 재시도를 모두 담당합니다.">
+                    <defs>
+                      <marker id="gotion-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="rgba(150,150,150,.85)" /></marker>
+                      <marker id="gotion-arrow-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="rgba(150,150,150,.55)" /></marker>
+                    </defs>
+                    <text x="24" y="27" class="group-label">REQUEST FLOW</text>
+                    <path class="flow" d="M108 128 H132" />
+                    <path class="flow" d="M236 128 H274" />
+                    <path class="flow" d="M534 96 H574" />
+                    <path class="flow" d="M676 96 H716" />
+                    <path class="flow" d="M818 96 H852" />
+                    <rect class="node-muted" x="20" y="104" width="88" height="48" rx="4" />
+                    <text class="node-label" x="64" y="126">사용자 요청</text>
+                    <text class="node-sub" x="64" y="141">request</text>
+                    <rect class="node" x="132" y="104" width="104" height="48" rx="4" />
+                    <text class="node-label" x="184" y="126">graph.py</text>
+                    <text class="node-sub" x="184" y="141">orchestration</text>
+                    <rect class="node-focus" x="274" y="40" width="260" height="176" rx="6" />
+                    <text class="node-label" x="404" y="68">planner.py</text>
+                    <text class="node-sub" x="404" y="85">one component, six responsibilities</text>
+                    <path d="M296 100 H512" stroke="rgba(64,188,216,.45)" stroke-width="1" />
+                    <text class="node-label" x="350" y="122">Intent 판단</text><text class="node-label" x="462" y="122">라우팅</text>
+                    <text class="node-label" x="350" y="150">권한 · 보안</text><text class="node-label" x="462" y="150">Tool 선택</text>
+                    <text class="node-label" x="350" y="178">실행 계획</text><text class="node-label" x="462" y="178">보정 · 재시도</text>
+                    <rect class="node" x="574" y="72" width="102" height="48" rx="4" />
+                    <text class="node-label" x="625" y="94">critic.py</text>
+                    <text class="node-sub" x="625" y="109">late check</text>
+                    <rect class="node" x="716" y="72" width="102" height="48" rx="4" />
+                    <text class="node-label" x="767" y="94">executor.py</text>
+                    <text class="node-sub" x="767" y="109">execution</text>
+                    <rect class="node-muted" x="852" y="40" width="128" height="176" rx="6" />
+                    <text class="node-label" x="916" y="68">registry.py</text>
+                    <text class="node-sub" x="916" y="97">tool mapping</text>
+                    <text class="node-sub" x="916" y="119">schemas</text>
+                    <text class="node-sub" x="916" y="141">categories</text>
+                    <text class="node-sub" x="916" y="163">memory / chat</text>
+                    <text class="node-sub" x="916" y="185">analyze / run</text>
+                    <text x="20" y="258" class="node-sub" text-anchor="start">문제: intent·권한·Tool 선택이 하나의 Planner context에 함께 들어가며, 오선택 원인과 책임 경계가 흐려졌습니다.</text>
+                  </svg>
+                </div>
+              </figure>
+
+              <figure class="gotion-diagram-block">
+                <figcaption class="gotion-diagram-caption">
+                  <h3>개선 구조 — 역할 기반 파이프라인</h3>
+                  <p>After / constrained planning</p>
+                </figcaption>
+                <div class="gotion-diagram-wrap">
+                  <svg class="gotion-diagram" viewBox="0 0 1000 332" role="img" aria-label="개선된 Gotion Agent 구조. Route, Policy, Planner, Validator, Critic, Executor, Result Validator, Memory 순서로 요청을 처리하며 Registry가 각 단계에 필요한 Tool schema와 실행 정보를 제공합니다.">
+                    <defs>
+                      <marker id="gotion-arrow-after" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="rgba(150,150,150,.85)" /></marker>
+                    </defs>
+                    <text x="24" y="27" class="group-label">CONTROLLED EXECUTION FLOW</text>
+                    <path class="flow" style="marker-end:url(#gotion-arrow-after)" d="M106 94 H124" />
+                    <path class="flow" style="marker-end:url(#gotion-arrow-after)" d="M218 94 H236" />
+                    <path class="flow" style="marker-end:url(#gotion-arrow-after)" d="M330 94 H348" />
+                    <path class="flow" style="marker-end:url(#gotion-arrow-after)" d="M442 94 H460 V156 H478" />
+                    <path class="flow" style="marker-end:url(#gotion-arrow-after)" d="M572 180 H590" />
+                    <path class="flow" style="marker-end:url(#gotion-arrow-after)" d="M684 180 H702" />
+                    <path class="flow" style="marker-end:url(#gotion-arrow-after)" d="M810 180 H828" />
+                    <path class="flow" style="marker-end:url(#gotion-arrow-after)" d="M922 180 H958" />
+                    <path class="flow-muted" style="marker-end:url(#gotion-arrow-after)" d="M358 282 V238 H171 V122" />
+                    <path class="flow-muted" style="marker-end:url(#gotion-arrow-after)" d="M358 282 V238 H283 V122" />
+                    <path class="flow-muted" style="marker-end:url(#gotion-arrow-after)" d="M358 282 V238 H637 V208" />
+                    <rect class="node-muted" x="18" y="70" width="88" height="48" rx="4" />
+                    <text class="node-label" x="62" y="92">사용자 요청</text><text class="node-sub" x="62" y="107">request</text>
+                    <rect class="node" x="124" y="70" width="94" height="48" rx="4" />
+                    <text class="node-label" x="171" y="92">Route</text><text class="node-sub" x="171" y="107">intent hint</text>
+                    <rect class="node-security" x="236" y="70" width="94" height="48" rx="4" />
+                    <text class="node-label" x="283" y="92">Policy</text><text class="node-sub" x="283" y="107">allow / block</text>
+                    <rect class="node-focus" x="348" y="70" width="94" height="48" rx="4" />
+                    <text class="node-label" x="395" y="92">Planner</text><text class="node-sub" x="395" y="107">2–3 tools</text>
+                    <rect class="node" x="460" y="70" width="94" height="48" rx="4" />
+                    <text class="node-label" x="507" y="92">Validator</text><text class="node-sub" x="507" y="107">schema / deps</text>
+                    <rect class="node" x="478" y="156" width="94" height="48" rx="4" />
+                    <text class="node-label" x="525" y="178">Critic</text><text class="node-sub" x="525" y="193">semantic</text>
+                    <rect class="node" x="590" y="156" width="94" height="48" rx="4" />
+                    <text class="node-label" x="637" y="178">Executor</text><text class="node-sub" x="637" y="193">run tool</text>
+                    <rect class="node" x="702" y="156" width="108" height="48" rx="4" />
+                    <text class="node-label" x="756" y="178">Result Validator</text><text class="node-sub" x="756" y="193">valid result</text>
+                    <rect class="node" x="828" y="156" width="94" height="48" rx="4" />
+                    <text class="node-label" x="875" y="178">Memory</text><text class="node-sub" x="875" y="193">selective save</text>
+                    <text class="node-label" x="978" y="178">응답</text><text class="node-sub" x="978" y="193">response</text>
+                    <rect class="node-muted" x="270" y="260" width="176" height="48" rx="4" />
+                    <text class="node-label" x="358" y="282">registry.py</text><text class="node-sub" x="358" y="297">schemas · categories · execution</text>
+                    <text x="24" y="326" class="node-sub" text-anchor="start">Registry는 모든 정보를 Planner에 노출하지 않고, Route · Planner · Executor에 필요한 계약만 전달합니다.</text>
+                  </svg>
+                </div>
+              </figure>
+            </div>
+          </section>
+
+          <section id="detail-technical-choice" class="case-study-section">
+            <div class="case-section-heading">
+              <h2>Technical Decision</h2>
+            </div>
+            <div id="detail-technical-choice-content" class="case-choice-grid"></div>
+          </section>
+
+          <section id="detail-evaluation" class="case-study-section">
+            <div class="case-section-heading">
+              <h2>Evaluation</h2>
+            </div>
+            <div id="detail-metrics" class="case-metrics"></div>
+          </section>
+
+          <section id="detail-troubleshooting" class="case-study-section">
+            <div class="case-section-heading">
+              <h2>Troubleshooting</h2>
+            </div>
+            <div id="detail-troubleshooting-list" class="case-troubleshooting-list"></div>
+          </section>
+
+          <section class="case-evidence-inline" aria-label="프로젝트 근거">
+            <div class="case-evidence-inline__header">
+              <p class="case-section-label">Project evidence</p>
+              <p class="case-evidence-inline__note">공개 가능한 근거와 검증 범위를 구분해 기록했습니다.</p>
+            </div>
+            <div id="detail-links"></div>
+          </section>
+        </article>
       </div>
     </section>
 
@@ -629,7 +1607,7 @@
       <div class="mb-12 animate-slide-up">
         <h2 class="section-title text-4xl font-semibold text-neutral-950 dark:text-white md:text-5xl">Technical Stack</h2>
         <p class="mt-6 max-w-2xl text-2xl leading-8 text-neutral-500 dark:text-neutral-400">
-          Tools of the trade.
+          프로젝트에서 반복적으로 사용한 다섯 가지 핵심 스택.
         </p>
       </div>
 
@@ -638,10 +1616,10 @@
 
     <section id="research" class="page-section hidden">
       <div class="mb-12 animate-slide-up">
-        <p class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">Blog / Research</p>
-        <h2 class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">읽고 실험한 내용을 문제 정의 관점으로 정리합니다.</h2>
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">기술 블로그 / TECHNICAL BLOG</p>
+        <h2 class="section-title mt-3 text-3xl font-semibold text-[#141612] dark:text-[#F7F4EA] md:text-5xl">기술 블로그</h2>
         <p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-500 dark:text-neutral-400">
-          단순 요약보다 “어떤 병목이나 운영 문제를 해결하려는 기술인가”를 중심으로 정리할 예정입니다.
+          LLM 추론·캐시·병렬화에 대해 직접 작성한 기술 블로그 글입니다. 제목을 누르면 원문에서 문제 배경과 기술 선택 과정을 더 자세히 볼 수 있습니다.
         </p>
       </div>
 
@@ -681,17 +1659,17 @@
   </main>
 
   <footer class="relative z-10 mt-20 border-t border-black/5 dark:border-white/5">
-    <div class="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-10 text-xs text-neutral-400 md:flex-row md:items-center md:justify-between">
-      <p>© 2026 장준민. AI Engineer Portfolio.</p>
-      <p>LLM / RAG / Serving / MLOps / LLMOps</p>
+    <div class="mx-auto flex max-w-[1440px] flex-col gap-4 px-6 py-8 text-xs text-neutral-400 md:flex-row md:items-center md:justify-between">
+      <p>© 2026 장준민 · AI Engineer</p>
+      <div class="flex flex-wrap gap-5"><a href="mailto:wkdwnsals0413@gmail.com">EMAIL</a><a href="https://github.com/wkd09" target="_blank" rel="noopener noreferrer">GITHUB</a><a href="https://wkd09.github.io/" target="_blank" rel="noopener noreferrer">BLOG</a><a href="https://www.linkedin.com/in/junmin09/" target="_blank" rel="noopener noreferrer">LINKEDIN</a></div>
     </div>
   </footer>
 
   <script>
-    const projects = [
+    const legacyProjects = [
       {
         id: 'folio',
-        order: '01',
+        order: '03',
         title: 'Folio',
         label: 'Featured / Organization',
         short: 'AI 기반 포트폴리오 분석 서비스',
@@ -793,53 +1771,626 @@
       }
     ];
 
+    const projectOverrides = {
+      folio: {
+        short: 'AI 기반 포트폴리오 분석 서비스',
+        overview: 'PDF 또는 이미지 포트폴리오를 업로드하면 AI가 구조, 기술 스택, 프로젝트 설명, 강점과 부족한 점을 분석해 개선 방향을 제안하는 팀 프로젝트입니다. 저는 FastAPI 기반 AI Server / Backend를 담당했습니다.',
+        stack: ['FastAPI', 'OpenAI API', 'pdfplumber', 'EasyOCR', 'Pydantic', 'Structured Output', 'Python'],
+        metrics: ['PDF / PNG / JPG 입력을 { page, tokens: [{ text, bbox }] } 구조로 표준화', '분석 기능을 분리하고 병렬 처리해 전체 응답 시간 40.57초 -> 22.339초로 비교', '프롬프트 문자열 기준 토큰 1,588 -> 959로 측정', '테스트 요청 4회 실패 0건, p95 latency 23.781초 기록'],
+        chartGroups: [
+          {
+            title: '응답 시간 · 낮을수록 빠름',
+            note: '분석 병렬화 전후에 기록한 전체 응답 시간입니다.',
+            stages: ['병렬화 전', '병렬화 후'],
+            metrics: [
+              { label: '전체 응답 시간', unit: '초', values: [40.57, 22.339], displayValues: ['40.57초', '22.339초'] }
+            ]
+          },
+          {
+            title: 'Prompt token 기록 · 낮을수록 적음',
+            note: '프로젝트 기록에 남은 프롬프트 문자열 기준 값입니다.',
+            stages: ['병렬화 전', '병렬화 후'],
+            metrics: [
+              { label: 'Prompt token', unit: 'token', values: [1588, 959], displayValues: ['1,588', '959'] }
+            ]
+          }
+        ],
+        metricStats: [
+          { label: '테스트 요청', value: '4회' },
+          { label: '실패 요청', value: '0건' },
+          { label: '기록된 P95', value: '23.781초' }
+        ],
+        repoUrl: 'https://github.com/Folio-Ai-project',
+        sourceNote: '첨부된 노션 PDF의 프로젝트 기록을 기준으로 작성했습니다. 조직 저장소는 현재 GitHub 인증이 없어 코드 원문까지 확인하지 못했습니다.',
+        role: 'AI Server / Backend',
+        period: '2026.01.13 — 2026.04.16',
+        team: '3명',
+        highlights: ['PDF·이미지 입력을 하나의 token schema로 표준화', '분석 요청을 분리·병렬화해 응답 시간 40.57초 → 22.339초', '프롬프트 문자열 기준 token 1,588 → 959', 'Pydantic Structured Output으로 분석 응답 계약 고정'],
+        architecture: ['PDF / Image', 'PDF Parser / OCR', 'Layout Block Normalizer', 'Structured LLM Analysis', 'Consulting API', 'Frontend'],
+        technicalChoice: {
+          question: '서로 다른 파일 형식을 어떻게 하나의 분석 흐름으로 연결할 것인가?',
+          hypothesis: 'PDF와 이미지의 추출 방식은 달라도, 페이지·텍스트·좌표를 공통 token contract로 정규화하면 이후의 레이아웃 복원과 LLM 분석은 파일 형식에 의존하지 않을 것이라고 판단했습니다.',
+          alternatives: [
+            { title: '파일 유형별 Prompt 분기', description: '빠르게 구현할 수 있지만 PDF와 이미지마다 분석 규칙과 예외 처리가 갈라져 후속 기능 추가와 테스트 범위가 커집니다.' },
+            { title: '공통 Token Schema + Structured Output', description: '추출 방식은 pdfplumber와 EasyOCR로 분리하되, 이후 단계는 같은 token 구조와 Pydantic 응답 계약을 사용합니다.' }
+          ],
+          selection: '입력 형식의 차이는 파싱 계층에만 남기고, 분석 계층에는 공통 contract를 전달하는 방식을 선택했습니다. 그 결과 분석 기능을 독립 요청으로 분리해 병렬화할 수 있었고, 응답 형식도 프론트엔드에서 예측 가능하게 유지했습니다.'
+        },
+        troubleshooting: [{
+          title: '분석 요청 병렬화로 응답 지연 개선',
+          observation: '리뷰·역량 평가·로드맵·기업 추천을 하나의 요청에서 순차적으로 생성하면서, 사용자가 결과를 기다리는 시간이 길어졌습니다.',
+          hypothesis: '리뷰·역량 평가·로드맵·기업 추천을 하나의 LLM 요청에서 순차적으로 생성하는 구조가 전체 지연의 주요 원인이라고 판단했습니다.',
+          decision: '한 번의 거대한 컨설팅 응답을 유지하는 대신, 사용자가 필요로 하는 분석 단위를 독립 요청으로 나누고 서버에서 동시에 처리하기로 했습니다.',
+          implementation: 'PDF parser와 OCR 결과를 공통 token 구조로 만든 뒤, 기능별 분석 요청을 분리해 병렬 실행했습니다. 응답은 Pydantic Structured Output으로 고정하고, 파일 파싱 및 분석 오류는 API 예외 흐름으로 분리했습니다.',
+          verification: '같은 방식으로 전후를 비교했을 때 전체 응답 시간은 40.57초에서 22.339초로 감소했고, 프롬프트 문자열 기준 token은 1,588에서 959로 줄었습니다. 첨부된 기록에는 테스트 4회 중 실패 0건과 p95 latency 23.781초도 남아 있습니다.',
+          limitation: '현재 검증은 응답 시간과 schema 안정성에 집중되어 있습니다. 분석 품질 자체를 주장하려면 포트폴리오 평가셋, 평가 기준, 사람 검토 결과를 별도로 설계해야 합니다.'
+        }],
+        sections: {
+          Overview: '포트폴리오를 객관적으로 점검받기 어려운 학생과 주니어 개발자를 위해, 파일을 업로드하면 구조와 기술 내용을 분석하고 개선 방향을 제안하는 서비스입니다.',
+          Problem: 'PDF는 텍스트와 좌표를 추출할 수 있지만 이미지는 OCR이 필요하고, 파일 형식마다 추출 결과가 달라 이후 LLM 분석 로직이 복잡해졌습니다. 또한 리뷰, 역량 평가, 성장 로드맵, 기업 추천을 한 요청에서 생성하면 응답 시간이 길어졌습니다.',
+          Decision: '파일 타입별 차이는 추출 단계에 가두고 이후 파이프라인은 공통 token 구조를 사용했습니다. LLM 역할은 구조화와 컨설팅으로 분리하고 Pydantic Structured Output으로 응답 계약을 고정했습니다.',
+          Implementation: 'pdfplumber와 EasyOCR로 텍스트를 추출하고 좌표와 줄 간격을 기준으로 레이아웃 블록을 복원했습니다. 분석 기능을 독립 요청으로 나눈 뒤 서버에서 병렬 처리하고, 실패 입력과 파싱 오류를 API 예외로 처리했습니다.',
+          Verification: '응답 시간을 측정해 40.57초와 22.339초를 비교했고 prompt_tokens와 completion_tokens를 로깅해 토큰 비용을 확인했습니다. 첨부 기록에는 p95 latency, throughput, 실패 요청 수까지 남겨져 있습니다.',
+          'My Role': 'AI Server / Backend 담당으로 파일 처리, OCR 및 PDF parsing, 분석 프롬프트, Pydantic 응답 모델, 예외 처리, 프론트엔드 연동 API를 구현했습니다.',
+          Limitation: '현재 기록에는 모델 품질에 대한 별도 정답셋 평가보다 latency와 schema 안정성 검증이 중심입니다. 분석 정확도를 주장하려면 포트폴리오 평가셋과 기준표를 추가해야 합니다.'
+        }
+      },
+      defapi: {
+        order: '03',
+        short: '서로 다른 보안 스캐너를 하나의 검증 흐름으로 묶은 MVP',
+        overview: '로컬 코드 또는 디렉터리를 Semgrep, Trivy, CodeQL로 스캔하고 결과를 공통 Finding 모델로 정규화한 뒤, 보고서와 repair/review 단계를 연결하는 FastAPI 기반 보안 분석 MVP입니다.',
+        stack: ['Python', 'FastAPI', 'Pydantic', 'LangGraph', 'FastMCP', 'Semgrep', 'Trivy', 'CodeQL'],
+        metrics: ['Semgrep results, Trivy vulnerabilities/misconfigurations, CodeQL SARIF를 공통 Finding 모델로 변환', 'tests/test_agents.py에서 scanner, repair, review agent의 정상 및 실패 흐름 확인', 'eval/eval.py에 command injection 등 보안 수정 케이스 5개 구성', '수치적 개선 여부: 기존 대비 전후 점수나 성능 비교가 없어 확인 불가', 'scanner CLI 미설치 시 전체 실패 대신 skipped 상태로 보고'],
+        chartGroups: [{
+          title: '구현·검증 범위',
+          note: '아래 숫자는 구현/평가 범위의 개수이며, 성능 향상을 뜻하지 않습니다.',
+          stages: ['확인된 수'],
+          metrics: [
+            { label: '연결한 Scanner', unit: '종', values: [3], displayValues: ['3종'], scale: 5 },
+            { label: '보안 수정 평가 케이스', unit: '건', values: [5], displayValues: ['5건'], scale: 5 }
+          ],
+          footnote: '기존 대비 전후 점수·성능 비교는 기록되어 있지 않아 개선 그래프를 만들지 않았습니다.'
+        }],
+        role: 'AI / Backend Engineer',
+        highlights: ['Semgrep·Trivy·CodeQL 출력을 공통 Finding schema로 정규화', 'scanner 실행 실패를 skipped / failed 상태로 보존', 'scan → report → repair → review workflow 설계', '취약 코드 5개 evaluation fixture와 agent 단위 테스트 구성'],
+        architecture: ['Code Input', 'Scanner Wrappers', 'Finding Normalizer', 'LangGraph Workflow', 'Report / Review API'],
+        technicalChoice: {
+          question: 'Scanner마다 다른 원본 출력을 API와 Agent가 어떻게 함께 사용할 것인가?',
+          hypothesis: 'Semgrep JSON, Trivy 취약점·misconfiguration 결과, CodeQL SARIF를 공통 Finding 모델로 먼저 정규화하면 이후 report·repair·review 단계가 특정 scanner 형식에 묶이지 않을 것이라고 판단했습니다.',
+          alternatives: [
+            { title: 'Scanner별 결과를 그대로 전달', description: '초기 연결은 단순하지만 report와 review 단계가 scanner별 조건문에 의존하고, 새 scanner를 붙일 때마다 API 계약이 바뀝니다.' },
+            { title: 'Scanner Wrapper + Finding Contract', description: 'scanner별 차이는 command와 parser에 한정하고, 내부 workflow는 공통 Finding·상태 모델만 사용합니다.' }
+          ],
+          selection: '스캐너 실행과 결과 해석을 wrapper에 가두고, 내부 파이프라인은 Finding schema를 중심으로 구성했습니다. 이 경계가 있어 정상 결과뿐 아니라 CLI 미설치·실행 실패를 skipped 또는 failed로 보존할 수 있었습니다.'
+        },
+        troubleshooting: [{
+          title: '이질적인 Scanner 결과를 공통 API 계약으로 정규화',
+          observation: 'Semgrep, Trivy, CodeQL은 탐지 대상과 결과 구조가 다르기 때문에, 원본 출력을 그대로 사용하면 후속 단계가 scanner별 분기로 늘어났습니다.',
+          hypothesis: '스캐너별 JSON·SARIF 결과를 공통 Finding 모델로 변환하면 report와 review 단계가 scanner 구현에 의존하지 않을 것이라고 판단했습니다.',
+          decision: '실행·timeout·stdout/stderr·상태 처리는 공통화하고, scanner별 구현은 command와 parse_findings에 한정했습니다. API와 LangGraph workflow는 scanner가 아니라 Finding을 기준으로 동작하게 했습니다.',
+          implementation: 'Semgrep, Trivy, CodeQL parser를 wrapper로 분리하고 FastAPI scan/report API와 LangGraph scan → report → repair → review 흐름을 연결했습니다. scanner CLI가 없거나 LLM이 실패하는 경우에도 상태와 원인을 결과에 보존했습니다.',
+          verification: 'FakeScanner와 FailingLLM으로 정상 결과 수집, 실패 보존, repair/review 결과 부착을 단위 검증했습니다. 별도 evaluation에는 command injection 등 5개 취약 코드 fixture를 구성했습니다.',
+          limitation: '기준선 대비 성능·정확도 향상 수치는 아직 측정하지 않았습니다. 또한 자동 패치, sandbox 실행, 테스트 러너 연동, 재스캔 검증은 현재 범위에 포함하지 않았습니다.'
+        }],
+        sections: {
+          Overview: '보안 스캔 결과를 단순 출력하지 않고, 후속 보고서와 LLM 보조 분석이 사용할 수 있는 일관된 API 응답으로 만드는 프로젝트입니다.',
+          Problem: 'Semgrep, Trivy, CodeQL은 탐지 대상과 JSON 또는 SARIF 구조가 달라 원본 출력을 그대로 사용하면 report, repair, validation 단계가 scanner별 분기로 오염됩니다.',
+          Decision: 'CommandMCP 추상화로 실행, timeout, stdout/stderr 처리, skipped/failed 상태 생성을 공통화하고 scanner별 구현은 command와 parse_findings에 한정했습니다. 내부 파이프라인은 Finding 모델만 바라보도록 경계를 만들었습니다.',
+          Implementation: 'FastAPI /health, /scan, /report/{scan_id}, LangGraph scan -> report -> repair -> review workflow, FastMCP tool server, SGLang OpenAI-compatible LLM client를 구성했습니다.',
+          Verification: 'FakeScanner와 FailingLLM을 사용해 정상 결과 수집, LLM 실패 보존, repair/review 결과 부착을 단위 검증했습니다. 별도 eval에서는 5개 취약 코드 케이스와 code block, 금지 필드 누출 여부를 점수화하지만, 현재 기록에는 기준선 대비 수치적 향상 결과가 없습니다.',
+          'My Role': 'FastAPI API, scanner wrapper, Finding 모델, LangGraph workflow, report summary, fixture 평가 구조와 문서화를 담당했습니다.',
+          Limitation: '현재 구현은 자동 파일 패치, sandbox 실행, 테스트 러너 연동, 재스캔 검증을 수행하지 않습니다. 원본 프로젝트를 변경하지 않는 분석 API 범위에 집중했습니다.'
+        }
+      },
+      dcc: {
+        order: '09',
+        short: '깊이 정보를 보존하는 GPR 단면 선택과 객체 탐지 파이프라인',
+        metrics: ['xz 평면을 수평 방향과 깊이 방향을 함께 보는 입력으로 선택', 'box, patch, pipe, manhole, cavity 5개 클래스 정의', 'JSON 라벨 분포 확인, bounding box 시각화, train/validation/test 분할 스크립트 작성', 'mAP@IoU50 평가 흐름을 README와 notebook에 기록'],
+        sections: {
+          Overview: 'GPR의 단면 표현과 깊이 축을 고려해 지하 객체 탐지 문제를 구성한 Computer Vision 프로젝트입니다.',
+          Problem: '같은 원본 데이터라도 어떤 단면을 입력으로 선택하느냐에 따라 객체의 깊이와 연속적인 형태가 달라지고, 원본 JSON 라벨은 YOLO 학습 형식으로 바로 사용할 수 없었습니다.',
+          Decision: 'z축이 깊이를 나타내는 xz 단면을 선택하고, 라벨 분포와 bounding box를 먼저 시각적으로 확인한 뒤 dataset split과 YOLO 변환을 진행했습니다.',
+          Implementation: 'JSON 라벨 탐색, 클래스 분포 확인, 이미지-라벨 매칭, bounding box 시각화, YOLO dataset.yaml 구성, YOLOv11n 학습/평가 notebook을 연결했습니다.',
+          Verification: '라벨 개수와 분포를 확인하고 bounding box 이미지로 변환 결과를 점검했습니다. train/validation/test 분할과 mAP@IoU50 평가 흐름을 구성했지만 README에는 최종 mAP 수치가 남아 있지 않습니다.',
+          Limitation: '대용량 데이터셋과 가중치는 저장소에서 제외되어 공개 저장소만으로 전체 학습을 재현할 수 없습니다. 성능을 강조하려면 최종 mAP와 split seed를 추가 기록해야 합니다.'
+        }
+      },
+      'tech-blog': {
+        order: '10',
+        label: 'Docs / Engineering Log',
+        short: '학습 메모를 재현 가능한 study, research, troubleshooting 기록으로 전환',
+        metrics: ['study, engineering, research, troubleshooting 카테고리 분리', 'post, research, troubleshooting 템플릿 제공', 'KV cache, vLLM, DDP, FlashAttention, speculative decoding 기록 축적', 'GitHub Actions 기반 Pages 배포 workflow 구성'],
+        sections: {
+          Overview: '학습 내용을 나중에 다시 설명하고 재현할 수 있도록, 개념 정리와 구현 기록을 검색 가능한 기술 문서로 관리하는 프로젝트입니다.',
+          Problem: '코드 조각과 메모가 흩어지면 같은 문제를 다시 만났을 때 원인과 해결 과정을 복원하기 어렵고, 글마다 기록 형식도 달라집니다.',
+          Decision: '글의 목적을 study, engineering, research, troubleshooting으로 나누고 front matter와 글 템플릿을 고정했습니다. 배포는 GitHub Actions가 main push를 받아 Pages에 반영하도록 구성했습니다.',
+          Implementation: 'Jekyll Minimal Mistakes 기반 레이아웃, 카테고리 페이지, 날짜 기반 post, research/troubleshooting 템플릿, 이미지 경로 규칙을 구성했습니다.',
+          Verification: '저장소에 실제 카테고리와 템플릿 파일이 존재하며 GitHub Pages 배포 주소를 통해 결과를 확인할 수 있습니다. 글마다 검증 수준은 개별 기록에 따라 다릅니다.',
+          Limitation: '블로그 글은 프로젝트 자체의 성능 검증과 다르므로, 포트폴리오에서는 글의 존재보다 문제를 재현하고 결론을 수정한 과정이 드러나는 글을 선별해야 합니다.'
+        }
+      },
+      'transformer-from-scratch': {
+        order: '12',
+        label: 'Study / Model Internals',
+        short: 'Attention과 Encoder/Decoder를 모듈 단위로 직접 구현',
+        stack: ['Python', 'PyTorch', 'Attention', 'Transformer'],
+        metrics: ['Attention.py와 MultiHeadAttention.py로 attention 연산 분리', 'Encoder.py, Decoder.py, transformer.py로 모델 흐름 구성', 'positional_encode.py로 위치 인코딩 구현', 'README와 자동화된 테스트 결과는 저장소에 없어 추가 검증 필요'],
+        sections: {
+          Overview: 'High-level 라이브러리 호출만으로는 내부 동작을 설명하기 어려워 Transformer의 핵심 연산을 작은 모듈로 직접 구현했습니다.',
+          Problem: 'attention mask, positional encoding, encoder/decoder 연결을 라이브러리 뒤에 숨겨두면 모델을 변경하거나 오류를 추적할 때 원인을 설명하기 어렵습니다.',
+          Decision: '모델 전체를 한 파일에 두지 않고 Attention, MultiHeadAttention, Encoder, Decoder, Positional Encoding 단위로 쪼개 각 책임을 확인할 수 있도록 했습니다.',
+          Verification: '코드 파일 단위 구현은 확인되지만 현재 저장소에 README와 자동화된 수치 비교 테스트가 없습니다. reference implementation과 출력 비교, shape invariant, mask 케이스를 추가하는 것이 다음 검증 단계입니다.',
+          'My Role': 'Transformer 구성요소 구현과 코드 구조 분해를 진행했습니다.',
+          Limitation: '서비스나 학습 성능을 검증한 프로젝트가 아니라 구조 이해를 위한 study repository입니다.'
+        }
+      }
+    };
+
+    const projectAdditions = [
+      {
+        id: 'gotion-agent',
+        order: '01',
+        title: 'Gotion Agent',
+        label: 'Organization / AI Agent',
+        short: '역할 기반 파이프라인으로 Tool 선택 정확도와 schema 비용을 개선한 AI Agent',
+        icon: 'lucide:route',
+        overview: '사용자의 자연어 요청을 받아 노트 검색·답변, 퀴즈 생성, 메모리 저장·조회, 분석으로 연결하는 LLM Agent 시스템입니다. Tool 오선택과 함께, 멀티턴 대화에서 과거 퀴즈·사용자 조건이 최종 답변까지 유지되지 않고 불필요한 문맥이 토큰 비용을 키우는 문제를 개선했습니다.',
+        projectProfile: [
+          { label: '프로젝트 목적', title: '자연어 요청을 작업으로 연결', description: '노트 검색과 답변, 퀴즈 생성, 메모리 저장·조회, 분석 기능을 하나의 LLM Agent에서 사용할 수 있도록 구성했습니다.' },
+          { label: '사용 흐름', title: '요청 이해부터 결과 확인까지', description: '사용자 요청을 바탕으로 실행할 기능을 선택하고, 계획과 실행 결과를 검증한 뒤 답변으로 돌려주는 흐름입니다.' },
+          { label: '팀과 담당 역할', title: '4인 팀 · AI Engineer / AI Lead', description: 'Agent 파이프라인과 요청별 Tool 선택 구조를 개선하고, 멀티턴 문맥을 선별·압축하는 Context Manager를 적용했습니다.' }
+        ],
+        stack: ['Multi-Agent', 'Tool Calling', 'Context Management', 'FastAPI', 'Route', 'Policy', 'Planner', 'Validator', 'Critic', 'Memory'],
+        metrics: ['평가 통과율 42.0% → 75.0%, Tool 선택 정확도 42.0% → 79.0%', 'Task 성공률 63.0% → 88.0%, 응답 성공률 63.0% → 86.0%', 'Planner 코드 643줄 → 198줄로 69.2% 감소, 요청별 노출 Tool 7개 → 2~3개', '전체 추정 token 80,581 → 15,945로 80.2% 감소, 평균 805.8 → 159.5', '멀티턴 15건 답변 기준 충족 53.3% → 86.7%, 입력 token 45.7% 감소', '멀티턴 답변 호출 추정 비용 $0.003921 → $0.002675 (31.8% 감소)', '잘못된 인자 비율 0%, Hard-gate 통과율 98.0%', 'Tool pipeline P50 1.07ms → 1.90ms, context eval P50 1,596ms → 1,225ms (각기 다른 평가)'],
+        chartGroups: [
+          {
+            title: 'Agent 평가 지표 · %',
+            note: '같은 평가 기준으로 세 구조 단계를 비교했습니다. 높을수록 좋은 지표지만 Hard-gate는 99%에서 98%로 소폭 하락했습니다.',
+            stages: ['초기 구조', '파이프라인 분리', 'Registry 축소'],
+            metrics: [
+              { label: '평가 평균 점수', unit: '%', values: [64.2, 87.2, 87.2], displayValues: ['64.2%', '87.2%', '87.2%'], scale: 100 },
+              { label: '평가 통과율', unit: '%', values: [42, 75, 75], displayValues: ['42.0%', '75.0%', '75.0%'], scale: 100 },
+              { label: 'Hard-gate 통과율', unit: '%', values: [99, 98, 98], displayValues: ['99.0%', '98.0%', '98.0%'], scale: 100 },
+              { label: 'Tool 선택 정확도', unit: '%', values: [42, 79, 79], displayValues: ['42.0%', '79.0%', '79.0%'], scale: 100 },
+              { label: 'Task 성공률', unit: '%', values: [63, 88, 88], displayValues: ['63.0%', '88.0%', '88.0%'], scale: 100 },
+              { label: '응답 성공률', unit: '%', values: [63, 86, 86], displayValues: ['63.0%', '86.0%', '86.0%'], scale: 100 },
+              { label: '잘못된 인자 비율', unit: '%', values: [0, 0, 0], displayValues: ['0%', '0%', '0%'], scale: 100 }
+            ],
+            footnote: 'Registry 축소 후 선택 정확도와 성공률은 파이프라인 분리 후와 동일하게 유지됐습니다.'
+          },
+          {
+            title: '추정 token 사용량 · 문자 수 ÷ 4',
+            note: '각 행의 막대는 해당 지표 안에서만 단계 간 상대 크기를 비교합니다.',
+            stages: ['초기 구조', '파이프라인 분리', 'Registry 축소'],
+            metrics: [
+              { label: '전체 추정 token', unit: 'token', values: [80581, 23985, 15945], displayValues: ['80,581', '23,985', '15,945'] },
+              { label: '케이스당 평균', unit: 'token', values: [805.8, 239.9, 159.5], displayValues: ['805.8', '239.9', '159.5'] },
+              { label: 'P50 추정 token', unit: 'token', values: [634, 132, 112], displayValues: ['634', '132', '112'] },
+              { label: 'P95 추정 token', unit: 'token', values: [2524, 1424, 904], displayValues: ['2,524', '1,424', '904'] }
+            ],
+            footnote: '동일한 문자 수 ÷ 4 식으로 계산한 비교용 추정치이며, 실제 모델 tokenizer나 API 과금 token은 아닙니다.'
+          },
+          {
+            title: '지연시간 · ms · 낮을수록 빠름',
+            note: '검증 단계를 추가하면서 지연시간은 증가했습니다. 이를 성능 개선으로 해석하지 않습니다.',
+            stages: ['초기 구조', '파이프라인 분리', 'Registry 축소'],
+            metrics: [
+              { label: 'P50 지연시간', unit: 'ms', values: [1.07, 1.9, 1.9], displayValues: ['1.07ms', '1.90ms', '1.90ms'] },
+              { label: 'P95 지연시간', unit: 'ms', values: [3.55, 5.08, 4.93], displayValues: ['3.55ms', '5.08ms', '4.93ms'] }
+            ],
+            footnote: 'P50은 1.07ms에서 1.90ms로, P95는 3.55ms에서 4.93ms로 증가했습니다. Registry 축소 후 P95만 5.08ms에서 4.93ms로 소폭 낮아졌습니다.'
+          },
+          {
+            title: 'Planner 크기 · 코드 줄 수',
+            note: 'Planner 책임 분리 전후의 코드량입니다.',
+            stages: ['초기 구조', '분리 후'],
+            metrics: [
+              { label: 'Planner 코드', unit: '줄', values: [643, 198], displayValues: ['643줄', '198줄'] }
+            ],
+            footnote: 'Planner 코드량은 69.2% 감소했습니다. 요청별 Tool 노출과 평균 실행 단계는 아래 차트에서 따로 비교합니다.'
+          },
+          {
+            title: 'Planner 입력·실행 규모',
+            note: 'Planner에 노출된 도구 후보 수와 평균 Agent 실행 단계입니다.',
+            stages: ['초기 구조', '파이프라인 분리', 'Registry 축소'],
+            metrics: [
+              { label: '노출 Tool 수', unit: '개', values: [7, 3, 3], displayValues: ['7개', '2–3개', '2–3개'], scale: 7 },
+              { label: '평균 Agent Step', unit: '단계', values: [1.16, 1.4, 1.4], displayValues: ['1.16', '1.40', '1.40'], scale: 1.5 }
+            ],
+            footnote: 'Tool 수 범위(2–3개)는 막대 길이를 상한 3개 기준으로 표시했습니다. 평균 실행 단계는 1.16에서 1.40으로 늘었습니다.'
+          },
+          {
+            title: '멀티턴 문맥 평가 · 고정 사례 15건',
+            note: '동일 Agent 그래프에서 문맥 선택만 바꾸고 각 사례를 전·후 한 번씩 실행했습니다. 규칙 Planner·Critic·Executor와 실제 LLM 답변 Tool, gpt-4o-mini-2024-07-18을 사용했습니다. 막대는 지표별 개선 전 값을 100%로 정규화하고, 숫자에는 실측값과 상대 비율을 함께 표시합니다.',
+            stages: ['문맥 개선 전', '문맥 개선 후'],
+            metrics: [
+              { label: '최종 답변 기준 충족', unit: '%', values: [53.3, 86.7], displayValues: ['8/15 · 53.3%', '13/15 · 86.7%'], scale: 100 },
+              { label: '모델 입력 token', unit: 'token', values: [17577, 9551], displayValues: ['17,577', '9,551'] },
+              { label: '입력 + 출력 token', unit: 'token', values: [20469, 12453], displayValues: ['20,469', '12,453'] },
+              { label: '답변 호출 추정 비용', unit: 'USD', values: [0.003921, 0.002675], displayValues: ['$0.003921 · 100%', '$0.002675 · 68.2%'], scale: 0.003921 },
+              { label: '응답 지연 p50', unit: 'ms', values: [1596, 1225], displayValues: ['1,596ms', '1,225ms'] },
+              { label: '응답 지연 p95', unit: 'ms', values: [7683, 7771], displayValues: ['7,683ms', '7,771ms'] }
+            ],
+            footnote: '단일 실행 결과이며 통계적 유의성·재현성을 주장하지 않습니다. 비용은 답변 호출 사용량에 입력 $0.15, 캐시 입력 $0.075, 출력 $0.60 / 100만 token의 공식 단가를 적용한 추정치입니다. 캐시 token은 실행 순서 영향을 받으며 전체 Agent/API 비용이 아닙니다. <a href="https://developers.openai.com/api/docs/models/gpt-4o-mini" target="_blank" rel="noopener noreferrer">공식 단가 ↗</a>'
+          }
+        ],
+        sourceNote: '평가 보고서: <a href="https://github.com/soshinbalun/gotion/blob/beta/docs/agent-context-live-eval.md" target="_blank" rel="noopener noreferrer">멀티턴 문맥 실측 보고서 ↗</a>. Planner schema 입력량은 문자 수 ÷ 4 추정치이고, 멀티턴 문맥 평가는 모델 응답에서 보고한 실제 token 사용량입니다. 두 token 지표는 산정 방식이 다릅니다.',
+        role: 'AI Engineer / AI Lead',
+        team: '4명',
+        highlights: ['Tool 선택 정확도 42.0% → 79.0%, 평가 통과율 42.0% → 75.0%', '멀티턴 평가 15건 답변 기준 충족 53.3% → 86.7%', '멀티턴 입력 token 45.7%, 답변 호출 추정 비용 31.8% 감소', 'Planner 역할을 분리해 코드량 643줄 → 198줄', '요청별 Tool schema 축소로 전체 추정 token 80.2% 감소', 'Policy·Validator·Critic으로 실행 전 안전성 검증'],
+        architecture: ['Route', 'Policy', 'Planner', 'Validator', 'Critic', 'Executor', 'Result Validator', 'Memory'],
+        coreImplementation: [
+          { title: '의도·정책·계획을 분리', description: 'Route는 intent hint를 만들고 Policy는 요청 범위를 제한합니다. Planner는 허용된 범위에서 실행 계획을 생성해 하나의 prompt에 몰려 있던 책임을 나눴습니다.', flow: 'Request → Route → Policy → Planner' },
+          { title: '실행 전 계획과 결과를 검증', description: 'Validator는 Tool·필수 인자·단계 의존성을 확인하고, Critic은 요청과 계획의 의미적 일치를 검사합니다. 실행 후 Result Validator가 빈 결과를 실패로 판정합니다.', flow: 'Plan → Validator → Critic → Executor → Result Validator' },
+          { title: 'Planner 입력을 요청별로 축소', description: 'Registry가 모든 Tool 정보를 한꺼번에 주는 대신 요청과 관련된 후보 schema 2~3개만 제공합니다. 같은 문자 수 ÷ 4 추정식으로 전체 입력 규모가 80,581에서 15,945로 줄었습니다.', flow: '7 Tool schemas → 2–3 relevant schemas' },
+          { title: '멀티턴 문맥을 예산 안에서 재구성', description: '현재 질문의 주제와 과거 발화 참조 여부를 보고 최신 발화를 우선한 뒤, 같은 세션의 최대 200개 후보에서 관련 대화를 선택합니다. 사용자 조건·퀴즈 결과를 보존하고 검색 Tool 결과는 관련 근거 중심으로 압축해 대화 2,000 token, Tool 문맥 1,600 token 예산에 맞춥니다. Planner와 답변 Tool이 같은 조립 문맥을 사용합니다.', flow: 'Question → Recent + Relevant history → Budgeted context → Planner / Answer Tool' }
+        ],
+        technicalChoice: {
+          question: '오선택을 막는 안전장치만 강화할 것인가, Planner가 판단하는 입력 자체를 줄일 것인가?',
+          hypothesis: '의도 분류, 권한 판단, Tool 선택, 실행 계획, 결과 판단을 한 Planner에 모으고 모든 요청에 7개 Tool schema를 전달한 구조가 선택 충돌과 context 비용의 공통 원인이라고 판단했습니다.',
+          alternatives: [
+            { title: 'Critic의 semantic 검증만 추가', description: '잘못된 Tool 실행과 side effect를 막는 안전장치가 되지만, Planner가 잘못 선택하는 원인 자체와 Tool Selection Accuracy는 바꾸지 못합니다.' },
+            { title: '역할 분리 + 요청별 후보 Tool 축소', description: 'Route와 Policy가 의도·허용 범위를 먼저 좁히고, Planner에는 2~3개 후보 Tool schema만 전달합니다. Validator·Critic은 실행 전 서로 다른 검증 역할을 맡습니다.' }
+          ],
+          selection: '안전성만 강화하는 접근 대신, Planner가 판단하는 문제 자체를 작게 만드는 구조를 선택했습니다. Critic은 선택기를 대체하지 않고 마지막 semantic gate로 남겼고, Registry는 각 단계에 필요한 Tool 계약만 제공하도록 축소했습니다.',
+          tokenNote: '토큰 수는 문맥 길이를 제한하는 예산 추정치로 사용하며, 문맥 선택에는 o200k_base를 적용합니다. 실제 과금과 비용 평가는 모델이 반환한 입력·출력·캐시 토큰을 기준으로 합니다. 다른 제공자의 모델에서는 문맥 선택용 토큰 수와 청구 토큰 수가 다를 수 있습니다.'
+        },
+        troubleshooting: [{
+          title: '첫 시도 — Semantic Critic은 오선택 자체를 고치지 못함',
+          observation: '일정 요청을 퀴즈 Tool로 보내거나 기억 저장 요청을 일반 대화로 처리하는 문제가 있었습니다. 첫 해결 시도에서는 Critic에 domain·operation 기준의 의미 검증을 추가했습니다.',
+          hypothesis: '계획과 사용자 의도의 의미적 일치를 Executor 전에 확인하면 잘못된 Tool 호출을 차단할 수 있지만, Planner가 처음부터 더 정확한 Tool을 선택하게 만들지는 못할 수 있다고 보았습니다.',
+          decision: 'Critic을 로컬 브랜치에 구현해 의미 불일치 계획을 실행 전에 차단했습니다. 이 단계는 Planner 개선이 아니라 잘못된 실행과 side effect를 막는 안전장치로 범위를 한정했습니다.',
+          implementation: '허용 Tool sequence를 검사하고, 일정·퀴즈 및 기억·일반 대화처럼 혼동이 재현된 경계를 우선 검증했습니다. 검증 실패 때 Executor를 부르지 않고 장기 메모리에도 저장하지 않도록 했습니다.',
+          verification: '전체 Agent 테스트 32개와 diff·compile 검사는 통과했습니다. 다만 25개 규칙 평가에서 Tool 선택 정확도는 44.0%, Task 성공률은 52.0%였고 Planner의 오선택은 남았습니다. 즉 실행 전 차단은 확인했지만 라우팅 품질 개선으로는 충분하지 않았습니다.',
+          limitation: '이 시도는 로컬 브랜치의 중간 실험이며 최종 구조의 결과와 같은 단계로 합산하지 않았습니다. 의미 검증은 오류를 차단할 뿐 선택기 자체를 대체하지 못한다는 점을 확인했습니다.'
+        }, {
+          title: '멀티턴 문맥 누락과 입력 비용 — 질문 관련 이력을 다시 선택',
+          observation: '긴 대화에서 이전 퀴즈의 두 번째 문항을 찾지 못하거나, 오래전에 정한 답변 형식 대신 무관한 최근 발화를 근거로 답하는 사례가 있었습니다.',
+          hypothesis: '최근 메시지를 고정 개수·글자 수로 잘라 전달하면 긴 메시지 끝의 최신 조건이 잘리고, quiz 결과처럼 result 필드에 저장된 정보와 오래된 관련 발화가 최종 답변 문맥에서 빠질 수 있다고 판단했습니다.',
+          decision: '메시지를 단순히 더 많이 붙이는 대신, 질문에 맞는 이력과 결과를 한 Context Manager에서 선택·압축하고 고정 token budget 안에서 답변 Tool에 전달하도록 했습니다.',
+          implementation: '현재 질문의 주제와 과거 발화 참조 여부를 분석하고 최신 발화를 우선합니다. 같은 세션의 최대 200개 후보에서 관련 발화를 선택하며 사용자 조건과 퀴즈 결과를 보존합니다. 검색 Tool 출력은 관련 출처와 사실 중심으로 압축하고 대화 문맥 2,000 token, Tool 문맥 1,600 token budget을 적용해 Planner와 답변 Tool이 같은 문맥을 사용하게 했습니다.',
+          verification: '고정된 멀티턴 사례 15건을 개선 전·후 각각 1회 실행했습니다. 같은 Agent 그래프에서 규칙 Planner·Critic·Executor와 실제 LLM 답변 Tool을 사용하고 모델은 gpt-4o-mini-2024-07-18, temperature 0으로 고정했습니다. 문맥 선택만 바꾼 결과 사례별 답변 기준 충족은 8/15(53.3%)에서 13/15(86.7%)로 증가했습니다. 입력 token은 17,577에서 9,551(45.7% 감소), 입력·출력 합계는 20,469에서 12,453(39.2% 감소), 답변 호출 추정 비용은 $0.003921에서 $0.002675(31.8% 감소)였습니다.',
+          limitation: '15건을 각 1회 실행한 결과로 유의성이나 재현성을 주장하지 않습니다. LLM Planner와 실제 DB 검색을 제외했으므로 운영 환경 전체 성공률·요청 비용이 아닙니다. P50은 1,596ms에서 1,225ms였지만 P95는 7,683ms에서 7,771ms로 소폭 증가했습니다. 영어 답변 지시를 무시하는 문제와 반복 문자 대화를 길게 출력하는 문제는 남았으며, 각각 chat Tool의 한국어 고정 지시와 저정보량 문맥 처리 문제로 분리했습니다.'
+        }, {
+          title: 'Planner 책임 분리 — Tool 선택 정확도 개선',
+          observation: '일정 요청을 퀴즈 생성으로, 메모리 저장 요청을 일반 대화로 처리하는 오선택이 재현됐습니다. 이번 표본에서는 Invalid Argument Rate가 0%였기 때문에 인자 형식보다 Tool 자체의 오선택이 핵심 문제였습니다.',
+          hypothesis: '하나의 Planner가 intent, 권한, Tool 선택, 실행 계획, 결과 판단을 모두 맡고 7개 Tool schema를 항상 받는 구조가 오선택과 context 비용 증가의 원인이라고 판단했습니다.',
+          decision: 'Planner를 더 복잡하게 만드는 대신 Route → Policy → Planner → Validator → Critic → Executor → Result Validator → Memory로 책임을 나눴습니다. Planner는 허용된 2~3개 후보 Tool만 받아 계획을 생성하게 했습니다.',
+          implementation: 'Route는 intent hint를 만들고, Policy는 인증·권한·prompt injection·미지원 쓰기 요청을 차단합니다. Validator는 schema와 단계 의존성을, Critic은 의도와 계획의 semantic 일치를 검사합니다. Registry description과 schema도 요청별로 전달 범위를 축소했습니다.',
+          verification: '동일 평가 기준에서 Tool 선택 정확도는 42.0%에서 79.0%, 평가 통과율은 42.0%에서 75.0%로 상승했습니다. 전체 추정 token은 80,581에서 15,945로 80.2% 줄었고, 추정 token P95는 2,524에서 904로 감소했습니다. 반면 P50 실행 지연시간은 1.07ms에서 1.90ms로 늘어났습니다.',
+          limitation: 'Tool 선택 정확도는 79.0%로, 모호하거나 복합적인 요청에 대한 개선 여지가 남아 있습니다. P50 실행 지연은 1.07ms에서 1.90ms로 늘었고, token 수치는 문자 수 ÷ 4 추정치라 실제 tokenizer·운영 환경에서 재검증해야 합니다.'
+        }, {
+          title: 'Registry 축소 — 정확도 유지와 입력량 감소를 분리 검증',
+          observation: '역할 기반 파이프라인 적용 뒤 Tool 선택 정확도와 Task 성공률은 개선됐지만, Planner에 전달되는 schema 설명의 길이는 여전히 줄일 여지가 있었습니다.',
+          hypothesis: '요청별 관련 Tool schema만 제공하면 Planner가 판단해야 할 선택지를 줄이지 않더라도 입력 크기를 더 낮출 수 있다고 가정했습니다.',
+          decision: 'Tool description을 간결하게 정리하고, 요청과 관련된 2~3개 Tool schema만 노출하도록 Registry 전달 범위를 축소했습니다.',
+          implementation: '초기 구조와 파이프라인 분리 후, Registry 축소 후를 같은 task 집합에서 비교했습니다. 입력 크기는 task와 전달 schema의 문자 수를 동일한 문자 수 ÷ 4 식으로 환산했습니다.',
+          verification: '파이프라인 분리 후 대비 전체 추정 token은 23,985에서 15,945로 33.5% 감소했고, Tool 선택 정확도 79%와 Task 성공률 88%는 유지됐습니다. 추정 token P95는 1,424에서 904로 감소했습니다.',
+          limitation: '문자 기반 환산은 모델 tokenizer의 실제 토큰 수나 API 비용과 다를 수 있습니다. 이번 단계에서 정확도 상승을 주장하지 않고 입력량 감소와 기존 성공률 유지로만 해석했습니다.'
+        }],
+        sections: {
+          Overview: '사용자는 자연어로 요청하고, API를 통해 Agent에 전달된 요청은 Route와 Policy를 거쳐 실행 계획으로 변환됩니다. Validator·Critic 검사 후 Tool을 호출하고, 결과 검증을 거쳐 응답합니다. 재사용 가치가 있는 성공 결과만 Memory에 저장합니다. 4인 팀에서 AI Engineer / AI Lead 역할을 맡았습니다. 확인 가능한 기록에 기간이 없어 날짜는 기재하지 않았습니다.',
+          Problem: '기존 Planner가 의도 분류, 권한 판단, Tool 선택, 실행 계획 생성, 결과 판단을 모두 맡으면서 643줄까지 커졌습니다. 모든 요청에 7개 Tool schema를 전달해 일정·퀴즈, 메모리·일반 대화처럼 경계가 겹치는 요청에서 오선택이 발생했습니다. 별도로 긴 멀티턴 대화에서는 서버가 최근 메시지 8개를 각 1,000자로 제한하고 chat Tool도 최근 6개만 사용해, 최신 조건·퀴즈 결과·오래된 관련 발화가 최종 답변 문맥에서 누락됐습니다.',
+          Decision: 'Planner를 단일 판단 주체로 두지 않고 Route → Policy → Planner → Validator → Critic → Executor → Result Validator → Memory 파이프라인으로 분리했습니다. Planner에는 요청과 관련된 2~3개 후보 Tool만 전달하고, 별도 Context Manager가 최신 발화와 질문 관련 과거 이력을 고정 token budget 안에서 조립해 Planner와 답변 Tool이 공유하도록 했습니다.',
+          Implementation: 'Route는 명확한 intent만 추출하고, Policy는 인증·권한·프롬프트 인젝션·미지원 쓰기 요청을 차단합니다. Validator는 Tool 존재·필수 인자·단계 의존성을 검사하고, Critic은 의도와 계획의 의미적 일치를 확인합니다. Result Validator는 빈 검색 결과·빈 퀴즈를 실패로 판정하며, Memory는 재사용 가치가 있는 성공 결과만 저장합니다. Context Manager는 최대 200개 세션 후보에서 관련 발화를 선택하고 사용자 조건·퀴즈 결과를 보존하며 Tool 출력을 압축합니다.',
+          Verification: 'Tool-routing 평가에서 통과율은 42.0%에서 75.0%, Tool 선택 정확도는 42.0%에서 79.0%로 상승했고, 잘못된 인자 비율은 0%였습니다. 별도의 멀티턴 15건 평가에서는 답변 기준 충족이 53.3%에서 86.7%, 입력 token이 17,577에서 9,551로 줄었습니다. 멀티턴 응답 P50은 1,596ms에서 1,225ms로 줄었지만 P95는 7,683ms에서 7,771ms로 증가했습니다. 두 평가는 데이터셋과 측정 범위가 달라 결과를 합산하지 않았습니다.',
+          'My Role': '4인 팀에서 AI Engineer / AI Lead로 Agent 파이프라인과 요청별 Tool 노출을 개선하고, Context Manager에서 질문 관련 멀티턴 이력 선택·token 예산·Tool 결과 압축을 적용했습니다. 두 평가 흐름의 사례와 성공 기준을 분리해 기록했습니다.',
+          Learning: 'Critic의 의미 검증은 잘못된 실행을 막지만 Planner 선택 품질 자체를 대신 개선하지 못했습니다. 멀티턴에서는 최근 메시지를 많이 전달하는 것보다 현재 질문에 맞는 이력·결과를 보존하는 것이 중요했습니다. 입력 token과 답변 기준 충족은 함께 개선됐지만 p95 latency는 개선되지 않아 정확도·비용·지연을 각각 검증해야 한다는 점을 확인했습니다.',
+          Limitation: 'Tool-routing 결과는 규칙 기반 task 평가이며 실제 사용자 트래픽의 품질을 보장하지 않습니다. 멀티턴 결과도 고정 사례 15건을 각 1회 실행한 단일 비교이며 LLM Planner와 실제 DB 검색을 제외했습니다. P95는 7,683ms에서 7,771ms로 개선되지 않았습니다. 남은 실패는 chat Tool의 한국어 고정 지시로 영어 답변 요청을 따르지 못한 사례와 반복 문자 문맥을 길게 출력해 2,048 token 제한에 도달한 사례입니다. Checkpointer 기반 session 복원과 Langfuse 운영 tracing은 별도 검증 자료가 없어 성과로 주장하지 않습니다. Tool schema token은 문자 수 ÷ 4 추정치인 반면 멀티턴 token은 모델 보고 사용량으로, 서로 다른 측정값입니다.'
+        }
+      },
+      {
+        id: 'skillup-rag-portfolio',
+        order: '04',
+        title: 'Portfolio RAG Chatbot',
+        label: 'RAG / Web App',
+        short: '하나의 프로젝트 데이터로 웹 포트폴리오와 근거 기반 챗봇을 연결',
+        icon: 'lucide:messages-square',
+        overview: '프로젝트 데이터를 단일 JSON 소스로 관리하고, 정적 포트폴리오와 RAG 챗봇이 같은 데이터를 사용하도록 구성한 웹 애플리케이션입니다.',
+        stack: ['HTML/CSS/JS', 'FastAPI', 'LangChain', 'ChromaDB', 'OpenAI Embeddings', 'LLM'],
+        metrics: ['data/projects.json을 웹 렌더링과 RAG 인덱싱의 Single Source of Truth로 사용', 'top_k, chunk_size, embedding, prompt를 조정할 수 있는 구조', 'health API, 검색 결과 확인, chat API, fallback 질문 흐름을 문서화', '챗봇 피드백에서 기술명 질문, 추천, 오타, 근거 부족 케이스를 분리'],
+        repoUrl: 'https://github.com/wkd09/skillup_rag_portfolio',
+        sections: {
+          Overview: '방문자가 프로젝트를 질문하면 검색된 프로젝트 문서와 출처를 바탕으로 답하는 포트폴리오 웹앱입니다.',
+          Problem: '웹사이트와 챗봇의 프로젝트 설명을 각각 관리하면 내용이 달라지고, 프로젝트명만 검색하는 챗봇은 기술명이나 추천 질문에 약해집니다.',
+          Decision: '프로젝트별 구조화 데이터를 하나의 JSON으로 관리하고 웹과 RAG가 같은 원본을 읽도록 했습니다. 질문 의도를 RAG, 일반 설명, 추천으로 나누고 피드백 로그를 프롬프트 컨텍스트에 반영했습니다.',
+          Implementation: '문서를 필드별 텍스트로 변환해 chunking과 embedding을 수행하고 ChromaDB에서 검색합니다. FastAPI가 검색 결과와 생성 답변을 연결하며, 검색 실패 시 fallback과 답변 구조를 분리했습니다.',
+          Verification: 'health endpoint, 검색 결과, chat endpoint를 단계별로 확인하도록 문서화했고, 기술명 단독 질문과 추천 질문을 테스트 케이스로 남겼습니다. 피드백에는 중복 답변, 근거 부족, 오타 보정 문제와 개선 방향이 기록되어 있습니다.',
+          Limitation: 'README는 Gemini를 설명하지만 현재 server 코드는 OpenAI embedding과 gpt-4o-mini를 사용합니다. 배포 전 실제 provider와 비용, 검색 품질을 하나의 기준으로 정리해야 합니다.'
+        }
+      },
+      {
+        id: 'practice-parallelism',
+        order: '05',
+        title: 'Practice Parallelism',
+        label: 'LLM Systems',
+        short: 'Qwen3-4B를 기준으로 학습 병렬화와 서빙 병목을 비교한 실험 모음',
+        icon: 'lucide:network',
+        overview: '단일 GPU LoRA부터 DDP, FSDP FULL_SHARD, Tensor Parallel, vLLM 서빙까지 같은 모델을 여러 실행 전략으로 비교하는 실험 저장소입니다.',
+        stack: ['PyTorch', 'Transformers', 'PEFT', 'DDP', 'FSDP', 'Tensor Parallel', 'vLLM'],
+        metrics: ['DDP 2 rank adapter checksum max diff 0.0으로 rank 동기화 확인', 'Qwen3-4B 전체 파인튜닝 DDP는 optimizer.step에서 OOM, FSDP FULL_SHARD는 peak memory 18.78 GiB 기록', 'Tensor Parallel 출력이 bf16 tolerance 0.01 안에 일치', 'vLLM benchmark JSON에 TTFT, p50 latency, throughput을 concurrency별 저장'],
+        repoUrl: 'https://github.com/wkd09/practice_parallelism',
+        sections: {
+          Overview: '모델 크기와 요청량이 커질 때 어떤 병렬화 전략을 선택해야 하는지 코드와 실행 기록으로 비교한 학습 프로젝트입니다.',
+          Problem: '단일 GPU 학습은 메모리 한계에 부딪히고, 분산 학습은 속도만 높이면 되는 것이 아니라 rank 간 파라미터 일치와 출력 정합성을 함께 확인해야 합니다. 서빙에서는 batch와 concurrency에 따라 latency와 throughput의 trade-off가 달라집니다.',
+          Decision: 'LoRA, DDP, FSDP, Tensor Parallel, vLLM을 단계별로 분리해 실패도 결과로 기록했습니다. 메모리 사용량, checksum, 출력 오차, TTFT, p50 latency를 각각 검증 지표로 선택했습니다.',
+          Implementation: 'Qwen3-4B 기준 단일 GPU LoRA, torchrun 기반 DDP/FSDP, MLP Tensor Parallel, OpenAI-compatible vLLM benchmark 스크립트를 단계별로 구성했습니다.',
+          Verification: 'outputs/metrics.json과 benchmark JSON을 커밋해 실험 조건과 결과를 재검토할 수 있게 했습니다. DDP full fine-tuning의 OOM, FSDP shard 메모리, TP 출력 tolerance, concurrency별 vLLM 지표를 비교합니다.',
+          Limitation: 'GPU 종류와 모델 cache, batch 구성에 따라 수치가 달라집니다. 절대적인 최고 성능보다 어떤 병목을 관찰하고 어떤 검증 기준을 추가했는지를 보여주는 실험 저장소입니다.'
+        }
+      },
+      {
+        id: 'paged-attention',
+        order: '06',
+        title: 'Paged Attention Implementation',
+        label: 'Serving Study',
+        short: 'KV cache 메모리 낭비와 prefix 복사를 검증한 PyTorch 구현',
+        icon: 'lucide:memory-stick',
+        overview: 'PagedAttention의 핵심인 block 기반 KV cache, logical-to-physical block table, copy-on-write를 교육용 PyTorch 코드로 구현하고 vanilla attention과 비교한 실험입니다.',
+        stack: ['Python', 'PyTorch', 'KV Cache', 'PagedAttention', 'Copy-on-Write', 'Pytest'],
+        metrics: ['회귀 테스트 28개와 출력 동일성 320개 조합 통과 기록', 'vanilla 대비 최대 절대 오차 1.19e-7 기록', '가변 길이 workload에서 reserved memory 약 80.36% 절약 예시', 'fork 후 COW parent 불변과 block refcount 복구를 검증'],
+        repoUrl: 'https://github.com/wkd09/paged_attention',
+        sections: {
+          Overview: 'sequence마다 최대 길이 KV cache를 미리 잡는 방식의 낭비를 줄이기 위해, 고정 크기 physical block과 logical block table을 사용하는 구조를 직접 구현했습니다.',
+          Problem: 'sequence 길이가 다르거나 같은 prompt에서 여러 decode path가 갈라지면 contiguous KV cache의 reserved memory와 prompt 복사 비용이 커집니다.',
+          Decision: 'BlockAllocator, PagedKVCache, blockwise attention, decoding fork, copy-on-write, swap/recompute simulation을 분리했습니다. 메모리 절약만 주장하지 않고 dense attention과의 출력 정합성을 먼저 확인했습니다.',
+          Implementation: 'allocator가 free list와 refcount를 관리하고 cache가 logical-to-physical mapping을 유지합니다. parallel sampling에서는 prefix block을 공유하고 마지막 partial block만 COW로 복사합니다.',
+          Verification: 'pytest 회귀 테스트, block size와 KV length 조합별 출력 비교, mask와 dtype 케이스, COW refcount 검증을 수행했습니다. CPU Python loop는 dense matmul보다 느릴 수 있다는 한계도 README에 명시했습니다.',
+          Limitation: 'CUDA/Triton kernel과 실제 model serving loop는 구현하지 않았습니다. memory behavior와 correctness를 검증한 educational implementation이지 kernel-level serving benchmark는 아닙니다.'
+        }
+      },
+      {
+        id: 'speculative-decoding',
+        order: '07',
+        title: 'Speculative Decoding with MLX',
+        label: 'Inference Study',
+        short: 'Apple Silicon에서 draft model 기반 생성의 latency와 수용률을 비교',
+        icon: 'lucide:zap',
+        overview: '작은 draft model이 제안한 토큰을 큰 target model이 검증하는 speculative decoding을 MLX-LM으로 실행하고 일반 생성과 latency, tokens/sec, acceptance 정보를 비교한 실험입니다.',
+        stack: ['Python', 'MLX-LM', 'Qwen3', 'Speculative Decoding', 'Apple Silicon'],
+        metrics: ['5개 프롬프트를 같은 max_new_tokens 조건으로 반복 측정', '기록된 평균 latency: normal 7.9586초, speculative 1.0048초', '기록된 평균 throughput: 25.34 -> 199.25 tokens/sec', 'accepted/rejected token과 평균 log-likelihood를 함께 출력하도록 구현'],
+        repoUrl: 'https://github.com/wkd09/Speculative_Decoding',
+        sections: {
+          Overview: '큰 모델의 생성 품질을 유지하면서 작은 모델의 초안 생성을 이용해 추론 시간을 줄일 수 있는지 확인한 Apple Silicon 실험입니다.',
+          Problem: 'target model만 순차적으로 실행하면 토큰 생성마다 큰 모델을 호출해야 해 latency가 커집니다. 반대로 draft model을 무조건 신뢰하면 품질이 달라질 수 있어 수용과 거절을 관찰해야 합니다.',
+          Decision: 'MLX-LM의 stream_generate에 draft_model을 연결하고 normal generation을 baseline으로 두었습니다. 응답별 from_draft, selected token log-likelihood, accepted/rejected count를 수집했습니다.',
+          Implementation: 'draft Qwen3-0.6B와 target Qwen3.5-4B 모델을 로드하고 동일 프롬프트를 normal/speculative 경로에 통과시켜 latency와 tokens/sec를 계산합니다.',
+          Verification: '5개 프롬프트를 반복해 평균 latency와 throughput을 비교하고 token acceptance와 평균 log-likelihood를 별도 신호로 출력합니다. README 예시에서는 verification score가 0.0000으로 기록되어 있어 품질 동등성은 추가 검증이 필요합니다.',
+          Limitation: '현재 기록은 짧은 프롬프트의 단일 로컬 실행 결과이며, 텍스트 품질의 동일성이나 acceptance rate 분포를 통계적으로 검증한 자료는 부족합니다.'
+        }
+      },
+      {
+        id: 'brain-mri-cnn',
+        order: '08',
+        title: 'Brain MRI Tumor CNN',
+        label: 'Vision / Kaggle',
+        short: '작은 MRI 데이터셋에서 split, threshold, TTA를 분리해 검증한 이진 분류',
+        icon: 'lucide:scan-face',
+        overview: 'Kaggle Brain MRI 데이터셋에서 종양 여부를 분류하는 Custom CNN을 구현하고, validation F1 기반 checkpoint와 decision threshold, test-time augmentation을 비교한 실습 프로젝트입니다.',
+        stack: ['Python', 'PyTorch', 'CNN', 'GroupNorm', 'AdamW', 'Scikit-learn', 'Kaggle'],
+        metrics: ['stratified train/valid/test 8:1:1 split과 seed 기반 재현 흐름 구성', 'baseline test F1 0.8855, TTA 적용 test F1 0.9231 기록', 'TTA 적용 ROC-AUC 0.9813 기록', 'best checkpoint, confusion matrix, ROC curve, prediction CSV 저장'],
+        repoUrl: 'https://github.com/wkd09/skillup_brain_mri_kaggle',
+        sections: {
+          Overview: '작은 이미지 데이터셋에서 단순 accuracy만 보지 않고 split, class weight, threshold, evaluation artifact를 남기는 것을 목표로 한 분류 실험입니다.',
+          Problem: 'MRI 데이터는 클래스 불균형과 작은 표본 때문에 한 번의 accuracy가 일반화 성능을 보장하지 않습니다. 입력 채널과 batch 크기에 맞는 모델 안정성도 고려해야 합니다.',
+          Decision: '전이학습 대신 1채널 입력 Custom CNN을 정의하고 GroupNorm, class-weighted CrossEntropy, AdamW, ReduceLROnPlateau, early stopping을 조합했습니다. validation F1로 checkpoint와 decision threshold를 선택했습니다.',
+          Implementation: '데이터 split, augmentation, 학습, checkpoint 저장, test prediction CSV, confusion matrix와 ROC curve 생성을 각각 코드로 분리했습니다. flip TTA는 원본과 좌우 반전 확률을 평균냅니다.',
+          Verification: 'baseline과 TTA를 같은 evaluation script에서 비교하고 accuracy, precision, recall, F1, ROC-AUC를 함께 저장합니다. 결과 파일을 남겨 이미지별 예측을 다시 확인할 수 있습니다.',
+          Limitation: '의료 진단용이 아닌 학습용 프로젝트이며 데이터셋이 작아 seed와 split에 따라 수치가 변합니다. 외부 데이터셋, k-fold, Grad-CAM 검증이 추가로 필요합니다.'
+        }
+      },
+      {
+        id: 'portfolio-site',
+        order: '11',
+        title: 'Portfolio Site',
+        label: 'Meta / Portfolio',
+        short: '노션 export와 GitHub 프로젝트를 case study UI로 재구성한 정적 사이트',
+        icon: 'lucide:layout-template',
+        overview: '노션에서 export한 포트폴리오 자료와 GitHub 저장소를 바탕으로 프로젝트 카드와 문제 해결 중심의 상세 case study를 보여주는 정적 포트폴리오 사이트입니다.',
+        stack: ['HTML', 'Tailwind CDN', 'Vanilla JavaScript', 'Iconify', 'GitHub Pages'],
+        metrics: ['generated-page.html 단일 페이지에서 프로젝트 목록과 상세 case study 렌더링', '프로젝트별 Tech Stack, Evidence / Verification, Links 분리', '공개 저장소와 문서 기반 초안을 sourceNote로 구분', 'dark mode, responsive grid, project detail navigation 구현'],
+        repoUrl: 'https://github.com/wkd09/portfolio',
+        sections: {
+          Overview: '프로젝트 결과를 한 줄 요약하는 데서 멈추지 않고, 어떤 문제를 발견했고 어떤 기준으로 해결을 선택했는지 읽히게 만드는 포트폴리오 자체가 하나의 프로젝트입니다.',
+          Problem: '기존 초안은 프로젝트의 기능과 결과가 앞에 보였지만, 실제 역량을 보여주는 고민과 검증 근거, 아직 검증하지 못한 범위가 분리되어 있지 않았습니다.',
+          Decision: '각 프로젝트에 Overview, Problem, Decision, Implementation, Verification, Limitation 구조를 적용하고 Evidence / Verification을 별도 영역으로 분리했습니다.',
+          Implementation: '프로젝트 데이터를 JavaScript 객체로 관리하고 카드와 상세 화면을 같은 데이터에서 렌더링합니다. 공개 GitHub 근거, 첨부 PDF 기록, 문서 기반 초안을 sourceNote로 구분했습니다.',
+          Verification: '현재 페이지는 정적 HTML 구조와 데이터 렌더링 기준으로 검토했습니다. 각 프로젝트의 검증 근거가 없는 곳에는 수치를 만들지 않고 추가 검증 필요성을 명시했습니다.',
+          Limitation: 'Organization의 비공개 저장소와 GitHub 계정 인증이 필요한 자료는 코드 수준으로 확인하지 못했습니다. 인증 후 Organization 프로젝트의 역할과 테스트 근거를 추가해야 합니다.'
+        }
+      },
+      {
+        id: 'autogen-study',
+        order: '13',
+        title: 'AutoGen Study',
+        label: 'Study / Agents',
+        short: 'tool use, structured response, group chat, termination을 실험한 코드 모음',
+        icon: 'lucide:bot',
+        overview: 'AutoGen AgentChat의 tool 호출, web search 도구, critic loop, group termination을 네 개의 작은 Python 예제로 분해해 확인한 학습 저장소입니다.',
+        stack: ['Python', 'AutoGen AgentChat', 'OpenAI API', 'Tool Use', 'Group Chat'],
+        metrics: ['01.py tool을 가진 WeatherAgent와 streaming 실행', '02.py tool 호출 기반 검색 예제', '03.py primary/critic round robin과 APPROVE termination', '04.py MaxMessageTermination과 환경 변수 검증'],
+        repoUrl: 'https://github.com/wkd09/autogen-study',
+        sections: {
+          Overview: 'Agent framework를 큰 애플리케이션에 넣기 전에 tool, termination, critic 협업 같은 최소 동작을 각각 확인한 study project입니다.',
+          Problem: 'Agent 시스템은 모델 호출보다 tool 결과를 언제 신뢰하고 어떤 조건에서 대화를 종료하며, 실패한 환경 설정을 어떻게 빠르게 알릴지가 중요합니다.',
+          Decision: '기능을 네 개의 독립 예제로 나누고 tool 실행, streaming, critic 승인 문구, message count 종료 조건을 각각 작게 검증했습니다.',
+          Verification: '각 예제는 OPENAI_MODEL과 OPENAI_API_KEY를 환경 변수로 읽으며 04.py는 값이 없으면 명시적으로 실패합니다. 저장소에 실행 로그나 자동화 테스트는 없습니다.',
+          Limitation: '실서비스 agent가 아니라 framework API를 이해하기 위한 예제 모음입니다. 다음 단계에서 tool failure, retry, state persistence, 비용 측정을 추가해야 합니다.'
+        }
+      },
+      {
+        id: 'java-oop',
+        order: '14',
+        title: 'Java OOP Practice',
+        label: 'Archive / Study',
+        short: '객체 지향 프로그래밍과 코딩 테스트 연습 저장소',
+        icon: 'lucide:coffee',
+        comingSoon: true,
+        overview: 'Java 객체 지향 프로그래밍 연습과 코딩 테스트 풀이를 챕터별로 정리한 학습 저장소입니다.',
+        stack: ['Java', 'OOP', 'Eclipse', 'Coding Test'],
+        metrics: ['chap01부터 chap06까지 챕터별 연습 구조 확인', 'cote와 sec02.exam03 학습 폴더 확인', '포트폴리오용 문제 해결 및 검증 기록은 아직 정리하지 않음'],
+        repoUrl: 'https://github.com/wkd09/java',
+        sourceNote: 'GitHub 저장소는 확인했지만 현재는 학습 아카이브로 분류했습니다. 대표 문제와 테스트 근거를 정리한 뒤 Case Study로 승격합니다.',
+        sections: {
+          Overview: 'Java 문법과 객체 지향 개념을 연습하기 위한 저장소입니다.',
+          Problem: '현재 저장소만으로는 어떤 문제를 해결했고 어떤 설계 선택을 했는지 확인할 수 있는 설명이 부족합니다.',
+          Verification: '챕터와 학습 폴더의 존재는 확인했지만 실행 결과와 테스트 근거는 아직 포트폴리오용으로 추출하지 않았습니다.'
+        }
+      },
+      {
+        id: 'llm-research',
+        order: '15',
+        title: 'LLM Research Workspace',
+        label: 'Draft / Empty Repository',
+        short: 'LLM 연구 기록을 위한 빈 공개 저장소',
+        icon: 'lucide:flask-conical',
+        comingSoon: true,
+        overview: 'GitHub 공개 저장소 목록에는 존재하지만 현재 clone 결과가 비어 있는 연구 작업 공간입니다.',
+        stack: ['LLM Research'],
+        metrics: ['공개 저장소 메타데이터 확인', '현재 커밋과 코드가 없어 문제, 해결, 검증을 판단할 근거 없음'],
+        repoUrl: 'https://github.com/wkd09/llm_research',
+        sourceNote: '내용을 만들지 않고 저장소 상태만 표시했습니다. 연구 기록이 추가되면 실험 질문, baseline, 평가 기준부터 정리합니다.',
+        sections: {
+          Overview: '연구 기록을 담기 위한 저장소로 보이지만 현재 공개된 내용은 없습니다.',
+          Verification: '코드와 README가 없어 검증 가능한 주장으로 작성하지 않았습니다.'
+        }
+      },
+      {
+        id: 'sglang-fork',
+        order: '16',
+        title: 'SGLang Fork',
+        label: 'Fork / Reference',
+        short: 'LLM serving framework를 추적하기 위한 fork 저장소',
+        icon: 'lucide:git-branch',
+        comingSoon: true,
+        overview: 'SGLang 원본 저장소를 fork한 공개 저장소입니다. 원본 프로젝트의 기능을 본인 프로젝트 성과처럼 표시하지 않습니다.',
+        stack: ['SGLang', 'LLM Serving'],
+        metrics: ['GitHub metadata에서 fork=true 확인', '본인 구현 범위와 검증 근거는 현재 페이지에서 주장하지 않음'],
+        repoUrl: 'https://github.com/wkd09/sglang',
+        sourceNote: 'Fork 저장소는 학습 및 참고 목록으로만 분류했습니다. 직접 작성한 commit이나 upstream 기여가 확인되면 별도 기록합니다.',
+        sections: {
+          Overview: 'SGLang 원본을 참고하기 위한 fork입니다.',
+          Verification: '이 저장소의 원본 기능을 개인 프로젝트 결과로 인용하지 않습니다.'
+        }
+      },
+      {
+        id: 'autogen-fork',
+        order: '17',
+        title: 'AutoGen Fork',
+        label: 'Fork / Reference',
+        short: 'AutoGen 원본 프레임워크를 추적하기 위한 fork 저장소',
+        icon: 'lucide:git-branch',
+        comingSoon: true,
+        overview: 'Microsoft AutoGen 원본 저장소를 fork한 공개 저장소입니다. 개인 구현 프로젝트와 구분해 표시합니다.',
+        stack: ['AutoGen', 'Multi-agent'],
+        metrics: ['GitHub metadata에서 fork=true 확인', '직접 구현 및 검증 기록은 autogen-study 저장소와 분리'],
+        repoUrl: 'https://github.com/wkd09/autogen',
+        sourceNote: 'Fork 저장소는 참고용입니다. 본인이 작성한 변경점이 확인되기 전까지 포트폴리오 성과로 사용하지 않습니다.',
+        sections: {
+          Overview: 'AutoGen 원본 코드를 참고하기 위한 fork입니다.',
+          Verification: '직접 작성한 학습 기록은 별도의 AutoGen Study 프로젝트에서 확인합니다.'
+        }
+      },
+      {
+        id: 'skill-up-fork',
+        order: '18',
+        title: 'Skill-up Fork',
+        label: 'Fork / Reference',
+        short: '수업 또는 실습 원본을 추적하기 위한 fork 저장소',
+        icon: 'lucide:git-branch',
+        comingSoon: true,
+        overview: 'GitHub 공개 저장소 목록에서 fork로 확인된 Skill-up 저장소입니다.',
+        stack: ['TypeScript', 'Course Material'],
+        metrics: ['GitHub metadata에서 fork=true 확인', '현재 포트폴리오에 주장할 개인 문제 해결 및 검증 근거 없음'],
+        repoUrl: 'https://github.com/wkd09/skill-up',
+        sourceNote: '원본과 개인 작업을 혼동하지 않도록 참고용으로만 표시했습니다.',
+        sections: {
+          Overview: '수업 또는 실습 원본을 추적하는 fork 저장소입니다.',
+          Verification: '개인 기여 범위가 확인되기 전까지 프로젝트 성과로 서술하지 않습니다.'
+        }
+      }
+    ];
+
+    const featuredProjectIds = new Set(['folio', 'gotion-agent', 'defapi']);
+    const projects = [...legacyProjects, ...projectAdditions]
+      .map(project => ({ ...project, ...(projectOverrides[project.id] || {}) }))
+      .filter(project => featuredProjectIds.has(project.id))
+      .sort((a, b) => a.order.localeCompare(b.order));
+
     const skills = [
       {
-        title: 'CORE INTELLIGENCE',
+        title: 'Languages',
         items: [
-          { name: 'Python', icon: 'logos:python', level: 88 },
-          { name: 'PyTorch', icon: 'devicon:pytorch', level: 72 },
-          { name: 'Transformers', icon: 'simple-icons:huggingface', level: 68 },
-          { name: 'OpenAI API', icon: 'simple-icons:openai', level: 70 }
+          { name: 'Python', icon: 'logos:python' }
         ]
       },
       {
-        title: 'BACKEND & API',
+        title: 'Backend',
         items: [
-          { name: 'FastAPI', icon: 'simple-icons:fastapi', level: 82 },
-          { name: 'Pydantic', icon: 'lucide:braces', level: 78 },
-          { name: 'REST API', icon: 'lucide:route', level: 76 },
-          { name: 'LangGraph', icon: 'lucide:workflow', level: 72 }
+          { name: 'FastAPI', icon: 'simple-icons:fastapi' },
+          { name: 'Pydantic', icon: 'simple-icons:pydantic' }
         ]
       },
       {
-        title: 'DATA & VISION',
+        title: 'LLM / Agent',
         items: [
-          { name: 'Jupyter', icon: 'devicon:jupyter', level: 80 },
-          { name: 'Pandas', icon: 'devicon:pandas', level: 72 },
-          { name: 'OpenCV', icon: 'simple-icons:opencv', level: 66 },
-          { name: 'YOLO / Ultralytics', icon: 'lucide:scan-line', level: 62 }
+          { name: 'LangGraph', icon: 'lucide:workflow' },
+          { name: 'Hugging Face Transformers', icon: 'simple-icons:huggingface' },
+          { name: 'PEFT', icon: 'lucide:sliders-horizontal' },
+          { name: 'TRL', icon: 'lucide:graduation-cap' }
         ]
       },
       {
-        title: 'INFRASTRUCTURE',
+        title: 'Serving',
         items: [
-          { name: 'Docker', icon: 'devicon:docker', level: 70 },
-          { name: 'Git / GitHub', icon: 'devicon:github', level: 82 },
-          { name: 'GitHub Pages', icon: 'lucide:globe', level: 72 },
-          { name: 'Linux CLI', icon: 'devicon:linux', level: 68 }
+          { name: 'vLLM', icon: 'lucide:server' },
+          { name: 'SGLang', icon: 'lucide:server-cog' },
+          { name: 'TensorRT-LLM', icon: 'simple-icons:nvidia' }
+        ]
+      },
+      {
+        title: 'Database',
+        items: [
+          { name: 'PostgreSQL', icon: 'simple-icons:postgresql' },
+          { name: 'pgvector', icon: 'simple-icons:postgresql' },
+          { name: 'Neo4j', icon: 'simple-icons:neo4j' }
+        ]
+      },
+      {
+        title: 'Infra / Tools',
+        items: [
+          { name: 'Docker', icon: 'simple-icons:docker' },
+          { name: 'GitHub', icon: 'simple-icons:github' },
+          { name: 'Weights & Biases', icon: 'simple-icons:weightsandbiases' }
         ]
       }
     ];
 
     const researchTopics = [
-      ['vLLM PagedAttention 논문 리뷰', 'Draft / KV cache와 serving 구조 정리 예정'],
-      ['SGLang 논문 리뷰', 'Draft / LLM application runtime 관점 정리 예정'],
-      ['LLM Inference Bottleneck 정리', 'Draft / prefill, decode, batch, streaming 지연 정리 예정'],
-      ['RAG 시스템 평가 방법', 'Draft / 검색 품질과 답변 근거성 평가 정리 예정'],
-      ['Agent Evaluation 자동화 고민', 'Draft / tool call과 task success 평가 방식 정리 예정'],
-      ['LLM Serving Benchmark 구축기', 'Draft / serving benchmark 구현 과정 정리 예정'],
-      ['모델 성능보다 운영 안정성이 중요한 이유', 'Draft / latency, cost, monitoring 관점 정리 예정']
+      {
+        category: 'INFERENCE', date: '2026.09.09', readTime: '10 MIN READ',
+        title: 'Disaggregated Serving — Prefill과 Decode를 분리하는 추론 구조',
+        desc: 'Prefill과 Decode의 계산 특성 차이를 기준으로 추론 서버 분리 구조를 정리했습니다.',
+        url: 'https://wkd09.github.io/engineering/2026/09/09/disaggregated-serving.html'
+      },
+      {
+        category: 'CACHING', date: '2026.08.21', readTime: '11 MIN READ',
+        title: 'LLM Caching — Prompt Cache와 Semantic Cache',
+        desc: 'Prompt Cache와 Semantic Cache의 동작 방식 및 비용 절감 관점을 비교합니다.',
+        url: 'https://wkd09.github.io/engineering/2026/08/21/llm-caching-cost-optimization.html'
+      },
+      {
+        category: 'KV CACHE', date: '2026.08.11', readTime: '21 MIN READ',
+        title: 'RadixAttention — Prefix KV Cache 재사용',
+        desc: 'System prompt·Tool 정의처럼 공유되는 prefix의 KV Cache를 Radix Tree로 재사용합니다.',
+        url: 'https://wkd09.github.io/engineering/2026/08/11/radix-attention.html'
+      },
+      {
+        category: 'EXPERIMENT', date: '2026.07.19', readTime: '7 MIN READ',
+        title: 'Qwen3-4B 병렬화 실습 — LoRA, DDP, FSDP, TP, vLLM',
+        desc: 'LoRA·DDP·FSDP·TP·vLLM 실습으로 각 방식의 역할과 해결하는 문제를 구분했습니다.',
+        url: 'https://wkd09.github.io/engineering/2026/07/19/qwen3-parallelism-lab.html'
+      }
     ];
 
     function renderProjects() {
@@ -848,30 +2399,10 @@
         const tag = project.comingSoon ? 'article' : 'button';
         const action = project.comingSoon ? '' : `onclick="openProject('${project.id}')"`;
         return `
-        <${tag} ${action} class="glass-card group relative overflow-hidden rounded-2xl p-6 text-left animate-slide-up ${project.large ? 'md:col-span-2 md:row-span-2' : ''} ${project.comingSoon ? 'opacity-75' : 'cursor-pointer'}" style="animation-delay:${index * 80}ms">
-          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.10),transparent_34%),linear-gradient(135deg,rgba(255,255,255,.04),transparent_42%)] opacity-0 transition group-hover:opacity-100"></div>
-          <div class="relative z-10 flex h-full flex-col">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <span class="font-mono text-xs text-neutral-400">${project.order}</span>
-                <span class="ml-2 rounded-full border border-black/5 px-2 py-1 text-[10px] uppercase tracking-wider text-neutral-400 dark:border-white/10">${project.label}</span>
-              </div>
-              <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-black/5 text-neutral-700 transition ${project.comingSoon ? '' : 'group-hover:bg-neutral-900 group-hover:text-white'} dark:bg-white/5 dark:text-neutral-200 dark:group-hover:bg-white dark:group-hover:text-black">
-              <iconify-icon icon="${project.icon}" width="23"></iconify-icon>
-              </span>
-            </div>
-            <div class="mt-auto pt-8">
-              <h3 class="${project.large ? 'text-3xl md:text-4xl' : 'text-lg'} font-semibold leading-tight text-neutral-950 dark:text-white">${project.title}</h3>
-              <p class="mt-3 text-sm leading-7 text-neutral-500 dark:text-neutral-400">${project.short}</p>
-              <div class="mt-5 flex flex-wrap gap-2">
-                ${project.stack.slice(0, project.large ? 6 : 4).map(item => `<span class="badge">${item}</span>`).join('')}
-              </div>
-              <div class="mt-5 flex items-center gap-2 text-xs font-medium ${project.comingSoon ? 'text-neutral-400' : 'text-neutral-700 dark:text-neutral-300'}">
-                ${project.comingSoon ? '상세 작성 예정' : 'Case Study 보기'}
-                ${project.comingSoon ? '' : '<iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon>'}
-              </div>
-            </div>
-          </div>
+        <${tag} ${action} class="project-row animate-slide-up" style="animation-delay:${index * 80}ms" ${project.comingSoon ? '' : `aria-label="${project.title} 상세 보기"`}>
+          <div class="project-row__index"><span>${project.order} / ${project.label}</span><span class="project-row__icon"><iconify-icon icon="${project.icon}" width="19" aria-hidden="true"></iconify-icon></span></div>
+          <div class="project-row__main"><h3>${project.title}</h3><p>${project.overview || project.short}</p></div>
+          <div class="project-row__meta"><div class="project-row__stack">${project.stack.slice(0, 5).map(item => `<span class="badge">${item}</span>`).join('')}</div><span class="project-row__action">${project.comingSoon ? '상세 작성 예정' : 'Case Study 보기'}${project.comingSoon ? '' : '<iconify-icon icon="lucide:arrow-up-right" width="13" aria-hidden="true"></iconify-icon>'}</span></div>
         </${tag}>
       `;
       }).join('');
@@ -884,42 +2415,84 @@
           <h3 class="border-b border-black/10 pb-4 font-mono text-sm uppercase tracking-[0.18em] text-neutral-500 dark:border-white/15 dark:text-neutral-500">${group.title}</h3>
           <div class="mt-7 space-y-7">
             ${group.items.map(item => `
-              <div class="grid grid-cols-[minmax(0,1fr)_112px] items-center gap-5 sm:grid-cols-[minmax(0,1fr)_180px]">
+              <div class="flex items-center">
                 <div class="flex min-w-0 items-center gap-4">
                   <span class="flex h-9 w-9 shrink-0 items-center justify-center text-neutral-700 dark:text-neutral-200">
-                    <iconify-icon icon="${item.icon}" width="32"></iconify-icon>
+                    <iconify-icon class="brightness-0 dark:invert" icon="${item.icon}" width="32"></iconify-icon>
                   </span>
                   <span class="truncate text-xl font-semibold text-neutral-800 dark:text-neutral-200 md:text-2xl">${item.name}</span>
-                </div>
-                <div class="h-2 overflow-hidden rounded-full bg-neutral-900/10 dark:bg-white/10" aria-label="${item.name} 숙련도 ${item.level}%">
-                  <div class="h-full rounded-full bg-neutral-900 dark:bg-white" style="width:${item.level}%"></div>
                 </div>
               </div>
             `).join('')}
           </div>
         </section>
       `).join('');
+      const homeStack = document.getElementById('home-stack-list');
+      if (homeStack) homeStack.innerHTML = skills.map(group => `
+        <section class="home-stack-group"><h3 class="home-stack-group__title">${group.title}</h3><div class="home-stack-items">${group.items.map(item => `<div class="home-stack-item"><iconify-icon icon="${item.icon}" width="16" aria-hidden="true"></iconify-icon><span>${item.name}</span></div>`).join('')}</div></section>
+      `).join('');
     }
 
     function renderResearch() {
       const list = document.getElementById('research-list');
-      list.innerHTML = researchTopics.map(([title, desc], index) => `
-        <article class="glass-card rounded-2xl p-6 animate-slide-up" style="animation-delay:${index * 60}ms">
-          <p class="font-mono text-xs text-neutral-400">Draft ${String(index + 1).padStart(2, '0')}</p>
-          <h3 class="mt-4 text-base font-semibold text-neutral-950 dark:text-white">${title}</h3>
-          <p class="mt-3 text-sm leading-7 text-neutral-500 dark:text-neutral-400">${desc}</p>
-        </article>
+      list.innerHTML = researchTopics.map((note, index) => `
+        <a href="${note.url}" target="_blank" rel="noopener noreferrer" class="glass-card group block rounded-2xl p-6 animate-slide-up transition-transform hover:-translate-y-1" style="animation-delay:${index * 60}ms">
+          <div class="flex items-center justify-between gap-4 font-mono text-xs text-neutral-400"><span>${note.category} · ${note.date}</span><span>${note.readTime}</span></div>
+          <h3 class="mt-5 text-base font-semibold text-neutral-950 dark:text-white">${note.title}</h3>
+          <p class="mt-3 text-sm leading-7 text-neutral-500 dark:text-neutral-400">${note.desc}</p>
+          <span class="mt-6 inline-flex items-center gap-2 text-xs text-neutral-500 transition-colors group-hover:text-neutral-950 dark:group-hover:text-white">블로그 글 읽기 ↗</span>
+        </a>
       `).join('');
     }
 
     function toggleTheme() {
       const html = document.documentElement;
       const icon = document.getElementById('theme-icon');
-      html.classList.toggle('dark');
-      icon.setAttribute('icon', html.classList.contains('dark') ? 'lucide:moon' : 'lucide:sun');
+      const isDark = html.classList.toggle('dark');
+      const button = document.getElementById('theme-toggle');
+      icon.setAttribute('icon', isDark ? 'lucide:sun' : 'lucide:moon');
+      button.setAttribute('aria-pressed', String(!isDark));
+      button.setAttribute('aria-label', isDark ? '화이트 모드 켜기' : '다크 모드 켜기');
+      try { localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light'); } catch {}
+    }
+
+    try {
+      if (localStorage.getItem('portfolio-theme') === 'light') document.documentElement.classList.remove('dark');
+    } catch {}
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    if (themeToggle && themeIcon) {
+      const isDark = document.documentElement.classList.contains('dark');
+      themeIcon.setAttribute('icon', isDark ? 'lucide:sun' : 'lucide:moon');
+      themeToggle.setAttribute('aria-pressed', String(!isDark));
+      themeToggle.setAttribute('aria-label', isDark ? '화이트 모드 켜기' : '다크 모드 켜기');
     }
 
     function navigateTo(sectionId) {
+      const homeAnchors = {
+        home: 'home',
+        projects: 'home-projects',
+        research: 'home-notes',
+        skills: 'home-stack',
+        contact: 'home-contact'
+      };
+      const homeAnchor = homeAnchors[sectionId];
+      if (homeAnchor) {
+        document.querySelectorAll('.page-section').forEach(section => {
+          section.classList.toggle('hidden', section.id !== 'home');
+          section.classList.remove('animate-slide-up');
+        });
+        setMicroSlatsActive(true);
+        setHeroMotionActive(true);
+        setContactSceneActive(false);
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.classList.toggle('active', link.getAttribute('data-target') === sectionId);
+        });
+        if (sectionId === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
+        else document.getElementById(homeAnchor)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
       const isContact = sectionId === 'contact';
 
       document.querySelectorAll('.page-section').forEach(section => {
@@ -934,6 +2507,9 @@
         target.classList.add('animate-slide-up');
       }
 
+      setMicroSlatsActive(sectionId === 'home');
+      setHeroMotionActive(sectionId === 'home');
+
       document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.toggle('active', link.getAttribute('data-target') === sectionId);
       });
@@ -941,6 +2517,59 @@
       setContactSceneActive(isContact);
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollProjectDetail(sectionId) {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderProjectMetrics(project) {
+      const container = document.getElementById('detail-metrics');
+      if (!project.chartGroups?.length) {
+        container.innerHTML = project.metrics.map(item => `
+          <div class="border-b border-black/5 pb-3 text-sm leading-6 text-neutral-600 dark:border-white/10 dark:text-neutral-300">${item}</div>
+        `).join('');
+        return;
+      }
+
+      container.innerHTML = project.chartGroups.map((group, groupIndex) => {
+        const stages = group.stages || [];
+        const legend = stages.map((stage, index) => {
+          const color = index === stages.length - 1 ? 'is-current' : index > 0 ? 'is-intermediate' : 'is-baseline';
+          return `<span class="metric-chart__legend-item"><i class="metric-chart__swatch ${color}" aria-hidden="true"></i>${stage}</span>`;
+        }).join('');
+        const rows = group.metrics.map(metric => {
+          const maxValue = metric.scale || Math.max(...metric.values.map(value => Math.abs(value)), 1);
+          const cells = stages.map((stage, index) => {
+            const value = metric.values[index] ?? 0;
+            const width = Math.max(0, Math.min(100, (Math.abs(value) / maxValue) * 100));
+            const color = index === stages.length - 1 ? 'is-current' : index > 0 ? 'is-intermediate' : 'is-baseline';
+            const displayValue = metric.displayValues?.[index] ?? `${value}${metric.unit ? ` ${metric.unit}` : ''}`;
+            return `<td><span class="metric-chart__value">${displayValue}</span><span class="metric-chart__track" aria-hidden="true"><i class="metric-chart__bar ${color}" style="width:${width.toFixed(2)}%"></i></span></td>`;
+          }).join('');
+          return `<tr><th scope="row">${metric.label}</th>${cells}</tr>`;
+        }).join('');
+        return `
+          <figure class="metric-chart" aria-labelledby="metric-chart-title-${groupIndex}">
+            <figcaption class="metric-chart__head">
+              <h3 class="metric-chart__title" id="metric-chart-title-${groupIndex}">${group.title}</h3>
+              <p class="metric-chart__note">${group.note || ''}</p>
+            </figcaption>
+            <div class="metric-chart__legend">${legend}</div>
+            <div class="metric-chart__table-wrap">
+              <table class="metric-chart__table">
+                <thead><tr><th scope="col">지표</th>${stages.map(stage => `<th scope="col">${stage}</th>`).join('')}</tr></thead>
+                <tbody>${rows}</tbody>
+              </table>
+            </div>
+            ${group.footnote ? `<p class="metric-chart__footnote">${group.footnote}</p>` : ''}
+          </figure>
+        `;
+      }).join('') + (project.metricStats?.length ? `
+        <div class="metric-chart__status" aria-label="추가 측정값">
+          ${project.metricStats.map(stat => `<div class="metric-chart__stat"><span class="metric-chart__stat-label">${stat.label}</span><strong class="metric-chart__stat-value">${stat.value}</strong></div>`).join('')}
+        </div>
+      ` : '');
     }
 
     function openProject(projectId) {
@@ -951,93 +2580,446 @@
       document.getElementById('detail-kicker').textContent = `${project.order} / Case Study`;
       document.getElementById('detail-title').textContent = project.title;
       document.getElementById('detail-overview').textContent = project.overview;
+      document.getElementById('detail-case-study-title').textContent = project.projectProfile ? '프로젝트 소개' : '문제 해결 사례';
 
-      document.getElementById('detail-stack').innerHTML = project.stack.map(item => `<span class="badge">${item}</span>`).join('');
-      document.getElementById('detail-metrics').innerHTML = project.metrics.map(item => `
-        <div class="border-b border-black/5 pb-3 text-sm leading-6 text-neutral-600 dark:border-white/10 dark:text-neutral-300">${item}</div>
+      document.getElementById('detail-header-stack').innerHTML = project.stack.map(item => `<span class="badge">${item}</span>`).join('');
+      document.getElementById('detail-meta').innerHTML = [
+        project.role ? `<span class="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-neutral-600 dark:border-white/15 dark:text-neutral-300">역할 · ${project.role}</span>` : '',
+        project.period ? `<span class="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-neutral-600 dark:border-white/15 dark:text-neutral-300">기간 · ${project.period}</span>` : '',
+        project.team ? `<span class="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-neutral-600 dark:border-white/15 dark:text-neutral-300">팀 · ${project.team}</span>` : ''
+      ].filter(Boolean).join('');
+      document.getElementById('detail-highlights').innerHTML = (project.highlights || []).map(item => `<li class="flex gap-2"><iconify-icon class="mt-1 shrink-0 text-neutral-500 dark:text-neutral-400" icon="lucide:check-circle-2" width="16"></iconify-icon><span>${item}</span></li>`).join('');
+
+      const architecture = document.getElementById('detail-architecture');
+      const architectureFlow = document.getElementById('detail-architecture-flow');
+      const architectureComparison = document.getElementById('detail-architecture-comparison');
+      const architectureSteps = project.architecture || [];
+      architecture.classList.toggle('hidden', architectureSteps.length === 0);
+      architectureComparison.classList.toggle('hidden', project.id !== 'gotion-agent');
+      architectureFlow.innerHTML = architectureSteps.map((step, index) => `
+        <span class="rounded-xl border border-black/10 bg-black/[.03] px-3 py-2 text-xs font-medium text-neutral-700 dark:border-white/15 dark:bg-white/[.04] dark:text-neutral-200">${step}</span>
+        ${index < architectureSteps.length - 1 ? '<iconify-icon class="text-neutral-400" icon="lucide:arrow-right" width="16"></iconify-icon>' : ''}
       `).join('');
+
+      const implementationSection = document.getElementById('detail-implementation');
+      const implementationGrid = document.getElementById('detail-implementation-grid');
+      const implementationItems = project.coreImplementation || [];
+      implementationSection.classList.toggle('hidden', implementationItems.length === 0);
+      implementationGrid.classList.toggle('has-four-cards', implementationItems.length === 4);
+      implementationGrid.innerHTML = implementationItems.map((item, index) => `
+        <article class="case-implementation-card">
+          <p class="case-implementation-card__index">${String(index + 1).padStart(2, '0')} / BUILD</p>
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+          ${item.flow ? `<span class="case-implementation-card__flow">${item.flow}</span>` : ''}
+        </article>
+      `).join('');
+
+      const technicalChoice = document.getElementById('detail-technical-choice');
+      const technicalChoiceContent = document.getElementById('detail-technical-choice-content');
+      const choice = project.technicalChoice;
+      technicalChoice.classList.toggle('hidden', !choice);
+      technicalChoiceContent.innerHTML = choice ? `
+        <div>
+          <p class="case-choice-question">${choice.question}</p>
+          <p class="case-choice-copy"><span class="font-medium text-neutral-800 dark:text-neutral-100">가설 · </span>${choice.hypothesis}</p>
+        </div>
+        <div class="case-choice-options">
+          ${(choice.alternatives || []).map(option => `<div class="case-choice-option"><strong>${option.title}</strong><p>${option.description}</p></div>`).join('')}
+        </div>
+        <div class="case-choice-conclusion">
+          <h3>Selection</h3>
+          <p>${choice.selection}</p>
+        </div>
+        ${choice.tokenNote ? `<div class="case-choice-conclusion"><h3>Token Accounting</h3><p>${choice.tokenNote}</p></div>` : ''}
+      ` : '';
+
+      const troubleshooting = document.getElementById('detail-troubleshooting');
+      const troubleshootingList = document.getElementById('detail-troubleshooting-list');
+      const troubleshootingItems = project.troubleshooting || [];
+      troubleshooting.classList.toggle('hidden', troubleshootingItems.length === 0);
+      troubleshootingList.innerHTML = troubleshootingItems.map((item, index) => {
+        const steps = [
+        ['관찰', item.observation],
+        ['가설', item.hypothesis],
+        ['판단', item.decision],
+        ['구현', item.implementation || item.experiment],
+        ['검증', item.verification || item.result],
+        ['한계', item.limitation]
+        ].filter(([, value]) => value);
+        return `
+          <article class="troubleshooting-case">
+            <div class="troubleshooting-title"><span>${String(index + 1).padStart(2, '0')}</span><h3>${item.title}</h3></div>
+            <div class="troubleshooting-steps">
+              ${steps.map(([label, value]) => `<div class="troubleshooting-step"><p>${label}</p><p>${value}</p></div>`).join('')}
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      renderProjectMetrics(project);
       document.getElementById('detail-links').innerHTML = [
         project.repoUrl ? `<a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between rounded-xl border border-black/5 px-4 py-3 text-sm font-medium text-neutral-700 transition hover:border-black/20 hover:text-black dark:border-white/10 dark:text-neutral-300 dark:hover:border-white/25 dark:hover:text-white"><span class="flex items-center gap-2"><iconify-icon icon="lucide:github" width="16"></iconify-icon>GitHub</span><iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></a>` : '',
         project.siteUrl ? `<a href="${project.siteUrl}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between rounded-xl border border-black/5 px-4 py-3 text-sm font-medium text-neutral-700 transition hover:border-black/20 hover:text-black dark:border-white/10 dark:text-neutral-300 dark:hover:border-white/25 dark:hover:text-white"><span class="flex items-center gap-2"><iconify-icon icon="lucide:globe" width="16"></iconify-icon>Live Site</span><iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></a>` : '',
         project.sourceNote ? `<div class="rounded-xl border border-black/5 px-4 py-3 text-sm leading-6 text-neutral-500 dark:border-white/10 dark:text-neutral-400">${project.sourceNote}</div>` : ''
       ].filter(Boolean).join('');
-      document.getElementById('detail-sections').innerHTML = Object.entries(project.sections).map(([title, body]) => `
-        <section class="glass-card rounded-2xl p-6">
-          <h2 class="text-sm font-semibold text-neutral-950 dark:text-white">${title}</h2>
-          <p class="mt-3 text-sm leading-7 text-neutral-500 dark:text-neutral-400">${body}</p>
-        </section>
-      `).join('');
+      const narrativeOrder = ['Problem', 'Decision', 'Implementation', 'Verification', 'Limitation', 'My Role', 'Learning'];
+      const narrativeTitles = {
+        Problem: '문제',
+        Decision: '판단',
+        Implementation: '구현',
+        Verification: '검증',
+        Limitation: '한계',
+        'My Role': '담당 역할',
+        Learning: '배운 점'
+      };
+      document.getElementById('detail-sections').innerHTML = project.projectProfile
+        ? `<div class="project-intro-grid">${project.projectProfile.map(item => `
+            <article class="project-intro-card">
+              <p class="project-intro-card__label">${item.label}</p>
+              <h3>${item.title}</h3>
+              <p>${item.description}</p>
+            </article>
+          `).join('')}</div>`
+        : narrativeOrder
+          .filter(title => project.sections[title])
+          .map((title, index) => `
+            <section class="case-story-item">
+              <p class="case-story-index">${String(index + 1).padStart(2, '0')} / ${narrativeTitles[title]}</p>
+              <div><h3>${narrativeTitles[title]}</h3><p>${project.sections[title]}</p></div>
+            </section>
+          `).join('');
 
       navigateTo('project-detail');
     }
 
-    const canvas = document.getElementById('network-canvas');
-    const ctx = canvas.getContext('2d');
-    let width = 0;
-    let height = 0;
-    let particles = [];
-    const config = { count: 42, distance: 160, speed: .25 };
+    const slatsCanvas = document.getElementById('micro-slats-canvas');
+    const slatsContext = slatsCanvas.getContext('2d', { alpha: true });
+    const reduceSlatsMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const slatsConfig = {
+      width: 15,
+      height: 37.5,
+      gap: 4.5,
+      roundness: .75,
+      color: [168, 85, 247],
+      glintColor: [255, 255, 255],
+      speed: .6,
+      direction: 250 * Math.PI / 180,
+      chop: .55,
+      glint: .7,
+      contrast: 1.25,
+      fog: .55,
+      perspective: .55,
+      lean: 0,
+      swirl: 0,
+      cursorSize: 60,
+      cursorStrength: 1,
+      trailSeconds: 1.4,
+      introSeconds: 1.5,
+      maxDpr: 1.5
+    };
+    let slatsWidth = 0;
+    let slatsHeight = 0;
+    let slatsDpr = 1;
+    let slatsFrame = 0;
+    let slatsStart = 0;
+    let slatsPointer = null;
+    let slatsLastDraw = 0;
+    let slatsActive = false;
 
-    class Particle {
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - .5) * config.speed;
-        this.vy = (Math.random() - .5) * config.speed;
-        this.size = Math.random() * 1.4 + .5;
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > width) this.vx *= -1;
-        if (this.y < 0 || this.y > height) this.vy *= -1;
-      }
-
-      draw() {
-        const isDark = document.documentElement.classList.contains('dark');
-        ctx.fillStyle = isDark ? 'rgba(255,255,255,.34)' : 'rgba(0,0,0,.22)';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
+    function resizeSlatsCanvas() {
+      const rect = slatsCanvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      slatsDpr = Math.min(window.devicePixelRatio || 1, slatsConfig.maxDpr);
+      slatsWidth = rect.width;
+      slatsHeight = rect.height;
+      slatsCanvas.width = Math.round(slatsWidth * slatsDpr);
+      slatsCanvas.height = Math.round(slatsHeight * slatsDpr);
+      slatsContext.setTransform(slatsDpr, 0, 0, slatsDpr, 0, 0);
+      slatsStart = performance.now();
+      if (reduceSlatsMotion) drawMicroSlats(slatsStart, true);
     }
 
-    function resizeCanvas() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      particles = Array.from({ length: config.count }, () => new Particle());
+    function roundedSlat(context, x, y, width, height, radius) {
+      const r = Math.max(0, Math.min(radius, width / 2, height / 2));
+      context.beginPath();
+      context.moveTo(x + r, y);
+      context.arcTo(x + width, y, x + width, y + height, r);
+      context.arcTo(x + width, y + height, x, y + height, r);
+      context.arcTo(x, y + height, x, y, r);
+      context.arcTo(x, y, x + width, y, r);
+      context.closePath();
+      context.fill();
     }
 
-    function animateCanvas() {
-      ctx.clearRect(0, 0, width, height);
+    function drawMicroSlats(timestamp, staticFrame = false) {
+      if (!slatsContext || !slatsWidth || !slatsHeight) return;
+      if (!staticFrame && !reduceSlatsMotion && slatsLastDraw && timestamp - slatsLastDraw < 33) {
+        slatsFrame = requestAnimationFrame(drawMicroSlats);
+        return;
+      }
+      slatsLastDraw = timestamp;
+      const time = (timestamp - slatsStart) / 1000;
+      const darkMode = document.documentElement.classList.contains('dark');
+      const pitchX = slatsConfig.width + slatsConfig.gap;
+      const pitchY = slatsConfig.height + slatsConfig.gap;
+      const columns = Math.ceil(slatsWidth / pitchX) + 2;
+      const rows = Math.ceil(slatsHeight / pitchY) + 2;
+      const originX = (slatsWidth - (columns - 1) * pitchX) / 2 - slatsConfig.width / 2;
+      const originY = (slatsHeight - (rows - 1) * pitchY) / 2 - slatsConfig.height / 2;
+      const waveX = Math.cos(slatsConfig.direction);
+      const waveY = Math.sin(slatsConfig.direction);
+      const intro = reduceSlatsMotion ? 1 : Math.min(1, Math.max(0, time / slatsConfig.introSeconds));
+      const introEase = 1 - Math.pow(1 - intro, 3);
+      const pointerAge = slatsPointer ? Math.max(0, time - slatsPointer.time) : Infinity;
+      const pointerFade = Math.exp(-pointerAge / slatsConfig.trailSeconds);
 
-      const isDark = document.documentElement.classList.contains('dark');
+      slatsContext.clearRect(0, 0, slatsWidth, slatsHeight);
+      for (let row = 0; row < rows; row += 1) {
+        for (let column = 0; column < columns; column += 1) {
+          const x = originX + column * pitchX;
+          const y = originY + row * pitchY;
+          const wavePosition = (x * waveX + y * waveY) * .012;
+          const wave = Math.sin(wavePosition - time * slatsConfig.speed + Math.sin(wavePosition * .7 + time * .35) * slatsConfig.chop);
+          const distance = slatsPointer ? Math.hypot(x + slatsConfig.width / 2 - slatsPointer.x, y + slatsConfig.height / 2 - slatsPointer.y) : Infinity;
+          const pointerInfluence = Math.max(0, 1 - distance / slatsConfig.cursorSize) * pointerFade;
+          const swell = (wave * .5 + .5) * introEase;
+          const height = slatsConfig.height * (.72 + swell * .28 + pointerInfluence * .34 * slatsConfig.cursorStrength);
+          const width = slatsConfig.width * (1 + pointerInfluence * .18);
+          const offsetY = (1 - introEase) * 12 + wave * 2.6 * introEase - pointerInfluence * 4.5;
+          const lean = (wave * .08 * (1 + slatsConfig.lean) + pointerInfluence * .18) * slatsConfig.perspective;
+          const glint = Math.max(0, wave) * slatsConfig.glint * introEase + pointerInfluence * .45;
+          const centerDistance = Math.hypot((x - slatsWidth / 2) / slatsWidth, (y - slatsHeight / 2) / slatsHeight);
+          const fogAlpha = Math.max(.35, 1 - centerDistance * slatsConfig.fog);
+          const baseAlpha = (darkMode ? .2 : .16) * (.45 + swell * .55) * slatsConfig.contrast * fogAlpha;
 
-      particles.forEach((particle, index) => {
-        particle.update();
-        particle.draw();
-
-        for (let i = index + 1; i < particles.length; i += 1) {
-          const other = particles[i];
-          const dx = particle.x - other.x;
-          const dy = particle.y - other.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < config.distance) {
-            const opacity = (1 - distance / config.distance) * (isDark ? .13 : .09);
-            ctx.strokeStyle = isDark ? `rgba(255,255,255,${opacity})` : `rgba(0,0,0,${opacity})`;
-            ctx.lineWidth = .5;
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(other.x, other.y);
-            ctx.stroke();
+          slatsContext.save();
+          slatsContext.translate(x + slatsConfig.width / 2, y + slatsConfig.height / 2 + offsetY);
+          slatsContext.rotate(lean);
+          slatsContext.fillStyle = `rgba(${slatsConfig.color.join(',')},${Math.min(.58, baseAlpha + pointerInfluence * .13)})`;
+          roundedSlat(slatsContext, -width / 2, -height / 2, width, height, slatsConfig.width * slatsConfig.roundness / 2);
+          if (glint > .04) {
+            const highlight = slatsContext.createLinearGradient(-width / 2, -height / 2, width / 2, height / 2);
+            highlight.addColorStop(0, `rgba(${slatsConfig.glintColor.join(',')},${Math.min(.68, glint * .32)})`);
+            highlight.addColorStop(.3, `rgba(${slatsConfig.glintColor.join(',')},${Math.min(.52, glint * .13)})`);
+            highlight.addColorStop(1, 'rgba(255,255,255,0)');
+            slatsContext.fillStyle = highlight;
+            roundedSlat(slatsContext, -width / 2, -height / 2, width, height, slatsConfig.width * slatsConfig.roundness / 2);
           }
+          slatsContext.restore();
         }
+      }
+
+      if (!staticFrame && !reduceSlatsMotion && !document.hidden && slatsActive) {
+        slatsFrame = requestAnimationFrame(drawMicroSlats);
+      }
+    }
+
+    function startMicroSlats() {
+      if (!slatsActive || document.hidden) return;
+      cancelAnimationFrame(slatsFrame);
+      slatsStart = performance.now();
+      slatsPointer = null;
+      slatsLastDraw = 0;
+      drawMicroSlats(slatsStart);
+    }
+
+    function setMicroSlatsActive(active) {
+      slatsActive = active;
+      cancelAnimationFrame(slatsFrame);
+      if (!active) {
+        slatsContext.clearRect(0, 0, slatsWidth, slatsHeight);
+        return;
+      }
+      resizeSlatsCanvas();
+      startMicroSlats();
+    }
+
+    const heroSignalCanvas = document.getElementById('hero-signal-canvas');
+    const heroSignalContext = heroSignalCanvas?.getContext('2d', { alpha: true });
+    const heroSignalReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const heroSignalPoints = Array.from({ length: 112 }, (_, index) => {
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+      const y = 1 - (index / 111) * 2;
+      const radius = Math.sqrt(1 - y * y);
+      const angle = goldenAngle * index;
+      return { x: Math.cos(angle) * radius, y, z: Math.sin(angle) * radius };
+    });
+    let heroSignalWidth = 0;
+    let heroSignalHeight = 0;
+    let heroSignalDpr = 1;
+    let heroSignalFrame = 0;
+    let heroSignalLastFrame = 0;
+    let heroSignalActive = false;
+
+    function resizeHeroSignal() {
+      if (!heroSignalCanvas) return;
+      const rect = heroSignalCanvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      heroSignalDpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      heroSignalWidth = rect.width;
+      heroSignalHeight = rect.height;
+      heroSignalCanvas.width = Math.round(heroSignalWidth * heroSignalDpr);
+      heroSignalCanvas.height = Math.round(heroSignalHeight * heroSignalDpr);
+      heroSignalContext.setTransform(heroSignalDpr, 0, 0, heroSignalDpr, 0, 0);
+      drawHeroSignal(performance.now(), true);
+      if (heroSignalActive) startHeroSignal();
+    }
+
+    function drawHeroSignal(timestamp, staticFrame = false) {
+      if (!heroSignalContext || !heroSignalWidth || !heroSignalHeight) return;
+      const animate = !staticFrame && !heroSignalReduceMotion && heroSignalActive && !document.hidden;
+      if (animate && heroSignalLastFrame && timestamp - heroSignalLastFrame < 32) {
+        heroSignalFrame = requestAnimationFrame(drawHeroSignal);
+        return;
+      }
+      heroSignalLastFrame = timestamp;
+      const time = heroSignalReduceMotion ? 0 : timestamp * .00016;
+      const context = heroSignalContext;
+      const centerX = heroSignalWidth * .5;
+      const centerY = heroSignalHeight * .51;
+      const radius = Math.min(heroSignalWidth, heroSignalHeight) * .305;
+      context.clearRect(0, 0, heroSignalWidth, heroSignalHeight);
+
+      const atmosphere = context.createRadialGradient(centerX, centerY, radius * .08, centerX, centerY, radius * 1.48);
+      atmosphere.addColorStop(0, 'rgba(255,255,255,.065)');
+      atmosphere.addColorStop(.5, 'rgba(255,255,255,.018)');
+      atmosphere.addColorStop(1, 'rgba(255,255,255,0)');
+      context.fillStyle = atmosphere;
+      context.fillRect(0, 0, heroSignalWidth, heroSignalHeight);
+
+      context.save();
+      context.translate(centerX, centerY);
+      context.rotate(-.42);
+      for (let ring = 0; ring < 3; ring += 1) {
+        context.beginPath();
+        context.ellipse(0, 0, radius * (1.08 + ring * .16), radius * (.42 + ring * .055), 0, 0, Math.PI * 2);
+        context.strokeStyle = `rgba(225,229,236,${.13 - ring * .028})`;
+        context.lineWidth = ring === 0 ? 1 : .7;
+        context.setLineDash(ring === 2 ? [2, 8] : []);
+        context.stroke();
+      }
+      context.setLineDash([]);
+      context.restore();
+
+      const rotation = time * .8;
+      const tilt = .32 + Math.sin(time * .35) * .07;
+      const cosY = Math.cos(rotation);
+      const sinY = Math.sin(rotation);
+      const cosX = Math.cos(tilt);
+      const sinX = Math.sin(tilt);
+      const projected = heroSignalPoints.map(point => {
+        const x = point.x * cosY - point.z * sinY;
+        const z = point.x * sinY + point.z * cosY;
+        const y = point.y * cosX - z * sinX;
+        const depth = point.y * sinX + z * cosX;
+        const perspective = 1 / (1.55 - depth * .34);
+        return {
+          x: centerX + x * radius * perspective,
+          y: centerY + y * radius * perspective,
+          z: depth,
+          scale: perspective
+        };
       });
 
-      requestAnimationFrame(animateCanvas);
+      context.lineWidth = .7;
+      for (let index = 0; index < projected.length; index += 1) {
+        const source = projected[index];
+        for (const offset of [1, 7, 13]) {
+          const target = projected[(index + offset) % projected.length];
+          const distance = Math.hypot(source.x - target.x, source.y - target.y);
+          if (distance > radius * (offset === 1 ? .42 : .27)) continue;
+          const depthAlpha = .035 + Math.max(0, (source.z + target.z + 2) * .5) * .07;
+          context.strokeStyle = `rgba(225,230,239,${depthAlpha.toFixed(3)})`;
+          context.beginPath();
+          context.moveTo(source.x, source.y);
+          context.lineTo(target.x, target.y);
+          context.stroke();
+        }
+      }
+
+      projected.forEach((point, index) => {
+        const frontness = Math.max(0, (point.z + 1) * .5);
+        const pulse = .72 + Math.sin(time * 1.7 + index * 1.91) * .28;
+        const dotRadius = (.55 + frontness * 1.15) * pulse;
+        context.beginPath();
+        context.arc(point.x, point.y, dotRadius, 0, Math.PI * 2);
+        context.fillStyle = `rgba(245,247,251,${(.13 + frontness * .6).toFixed(3)})`;
+        context.fill();
+      });
+
+      const coreGlow = context.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius * .34);
+      coreGlow.addColorStop(0, 'rgba(255,255,255,.13)');
+      coreGlow.addColorStop(.14, 'rgba(230,234,241,.055)');
+      coreGlow.addColorStop(1, 'rgba(255,255,255,0)');
+      context.fillStyle = coreGlow;
+      context.beginPath();
+      context.arc(centerX, centerY, radius * .34, 0, Math.PI * 2);
+      context.fill();
+
+      for (let orbit = 0; orbit < 3; orbit += 1) {
+        const angle = time * (.48 + orbit * .11) + orbit * Math.PI * .68;
+        const orbitRotation = -.42 + orbit * .38;
+        const orbitX = radius * (1.08 + orbit * .16);
+        const orbitY = radius * (.42 + orbit * .055);
+        const localX = Math.cos(angle) * orbitX;
+        const localY = Math.sin(angle) * orbitY;
+        const x = centerX + localX * Math.cos(orbitRotation) - localY * Math.sin(orbitRotation);
+        const y = centerY + localX * Math.sin(orbitRotation) + localY * Math.cos(orbitRotation);
+        const glow = context.createRadialGradient(x, y, 0, x, y, 15 + orbit * 2);
+        glow.addColorStop(0, 'rgba(255,255,255,.72)');
+        glow.addColorStop(.12, 'rgba(255,255,255,.23)');
+        glow.addColorStop(1, 'rgba(255,255,255,0)');
+        context.fillStyle = glow;
+        context.beginPath();
+        context.arc(x, y, 15 + orbit * 2, 0, Math.PI * 2);
+        context.fill();
+        context.beginPath();
+        context.arc(x, y, 1.6, 0, Math.PI * 2);
+        context.fillStyle = '#fff';
+        context.fill();
+      }
+
+      if (animate) heroSignalFrame = requestAnimationFrame(drawHeroSignal);
     }
+
+    function startHeroSignal() {
+      if (!heroSignalActive || document.hidden || heroSignalReduceMotion) return;
+      cancelAnimationFrame(heroSignalFrame);
+      heroSignalLastFrame = 0;
+      heroSignalFrame = requestAnimationFrame(drawHeroSignal);
+    }
+
+    function setHeroMotionActive(active) {
+      heroSignalActive = active;
+      cancelAnimationFrame(heroSignalFrame);
+      if (active) {
+        resizeHeroSignal();
+        startHeroSignal();
+      }
+    }
+
+    window.addEventListener('pointermove', event => {
+      if (!slatsActive) return;
+      const rect = slatsCanvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+        slatsPointer = null;
+        return;
+      }
+      slatsPointer = { x, y, time: (performance.now() - slatsStart) / 1000 };
+    }, { passive: true });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelAnimationFrame(slatsFrame);
+        cancelAnimationFrame(heroSignalFrame);
+      } else {
+        if (!reduceSlatsMotion && slatsActive) startMicroSlats();
+        if (heroSignalActive) startHeroSignal();
+      }
+    });
 
     const contactCanvas = document.getElementById('contact-canvas');
     const contactStage = document.getElementById('contact-stage');
@@ -1232,16 +3214,18 @@
       requestAnimationFrame(drawContactScene);
     }
 
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('resize', resizeSlatsCanvas, { passive: true });
+    window.addEventListener('resize', resizeHeroSignal, { passive: true });
     window.addEventListener('resize', resizeContactCanvas);
     document.addEventListener('DOMContentLoaded', () => {
       renderProjects();
       renderSkills();
       renderResearch();
-      document.querySelector('.nav-link[data-target="about"]').classList.remove('active');
-      resizeCanvas();
+      slatsActive = !document.getElementById('home').classList.contains('hidden');
+      resizeSlatsCanvas();
       initContactScene();
-      animateCanvas();
+      if (slatsActive) startMicroSlats();
+      setHeroMotionActive(slatsActive);
     });
   </script>
 </body>
