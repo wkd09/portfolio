@@ -1244,7 +1244,7 @@
       <div class="home-signal" aria-label="주요 엔지니어링 주제"><span>AI SYSTEMS</span><span>AGENT ROUTING</span><span>STRUCTURED OUTPUT</span><span>EVALUATION</span><span>PRODUCTION API</span></div>
 
       <section id="home-projects" class="home-chapter" aria-labelledby="registry-title">
-        <div class="chapter-head"><div><p class="section-eyebrow">01 / SELECTED WORKS</p><h2 id="registry-title">프로젝트</h2></div><p>문제, 직접 맡은 설계, 검증 결과를 함께 기록했습니다. 서비스 프로젝트와 서빙 실험의 범위도 각 상세 페이지에 밝혔습니다.</p></div>
+        <div class="chapter-head"><div><p class="section-eyebrow">01 / SELECTED WORKS</p><h2 id="registry-title">프로젝트</h2></div><p>문제, 직접 맡은 설계, 검증 결과를 함께 기록했습니다. 각 프로젝트의 역할과 평가 범위는 상세 페이지에 밝혔습니다.</p></div>
         <div class="project-showcase">
           <div class="project-registry" aria-label="프로젝트별 문제 해결 기록">
             <div class="project-registry__header" aria-hidden="true">
@@ -1271,16 +1271,9 @@
               <span class="project-registry__verify"><strong>40.57s → 22.339s</strong><small>응답 시간 · Prompt token 1,588 → 959</small></span>
               <span class="project-registry__arrow" aria-hidden="true">↗</span>
             </button>
-            <button class="project-registry__row" type="button" data-project-id="practice-parallelism" aria-label="Parallelism Lab 상세 실험 기록 열기" onclick="openProject('practice-parallelism')">
-              <span class="project-registry__project"><small>04 / SERVING LAB</small><strong>Parallelism Lab</strong><em>Qwen3-4B · FSDP · vLLM</em></span>
-              <span class="project-registry__cell"><small>문제</small><span>전체 파인튜닝 DDP는 optimizer 단계에서 메모리 부족이 났고, 병렬화 방식별 서빙 성능도 확인이 필요했습니다.</span></span>
-              <span class="project-registry__cell"><small>판단</small><span>FSDP로 학습 상태를 분산하고, vLLM에서는 같은 요청 조건으로 TP 구성을 비교했습니다.</span></span>
-              <span class="project-registry__verify"><strong>18.78 GiB</strong><small>FSDP 학습 peak · 로컬 실험, 운영 지표 아님</small></span>
-              <span class="project-registry__arrow" aria-hidden="true">↗</span>
-            </button>
           </div>
         </div>
-        <p class="source-note">수치는 각 상세 페이지에 측정 조건과 한계를 함께 적었습니다. defAPI는 비교 전후 성능 수치가 없으며, Parallelism Lab 결과는 실험 환경에서만 확인했습니다.</p>
+        <p class="source-note">수치는 각 상세 페이지에 측정 조건과 한계를 함께 적었습니다. defAPI는 비교 전후 성능 수치가 없어 향상을 주장하지 않습니다.</p>
       </section>
 
       <section id="home-notes" class="home-chapter" aria-labelledby="notes-title">
@@ -2129,69 +2122,6 @@
         }
       },
       {
-        id: 'practice-parallelism',
-        order: '04',
-        title: 'Parallelism Lab',
-        label: 'LLM Serving / GPU Lab',
-        short: 'Qwen3-4B 학습 메모리 한계와 vLLM 서빙 구성을 측정한 개인 실험',
-        icon: 'lucide:network',
-        overview: 'Qwen3-4B에서 학습 상태 복제로 생기는 GPU 메모리 한계와 vLLM 서빙 구성의 지연·처리량 차이를 직접 측정한 개인 실험입니다. 모델 서빙 플랫폼의 운영 경험이 아닌, 병렬화 전략을 비교하고 실패 원인을 기록한 실험입니다.',
-        projectProfile: [
-          { label: '해결 과제', title: '전체 파인튜닝 OOM과 병렬 서빙의 선택 기준', description: 'Qwen3-4B 전체 파인튜닝은 DDP의 optimizer.step에서 메모리 부족이 발생했습니다. 서빙에서는 GPU 병렬화 구성을 늘리는 것이 항상 처리량을 높이는지 같은 요청 조건으로 확인해야 했습니다.' },
-          { label: '직접 맡은 일', title: '개인 실험 설계·구현', description: 'LoRA·DDP·FSDP·Tensor Parallel 단계별 스크립트와 vLLM OpenAI 호환 API 벤치마크를 구성하고, 메모리·출력 정합성·TTFT·지연·처리량을 JSON으로 남겼습니다.' },
-          { label: '검증 범위', title: '로컬 GPU 실험', description: 'FSDP는 2 rank, 20 step 실행 결과이고 서빙 비교는 동일 모델에 16개 요청·동시성 8을 적용한 기록입니다. GPU 구성과 워크로드가 달라지면 수치가 바뀌며, 실제 서비스의 처리량으로 해석하지 않습니다.' }
-        ],
-        stack: ['Python', 'PyTorch', 'FSDP', 'Tensor Parallel', 'vLLM'],
-        metrics: ['DDP 전체 파인튜닝은 optimizer.step에서 OOM, FSDP FULL_SHARD 2 rank는 20 step 완료', 'FSDP 학습 peak memory 18.78 GiB, DDP OOM 시 allocated memory 43.76 GiB 기록', 'TP1/TP2 vLLM 비교: 16개 요청·동시성 8에서 340.64/283.06 completion tokens/s', 'Tensor Parallel 출력은 bf16 tolerance 0.01 내에서 일치'],
-        chartGroups: [{
-          title: 'vLLM 구성별 단일 실험 · 16개 요청 / 동시성 8',
-          note: '같은 Qwen3-4B 요청 조건에서 TP1과 TP2의 기록값을 비교합니다. 모델 크기와 GPU 구성에 따른 일반적인 우열은 주장하지 않습니다.',
-          stages: ['TP1', 'TP2'],
-          metrics: [
-            { label: 'Completion throughput', unit: 'token/s', values: [340.64, 283.06], displayValues: ['340.64 token/s', '283.06 token/s'] },
-            { label: '요청 지연 p50', unit: '초', values: [1.519, 1.662], displayValues: ['1.519초', '1.662초'] }
-          ],
-          footnote: '각 구성의 benchmark JSON에 기록된 값입니다. 반복 실행 분포와 운영 트래픽은 측정하지 않았습니다.'
-        }],
-        metricStats: [
-          { label: 'DDP 전체 학습', value: 'OOM' },
-          { label: 'FSDP peak', value: '18.78 GiB' },
-          { label: 'FSDP 완료', value: '20 steps' }
-        ],
-        repoUrl: 'https://github.com/wkd09/practice_parallelism',
-        sourceNote: '근거: <a href="https://github.com/wkd09/practice_parallelism/blob/main/step3-fsdp/outputs/ddp-full-qwen3-4b/metrics.json" target="_blank" rel="noopener noreferrer">DDP 실패 기록 ↗</a>, <a href="https://github.com/wkd09/practice_parallelism/blob/main/step3-fsdp/outputs/fsdp-full-shard-qwen3-4b/metrics.json" target="_blank" rel="noopener noreferrer">FSDP 실행 기록 ↗</a>, <a href="https://github.com/wkd09/practice_parallelism/blob/main/step5-vllm-serving/outputs/benchmark_tp1.json" target="_blank" rel="noopener noreferrer">TP1 ↗</a>·<a href="https://github.com/wkd09/practice_parallelism/blob/main/step5-vllm-serving/outputs/benchmark_tp2.json" target="_blank" rel="noopener noreferrer">TP2 ↗</a> 벤치마크. 학습 메모리와 서빙 처리량을 합쳐 개선율을 계산하지 않았습니다.',
-        role: '실험 설계·구현',
-        team: '개인 실험',
-        highlights: ['DDP 전체 파인튜닝 OOM 이후 FSDP FULL_SHARD 2 rank로 20 step 완료', 'FSDP 학습 peak memory 18.78 GiB 기록', 'vLLM 16개 요청·동시성 8에서 TP1 340.64, TP2 283.06 completion tokens/s'],
-        architecture: ['Qwen3-4B', '학습 DDP·FSDP / 서빙 vLLM TP1·TP2', '메모리·요청 부하 측정', '조건별 metrics JSON'],
-        coreImplementation: [
-          { title: '학습 메모리 병목 확인', description: 'DDP 전체 파인튜닝이 optimizer.step에서 OOM으로 끝난 위치와 메모리 사용량을 저장했습니다. 같은 모델을 FSDP FULL_SHARD 2 rank로 실행해 shard 기반 대안을 확인했습니다.', flow: 'DDP OOM → FSDP FULL_SHARD → 20 steps' },
-          { title: '분산 실행 정합성 확인', description: 'DDP LoRA rank 간 adapter checksum과 Tensor Parallel의 bf16 출력 오차를 확인해 실행 성공 외에 결과의 일치 여부도 기록했습니다.', flow: 'rank checksum / TP output tolerance' },
-          { title: '서빙 구성별 병목 측정', description: 'vLLM OpenAI 호환 API에 같은 수의 요청을 보내고 TP1·TP2의 TTFT, p50 지연, completion tokens/s를 JSON에 저장했습니다.', flow: '16 requests × concurrency 8 → metrics JSON' }
-        ],
-        technicalChoice: {
-          question: 'DDP 전체 파인튜닝이 optimizer 단계에서 메모리 부족으로 멈출 때 어떤 구조를 선택할 것인가?',
-          hypothesis: '모델과 optimizer 상태를 각 rank가 복제하는 DDP에서는 4B 모델의 전체 학습이 메모리 한계에 걸릴 수 있다고 판단했습니다.',
-          alternatives: [
-            { title: 'DDP 전체 파인튜닝 유지', description: '구현은 단순하지만 이번 실행에서는 AdamW optimizer.step에서 메모리 부족이 발생했습니다.' },
-            { title: 'FSDP FULL_SHARD', description: '학습 상태를 rank에 나눠 보관해 메모리 압박을 낮추는 대신 통신과 설정 복잡성이 늘어납니다.' }
-          ],
-          selection: '동일 모델의 전체 학습을 계속하기 위해 FSDP FULL_SHARD를 선택했습니다. 2 rank에서 20 step을 마쳤고 peak memory 18.78 GiB를 기록했습니다. 서빙에서는 TP2가 TP1보다 느린 실험값을 확인해 병렬화 정도를 높이는 선택을 별도로 검증했습니다.'
-        },
-        troubleshooting: [
-          { title: 'DDP 전체 파인튜닝의 optimizer 단계 OOM', observation: 'Qwen3-4B의 DDP 전체 파인튜닝은 AdamW optimizer.step에서 OOM으로 종료됐고, 당시 할당 메모리는 43.76 GiB였습니다.', hypothesis: '각 rank의 모델·gradient·optimizer 상태 복제가 메모리 한계를 넘는다고 보았습니다.', decision: '기존 DDP 실행을 기준선으로 남기고 학습 상태를 분산하는 FSDP FULL_SHARD로 바꿨습니다.', implementation: '2 rank에서 같은 모델로 20 step을 실행하고 학습 peak memory와 처리량을 metrics.json에 기록했습니다.', verification: 'FSDP 실행은 20 step을 완료했고 기록된 peak training memory는 18.78 GiB입니다.', limitation: 'DDP OOM 시점의 할당량과 FSDP 전체 학습 peak는 같은 방식의 성능 개선율로 비교할 수 없습니다. 다른 GPU·배치에서 재측정이 필요합니다.' },
-          { title: 'TP2가 TP1보다 느린 서빙 결과', observation: 'vLLM의 16개 요청·동시성 8 실험에서 TP1의 처리량 340.64 completion tokens/s보다 TP2의 283.06 tokens/s가 낮았습니다.', hypothesis: '작은 모델과 제한된 요청 부하에서는 병렬화 통신 비용이 계산 이득보다 클 수 있다고 보았습니다.', decision: 'GPU 수만 보고 구성을 고르지 않고 동일 요청 조건에서 처리량과 지연을 함께 비교했습니다.', implementation: 'TP1·TP2에 같은 벤치마크 스크립트를 적용하고 p50 지연과 completion tokens/s를 JSON으로 저장했습니다.', verification: 'p50 지연은 TP1 1.519초, TP2 1.662초로 기록됐습니다. 이번 설정에서는 TP1이 두 지표에서 앞섰습니다.', limitation: '단일 실험 결과이며 GPU 구성·입출력 길이·동시성을 바꾸면 결론이 달라질 수 있습니다. 운영 환경의 가용성이나 비용은 측정하지 않았습니다.' }
-        ],
-        sections: {
-          Overview: '모델 크기와 요청량이 커질 때 어떤 병렬화 전략을 선택해야 하는지 코드와 실행 기록으로 비교한 학습 프로젝트입니다.',
-          Problem: '단일 GPU 학습은 메모리 한계에 부딪히고, 분산 학습은 속도만 높이면 되는 것이 아니라 rank 간 파라미터 일치와 출력 정합성을 함께 확인해야 합니다. 서빙에서는 batch와 concurrency에 따라 latency와 throughput의 trade-off가 달라집니다.',
-          Decision: 'LoRA, DDP, FSDP, Tensor Parallel, vLLM을 단계별로 분리해 실패도 결과로 기록했습니다. 메모리 사용량, checksum, 출력 오차, TTFT, p50 latency를 각각 검증 지표로 선택했습니다.',
-          Implementation: 'Qwen3-4B 기준 단일 GPU LoRA, torchrun 기반 DDP/FSDP, MLP Tensor Parallel, OpenAI-compatible vLLM benchmark 스크립트를 단계별로 구성했습니다.',
-          Verification: 'outputs/metrics.json과 benchmark JSON을 커밋해 실험 조건과 결과를 재검토할 수 있게 했습니다. DDP full fine-tuning의 OOM, FSDP shard 메모리, TP 출력 tolerance, concurrency별 vLLM 지표를 비교합니다.',
-          Limitation: 'GPU 종류와 모델 cache, batch 구성에 따라 수치가 달라집니다. 절대적인 최고 성능보다 어떤 병목을 관찰하고 어떤 검증 기준을 추가했는지를 보여주는 실험 저장소입니다.'
-        }
-      },
-      {
         id: 'paged-attention',
         order: '06',
         title: 'Paged Attention Implementation',
@@ -2383,7 +2313,7 @@
       }
     ];
 
-    const featuredProjectIds = new Set(['folio', 'gotion-agent', 'defapi', 'practice-parallelism']);
+    const featuredProjectIds = new Set(['folio', 'gotion-agent', 'defapi']);
     const projects = [...legacyProjects, ...projectAdditions]
       .map(project => ({ ...project, ...(projectOverrides[project.id] || {}) }))
       .filter(project => featuredProjectIds.has(project.id))
@@ -2649,7 +2579,7 @@
       if (!project) return;
 
       document.getElementById('detail-icon').setAttribute('icon', project.icon);
-      document.getElementById('detail-kicker').textContent = `${project.order} / ${project.id === 'practice-parallelism' ? '실험 기록' : '프로젝트 기록'}`;
+      document.getElementById('detail-kicker').textContent = `${project.order} / 프로젝트 기록`;
       document.getElementById('detail-title').textContent = project.title;
       document.getElementById('detail-overview').textContent = project.overview;
       document.getElementById('detail-case-study-title').textContent = project.projectProfile ? '프로젝트 맥락' : '문제 해결 사례';
