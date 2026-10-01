@@ -701,11 +701,11 @@
     .dark .case-story-list, .dark .case-story-item { border-color: rgba(255,255,255,.12); }
     .dark .case-story-item h3 { color: #f5f5f5; }
     .dark .case-story-item p { color: #bebebe; }
-    .project-intro-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 28px; border-top: 1px solid rgba(0,0,0,.12); border-left: 1px solid rgba(0,0,0,.12); }
-    .project-intro-card { min-height: 190px; padding: 24px; border-right: 1px solid rgba(0,0,0,.12); border-bottom: 1px solid rgba(0,0,0,.12); }
-    .project-intro-card__label { color: #40bcd8; font: 600 11px/1.4 'JetBrains Mono', monospace; letter-spacing: .12em; }
-    .project-intro-card h3 { margin-top: 24px; color: #1a1a1a; font-size: 1.05rem; font-weight: 600; }
-    .project-intro-card p { margin-top: 10px; color: #626262; font-size: .94rem; line-height: 1.8; }
+    .project-intro-grid { margin-top: 28px; border-top: 1px solid rgba(0,0,0,.12); }
+    .project-intro-card { display: grid; grid-template-columns: 165px minmax(0, 1fr); column-gap: 34px; row-gap: 8px; padding: 25px 0; border-bottom: 1px solid rgba(0,0,0,.12); }
+    .project-intro-card__label { grid-row: 1 / 3; color: #40bcd8; font: 600 12px/1.5 'JetBrains Mono', monospace; letter-spacing: .06em; }
+    .project-intro-card h3 { color: #1a1a1a; font-size: 1.06rem; font-weight: 600; }
+    .project-intro-card p { grid-column: 2; max-width: 790px; color: #626262; font-size: 1rem; line-height: 1.7; }
     .dark .project-intro-grid, .dark .project-intro-card { border-color: rgba(255,255,255,.12); }
     .dark .project-intro-card h3 { color: #f5f5f5; }
     .dark .project-intro-card p { color: #bebebe; }
@@ -959,14 +959,15 @@
       .home-stack-group { grid-template-columns: 1fr; gap: 8px; min-height: 0; padding: 14px 0; }
       .home-stack-item { gap: 7px; padding-right: 12px; font-size: 13px; }
       .project-registry__header { display: none; }
-      .project-registry__row { grid-template-columns: repeat(3,minmax(0,1fr)) 18px; gap: 14px 10px; padding: 19px 0; }
+      .project-registry__row { grid-template-columns: minmax(0,1fr) 18px; gap: 12px 10px; padding: 22px 0; }
       .project-registry__project { grid-column: 1 / -1; display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; }
       .project-registry__project strong { font-size: 24px; }
-      .project-registry__project em { margin-left: auto; }
-      .project-registry__cell small { font-size: 8px; }
-      .project-registry__cell span { font-size: 10px; line-height: 1.65; }
-      .project-registry__verify { grid-column: 1 / 4; grid-row: 3; }
-      .project-registry__arrow { grid-column: 4; grid-row: 3; }
+      .project-registry__project em { margin-left: 0; }
+      .project-registry__cell { grid-column: 1 / -1; grid-template-columns: 48px minmax(0,1fr); gap: 12px; }
+      .project-registry__cell small { font-size: 9px; }
+      .project-registry__cell span { font-size: 12px; line-height: 1.65; }
+      .project-registry__verify { grid-column: 1; grid-row: 4; margin-top: 4px; }
+      .project-registry__arrow { grid-column: 2; grid-row: 4; }
       .workflow { grid-template-columns: 1fr; overflow: visible; }
       .workflow-step, .workflow-step + .workflow-step { min-height: 0; padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--site-line); }
       .workflow-step h3 { margin-top: 12px; }
@@ -1001,7 +1002,9 @@
       .metric-chart__head { display: block; }
       .metric-chart__note { margin-top: 6px; text-align: left; }
       .metric-chart__legend { margin-left: 0; }
-      .case-story-item, .case-choice-conclusion, .troubleshooting-step { grid-template-columns: 1fr; gap: 10px; }
+      .case-story-item, .case-choice-conclusion, .troubleshooting-step, .project-intro-card { grid-template-columns: 1fr; gap: 10px; }
+      .project-intro-card__label { grid-row: auto; }
+      .project-intro-card p { grid-column: 1; }
       .case-implementation-grid,.case-implementation-grid.has-four-cards { grid-template-columns: 1fr; }
       .case-implementation-card,.case-implementation-card + .case-implementation-card { padding: 20px 0; border-left: 0; border-bottom: 1px solid rgba(0,0,0,.12); }
       .case-implementation-grid.has-four-cards .case-implementation-card { padding: 20px 0; border: 0; border-bottom: 1px solid rgba(0,0,0,.12); }
@@ -1011,7 +1014,6 @@
       .dark .case-implementation-card,.dark .case-implementation-card + .case-implementation-card { border-color: rgba(255,255,255,.12); }
       .case-implementation-card h3 { margin-top: 12px; }
       .troubleshooting-steps { margin-left: 0; }
-      .project-intro-grid { grid-template-columns: 1fr; }
       .project-intro-card { min-height: auto; }
       .gotion-diagram-caption { display: block; }
       .gotion-diagram-caption p { margin-top: 5px; }
@@ -1242,36 +1244,43 @@
       <div class="home-signal" aria-label="주요 엔지니어링 주제"><span>AI SYSTEMS</span><span>AGENT ROUTING</span><span>STRUCTURED OUTPUT</span><span>EVALUATION</span><span>PRODUCTION API</span></div>
 
       <section id="home-projects" class="home-chapter" aria-labelledby="registry-title">
-        <div class="chapter-head"><div><p class="section-eyebrow">01 / SELECTED WORKS</p><h2 id="registry-title">프로젝트</h2></div><p>무엇이 막혔는지, 어떤 선택을 했는지, 확인된 변화는 무엇인지 케이스 스터디로 정리했습니다.</p></div>
+        <div class="chapter-head"><div><p class="section-eyebrow">01 / SELECTED WORKS</p><h2 id="registry-title">프로젝트</h2></div><p>문제, 직접 맡은 설계, 검증 결과를 함께 기록했습니다. 서비스 프로젝트와 서빙 실험의 범위도 각 상세 페이지에 밝혔습니다.</p></div>
         <div class="project-showcase">
           <div class="project-registry" aria-label="프로젝트별 문제 해결 기록">
             <div class="project-registry__header" aria-hidden="true">
-              <span>Project</span><span>Problem</span><span>Decision</span><span>Verification</span><span></span>
+              <span>프로젝트</span><span>문제</span><span>판단</span><span>검증</span><span></span>
             </div>
             <button class="project-registry__row" type="button" data-project-id="gotion-agent" aria-label="Gotion 상세 케이스 스터디 열기" onclick="openProject('gotion-agent')">
               <span class="project-registry__project"><small>01 / AGENT SYSTEMS</small><strong>Gotion</strong><em>LLM Agent · Tool Routing</em></span>
-              <span class="project-registry__cell"><small>Problem</small><span>일정 요청이 퀴즈 Tool로, 기억 저장 요청이 일반 대화로 잘못 라우팅됐습니다.</span></span>
-              <span class="project-registry__cell"><small>Decision</small><span>역할 기반 파이프라인으로 분리하고, 요청별 후보 Tool schema만 Planner에 전달했습니다.</span></span>
-              <span class="project-registry__verify"><strong>42% → 79%</strong><small>Tool 선택 정확도 · Task 성공 63% → 88%</small></span>
+              <span class="project-registry__cell"><small>문제</small><span>Tool 오선택과 멀티턴 대화의 문맥 누락이 답변 품질과 비용에 영향을 줬습니다.</span></span>
+              <span class="project-registry__cell"><small>판단</small><span>Agent 역할을 분리하고, 질문별 Tool 후보와 관련 대화만 문맥에 남겼습니다.</span></span>
+              <span class="project-registry__verify"><strong>42% → 79%</strong><small>Tool 선택 정확도 · 별도 멀티턴 평가 8/15 → 13/15</small></span>
               <span class="project-registry__arrow" aria-hidden="true">↗</span>
             </button>
             <button class="project-registry__row" type="button" data-project-id="defapi" aria-label="defAPI 상세 케이스 스터디 열기" onclick="openProject('defapi')">
               <span class="project-registry__project"><small>02 / SECURITY WORKFLOW</small><strong>defAPI</strong><em>Security Scan · Repair Workflow</em></span>
-              <span class="project-registry__cell"><small>Problem</small><span>Semgrep·Trivy·CodeQL의 결과 형식이 달라 후속 분석 흐름이 분기됐습니다.</span></span>
-              <span class="project-registry__cell"><small>Decision</small><span>Scanner wrapper와 공통 Finding schema를 두어 결과 정규화 경계를 만들었습니다.</span></span>
-              <span class="project-registry__verify"><strong>3 scanners · 5 fixtures</strong><small>회귀 케이스 검증 · 개선 수치 미주장</small></span>
+              <span class="project-registry__cell"><small>문제</small><span>Semgrep·Trivy·CodeQL의 결과 형식이 달라 후속 분석 흐름이 분기됐습니다.</span></span>
+              <span class="project-registry__cell"><small>판단</small><span>Scanner wrapper와 공통 Finding schema를 두어 결과 정규화 경계를 만들었습니다.</span></span>
+              <span class="project-registry__verify"><strong>3종 · 5건</strong><small>스캐너 연결 · 보안 수정 평가 사례</small></span>
               <span class="project-registry__arrow" aria-hidden="true">↗</span>
             </button>
             <button class="project-registry__row" type="button" data-project-id="folio" aria-label="Folio 상세 케이스 스터디 열기" onclick="openProject('folio')">
               <span class="project-registry__project"><small>03 / DOCUMENT INTELLIGENCE</small><strong>Folio</strong><em>Document Analysis · OCR</em></span>
-              <span class="project-registry__cell"><small>Problem</small><span>PDF·이미지별 추출 결과 차이가 분석 파이프라인을 복잡하게 했습니다.</span></span>
-              <span class="project-registry__cell"><small>Decision</small><span>공통 token schema로 입력을 정규화하고 독립 분석 요청을 병렬화했습니다.</span></span>
+              <span class="project-registry__cell"><small>문제</small><span>PDF·이미지별 추출 결과 차이가 분석 파이프라인을 복잡하게 했습니다.</span></span>
+              <span class="project-registry__cell"><small>판단</small><span>공통 token schema로 입력을 정규화하고 독립 분석 요청을 병렬화했습니다.</span></span>
               <span class="project-registry__verify"><strong>40.57s → 22.339s</strong><small>응답 시간 · Prompt token 1,588 → 959</small></span>
+              <span class="project-registry__arrow" aria-hidden="true">↗</span>
+            </button>
+            <button class="project-registry__row" type="button" data-project-id="practice-parallelism" aria-label="Parallelism Lab 상세 실험 기록 열기" onclick="openProject('practice-parallelism')">
+              <span class="project-registry__project"><small>04 / SERVING LAB</small><strong>Parallelism Lab</strong><em>Qwen3-4B · FSDP · vLLM</em></span>
+              <span class="project-registry__cell"><small>문제</small><span>전체 파인튜닝 DDP는 optimizer 단계에서 메모리 부족이 났고, 병렬화 방식별 서빙 성능도 확인이 필요했습니다.</span></span>
+              <span class="project-registry__cell"><small>판단</small><span>FSDP로 학습 상태를 분산하고, vLLM에서는 같은 요청 조건으로 TP 구성을 비교했습니다.</span></span>
+              <span class="project-registry__verify"><strong>18.78 GiB</strong><small>FSDP 학습 peak · 로컬 실험, 운영 지표 아님</small></span>
               <span class="project-registry__arrow" aria-hidden="true">↗</span>
             </button>
           </div>
         </div>
-        <p class="source-note">검증 수치는 각 프로젝트 기록의 평가 방식과 함께 상세 페이지에서 확인할 수 있습니다. defAPI는 비교 전후 수치가 없어 성능 향상을 주장하지 않습니다.</p>
+        <p class="source-note">수치는 각 상세 페이지에 측정 조건과 한계를 함께 적었습니다. defAPI는 비교 전후 성능 수치가 없으며, Parallelism Lab 결과는 실험 환경에서만 확인했습니다.</p>
       </section>
 
       <section id="home-notes" class="home-chapter" aria-labelledby="notes-title">
@@ -1421,13 +1430,13 @@
 
       <div class="case-study-layout">
         <aside class="case-study-nav animate-slide-up" aria-label="프로젝트 상세 목차">
-          <button onclick="scrollProjectDetail('detail-overview-section')"><span>01</span> Overview</button>
-          <button onclick="scrollProjectDetail('detail-case-study')"><span>02</span> Case study</button>
-          <button onclick="scrollProjectDetail('detail-implementation')"><span>03</span> Core build</button>
-          <button onclick="scrollProjectDetail('detail-architecture')"><span>04</span> Architecture</button>
-          <button onclick="scrollProjectDetail('detail-technical-choice')"><span>05</span> Tech choice</button>
-          <button onclick="scrollProjectDetail('detail-evaluation')"><span>06</span> Evaluation</button>
-          <button onclick="scrollProjectDetail('detail-troubleshooting')"><span>07</span> Troubleshooting</button>
+          <button onclick="scrollProjectDetail('detail-overview-section')"><span>01</span> 요약</button>
+          <button onclick="scrollProjectDetail('detail-case-study')"><span>02</span> 프로젝트 맥락</button>
+          <button onclick="scrollProjectDetail('detail-implementation')"><span>03</span> 구현</button>
+          <button onclick="scrollProjectDetail('detail-architecture')"><span>04</span> 구조</button>
+          <button onclick="scrollProjectDetail('detail-technical-choice')"><span>05</span> 기술 선택</button>
+          <button onclick="scrollProjectDetail('detail-evaluation')"><span>06</span> 평가</button>
+          <button onclick="scrollProjectDetail('detail-troubleshooting')"><span>07</span> 문제 해결</button>
         </aside>
 
         <article class="case-study-main animate-slide-up">
@@ -1450,21 +1459,21 @@
 
           <section id="detail-case-study" class="case-study-section">
             <div class="case-section-heading">
-              <h2 id="detail-case-study-title">문제 해결 사례</h2>
+              <h2 id="detail-case-study-title">프로젝트 맥락</h2>
             </div>
             <div id="detail-sections" class="case-story-list"></div>
           </section>
 
           <section id="detail-implementation" class="case-study-section hidden">
             <div class="case-section-heading">
-              <h2>Implementation</h2>
+              <h2>구현</h2>
             </div>
             <div id="detail-implementation-grid" class="case-implementation-grid"></div>
           </section>
 
           <section id="detail-architecture" class="case-study-section">
             <div class="case-section-heading">
-              <h2>System Architecture</h2>
+              <h2>구조</h2>
             </div>
             <div id="detail-architecture-flow" class="case-architecture-flow"></div>
 
@@ -1573,21 +1582,21 @@
 
           <section id="detail-technical-choice" class="case-study-section">
             <div class="case-section-heading">
-              <h2>Technical Decision</h2>
+              <h2>기술 선택</h2>
             </div>
             <div id="detail-technical-choice-content" class="case-choice-grid"></div>
           </section>
 
           <section id="detail-evaluation" class="case-study-section">
             <div class="case-section-heading">
-              <h2>Evaluation</h2>
+              <h2>평가</h2>
             </div>
             <div id="detail-metrics" class="case-metrics"></div>
           </section>
 
           <section id="detail-troubleshooting" class="case-study-section">
             <div class="case-section-heading">
-              <h2>Troubleshooting</h2>
+              <h2>문제 해결</h2>
             </div>
             <div id="detail-troubleshooting-list" class="case-troubleshooting-list"></div>
           </section>
@@ -1775,7 +1784,12 @@
       folio: {
         short: 'AI 기반 포트폴리오 분석 서비스',
         overview: 'PDF 또는 이미지 포트폴리오를 업로드하면 AI가 구조, 기술 스택, 프로젝트 설명, 강점과 부족한 점을 분석해 개선 방향을 제안하는 팀 프로젝트입니다. 저는 FastAPI 기반 AI Server / Backend를 담당했습니다.',
-        stack: ['FastAPI', 'OpenAI API', 'pdfplumber', 'EasyOCR', 'Pydantic', 'Structured Output', 'Python'],
+        projectProfile: [
+          { label: '해결 과제', title: '서로 다른 파일 입력과 긴 응답 시간', description: '포트폴리오를 점검받고 싶은 학생·주니어 개발자가 PDF나 이미지를 업로드하면 분석 결과를 돌려주는 서비스입니다. 파일마다 텍스트 추출 방식이 달랐고, 여러 분석을 순차 실행해 응답이 길어졌습니다.' },
+          { label: '직접 맡은 일', title: 'AI Server / Backend', description: 'PDF 파싱·OCR 입력을 공통 token 구조로 변환하고, 분석 프롬프트와 Pydantic 응답 모델, 오류 처리, 프론트엔드 연동 API를 구현했습니다. 전체 웹 서비스는 3인 팀의 결과입니다.' },
+          { label: '검증 범위', title: '팀 시연과 제한된 성능 측정', description: '기록된 전후 응답 시간과 프롬프트 문자열 기준 token을 비교했습니다. 테스트 요청 4회는 모두 성공했지만, 이 수치로 운영 장애율이나 분석 품질의 향상을 주장하지 않습니다.' }
+        ],
+        stack: ['Python', 'FastAPI', 'pdfplumber', 'EasyOCR', 'Pydantic'],
         metrics: ['PDF / PNG / JPG 입력을 { page, tokens: [{ text, bbox }] } 구조로 표준화', '분석 기능을 분리하고 병렬 처리해 전체 응답 시간 40.57초 -> 22.339초로 비교', '프롬프트 문자열 기준 토큰 1,588 -> 959로 측정', '테스트 요청 4회 실패 0건, p95 latency 23.781초 기록'],
         chartGroups: [
           {
@@ -1788,8 +1802,8 @@
           },
           {
             title: 'Prompt token 기록 · 낮을수록 적음',
-            note: '프로젝트 기록에 남은 프롬프트 문자열 기준 값입니다.',
-            stages: ['병렬화 전', '병렬화 후'],
+            note: '프로젝트 기록에 남은 프롬프트 문자열 기준 값입니다. 병렬화만의 효과로 해석하지 않습니다.',
+            stages: ['초기 기록', '개선 기록'],
             metrics: [
               { label: 'Prompt token', unit: 'token', values: [1588, 959], displayValues: ['1,588', '959'] }
             ]
@@ -1801,12 +1815,17 @@
           { label: '기록된 P95', value: '23.781초' }
         ],
         repoUrl: 'https://github.com/Folio-Ai-project',
-        sourceNote: '첨부된 노션 PDF의 프로젝트 기록을 기준으로 작성했습니다. 조직 저장소는 현재 GitHub 인증이 없어 코드 원문까지 확인하지 못했습니다.',
+        sourceNote: '성능 수치는 프로젝트 측정 기록을, 구현 범위는 로컬 ai_server 코드를 기준으로 정리했습니다. 운영 트래픽과 모델 답변 품질에 대한 검증값은 포함하지 않았습니다.',
         role: 'AI Server / Backend',
         period: '2026.01.13 — 2026.04.16',
         team: '3명',
-        highlights: ['PDF·이미지 입력을 하나의 token schema로 표준화', '분석 요청을 분리·병렬화해 응답 시간 40.57초 → 22.339초', '프롬프트 문자열 기준 token 1,588 → 959', 'Pydantic Structured Output으로 분석 응답 계약 고정'],
+        highlights: ['PDF·이미지 입력을 공통 token schema와 Pydantic 응답 계약으로 연결', '분석 요청을 병렬화한 기록에서 응답 시간 40.57초 → 22.339초', '프롬프트 문자열 기준 token 1,588 → 959 · 분석 품질 평가는 별도 필요'],
         architecture: ['PDF / Image', 'PDF Parser / OCR', 'Layout Block Normalizer', 'Structured LLM Analysis', 'Consulting API', 'Frontend'],
+        coreImplementation: [
+          { title: '파일별 추출 결과를 표준화', description: 'PDF는 pdfplumber, 이미지는 EasyOCR로 처리하고 페이지·텍스트·좌표를 공통 token 구조로 변환했습니다. 이후 분석 계층은 파일 종류에 따른 분기를 줄일 수 있었습니다.', flow: 'PDF / Image → text + bbox → common tokens' },
+          { title: '분석 응답 계약을 고정', description: '프롬프트에서 요구하는 분석 결과를 Pydantic Structured Output으로 검증하고, 파싱 실패와 모델 응답 오류를 API 예외로 분리했습니다.', flow: 'Normalized input → LLM → Pydantic response' },
+          { title: '독립 분석을 병렬 실행', description: '리뷰·역량 평가·로드맵·기업 추천 요청을 분리해 서버에서 동시에 처리했습니다. 사용자에게 반환하는 응답 구조는 프론트엔드 연동 API에서 유지했습니다.', flow: 'Independent analyses → concurrent execution → API response' }
+        ],
         technicalChoice: {
           question: '서로 다른 파일 형식을 어떻게 하나의 분석 흐름으로 연결할 것인가?',
           hypothesis: 'PDF와 이미지의 추출 방식은 달라도, 페이지·텍스트·좌표를 공통 token contract로 정규화하면 이후의 레이아웃 복원과 LLM 분석은 파일 형식에 의존하지 않을 것이라고 판단했습니다.',
@@ -1814,7 +1833,7 @@
             { title: '파일 유형별 Prompt 분기', description: '빠르게 구현할 수 있지만 PDF와 이미지마다 분석 규칙과 예외 처리가 갈라져 후속 기능 추가와 테스트 범위가 커집니다.' },
             { title: '공통 Token Schema + Structured Output', description: '추출 방식은 pdfplumber와 EasyOCR로 분리하되, 이후 단계는 같은 token 구조와 Pydantic 응답 계약을 사용합니다.' }
           ],
-          selection: '입력 형식의 차이는 파싱 계층에만 남기고, 분석 계층에는 공통 contract를 전달하는 방식을 선택했습니다. 그 결과 분석 기능을 독립 요청으로 분리해 병렬화할 수 있었고, 응답 형식도 프론트엔드에서 예측 가능하게 유지했습니다.'
+          selection: '입력 형식의 차이는 파싱 계층에만 남기고, 분석 계층에는 공통 contract를 전달하는 방식을 선택했습니다. 이후 분석 기능을 독립 요청으로 분리해 병렬화하고, 응답 형식은 프론트엔드에서 예측 가능하게 유지했습니다.'
         },
         troubleshooting: [{
           title: '분석 요청 병렬화로 응답 지연 개선',
@@ -1822,7 +1841,7 @@
           hypothesis: '리뷰·역량 평가·로드맵·기업 추천을 하나의 LLM 요청에서 순차적으로 생성하는 구조가 전체 지연의 주요 원인이라고 판단했습니다.',
           decision: '한 번의 거대한 컨설팅 응답을 유지하는 대신, 사용자가 필요로 하는 분석 단위를 독립 요청으로 나누고 서버에서 동시에 처리하기로 했습니다.',
           implementation: 'PDF parser와 OCR 결과를 공통 token 구조로 만든 뒤, 기능별 분석 요청을 분리해 병렬 실행했습니다. 응답은 Pydantic Structured Output으로 고정하고, 파일 파싱 및 분석 오류는 API 예외 흐름으로 분리했습니다.',
-          verification: '같은 방식으로 전후를 비교했을 때 전체 응답 시간은 40.57초에서 22.339초로 감소했고, 프롬프트 문자열 기준 token은 1,588에서 959로 줄었습니다. 첨부된 기록에는 테스트 4회 중 실패 0건과 p95 latency 23.781초도 남아 있습니다.',
+          verification: '프로젝트 기록의 전체 응답 시간은 40.57초에서 22.339초로 감소했습니다. 별도로 프롬프트 문자열 기준 token은 1,588에서 959로 줄었습니다. 두 변화가 모두 병렬화만의 효과라고 주장하지 않습니다. 테스트 4회 중 실패 0건과 p95 latency 23.781초도 기록했습니다.',
           limitation: '현재 검증은 응답 시간과 schema 안정성에 집중되어 있습니다. 분석 품질 자체를 주장하려면 포트폴리오 평가셋, 평가 기준, 사람 검토 결과를 별도로 설계해야 합니다.'
         }],
         sections: {
@@ -1836,10 +1855,15 @@
         }
       },
       defapi: {
-        order: '03',
+        order: '02',
         short: '서로 다른 보안 스캐너를 하나의 검증 흐름으로 묶은 MVP',
         overview: '로컬 코드 또는 디렉터리를 Semgrep, Trivy, CodeQL로 스캔하고 결과를 공통 Finding 모델로 정규화한 뒤, 보고서와 repair/review 단계를 연결하는 FastAPI 기반 보안 분석 MVP입니다.',
-        stack: ['Python', 'FastAPI', 'Pydantic', 'LangGraph', 'FastMCP', 'Semgrep', 'Trivy', 'CodeQL'],
+        projectProfile: [
+          { label: '해결 과제', title: '이질적인 스캔 결과를 하나의 분석 흐름으로', description: '코드 스캔을 요청하는 사용자가 스캐너별 원본 형식을 몰라도 결과와 수정 제안을 확인할 수 있도록 만든 MVP입니다. Semgrep·Trivy·CodeQL의 출력과 실패 상태를 공통 계약으로 묶어야 했습니다.' },
+          { label: '직접 맡은 일', title: 'API·Scanner Wrapper·Agent 흐름', description: 'FastAPI 엔드포인트, scanner wrapper, Finding 모델, LangGraph의 scan→report→repair→review 흐름, 단위 테스트와 평가 fixture를 구성했습니다.' },
+          { label: '검증 범위', title: '3종 스캐너와 5개 평가 사례', description: '정상·실패 흐름을 FakeScanner와 FailingLLM으로 검증하고 취약 코드 fixture 5개를 마련했습니다. 기준선 대비 탐지 정확도나 운영 성능을 측정한 결과는 없습니다.' }
+        ],
+        stack: ['Python', 'FastAPI', 'Pydantic', 'LangGraph', 'FastMCP'],
         metrics: ['Semgrep results, Trivy vulnerabilities/misconfigurations, CodeQL SARIF를 공통 Finding 모델로 변환', 'tests/test_agents.py에서 scanner, repair, review agent의 정상 및 실패 흐름 확인', 'eval/eval.py에 command injection 등 보안 수정 케이스 5개 구성', '수치적 개선 여부: 기존 대비 전후 점수나 성능 비교가 없어 확인 불가', 'scanner CLI 미설치 시 전체 실패 대신 skipped 상태로 보고'],
         chartGroups: [{
           title: '구현·검증 범위',
@@ -1852,8 +1876,13 @@
           footnote: '기존 대비 전후 점수·성능 비교는 기록되어 있지 않아 개선 그래프를 만들지 않았습니다.'
         }],
         role: 'AI / Backend Engineer',
-        highlights: ['Semgrep·Trivy·CodeQL 출력을 공통 Finding schema로 정규화', 'scanner 실행 실패를 skipped / failed 상태로 보존', 'scan → report → repair → review workflow 설계', '취약 코드 5개 evaluation fixture와 agent 단위 테스트 구성'],
+        highlights: ['Semgrep·Trivy·CodeQL 출력을 공통 Finding schema로 정규화', '스캐너 실패를 skipped / failed 상태로 보존하고 후속 Agent 흐름 검증', '취약 코드 평가 사례 5개 구성 · 개선 전후 성능 수치는 미측정'],
         architecture: ['Code Input', 'Scanner Wrappers', 'Finding Normalizer', 'LangGraph Workflow', 'Report / Review API'],
+        coreImplementation: [
+          { title: '스캐너별 차이를 wrapper에 격리', description: '공통 실행 경계에서 timeout·stdout/stderr·상태를 처리하고 Semgrep·Trivy·CodeQL마다 command와 결과 parser만 달리했습니다.', flow: 'Scanner CLI → wrapper → execution status' },
+          { title: 'Finding으로 내부 계약 통일', description: '스캐너의 JSON·SARIF 결과를 Pydantic Finding으로 정규화했습니다. 보고서·수정 제안 단계가 원본 스캐너 형식에 직접 의존하지 않게 했습니다.', flow: 'JSON / SARIF → Finding → report' },
+          { title: '실패도 결과로 반환', description: 'LangGraph가 scan→report→repair→review를 연결합니다. CLI가 없거나 LLM 요청이 실패해도 skipped·failed 상태와 원인을 보존해 후속 결과를 해석할 수 있게 했습니다.', flow: 'scan → report → repair → review' }
+        ],
         technicalChoice: {
           question: 'Scanner마다 다른 원본 출력을 API와 Agent가 어떻게 함께 사용할 것인가?',
           hypothesis: 'Semgrep JSON, Trivy 취약점·misconfiguration 결과, CodeQL SARIF를 공통 Finding 모델로 먼저 정규화하면 이후 report·repair·review 단계가 특정 scanner 형식에 묶이지 않을 것이라고 판단했습니다.',
@@ -1936,11 +1965,11 @@
         icon: 'lucide:route',
         overview: '사용자의 자연어 요청을 받아 노트 검색·답변, 퀴즈 생성, 메모리 저장·조회, 분석으로 연결하는 LLM Agent 시스템입니다. Tool 오선택과 함께, 멀티턴 대화에서 과거 퀴즈·사용자 조건이 최종 답변까지 유지되지 않고 불필요한 문맥이 토큰 비용을 키우는 문제를 개선했습니다.',
         projectProfile: [
-          { label: '프로젝트 목적', title: '자연어 요청을 작업으로 연결', description: '노트 검색과 답변, 퀴즈 생성, 메모리 저장·조회, 분석 기능을 하나의 LLM Agent에서 사용할 수 있도록 구성했습니다.' },
-          { label: '사용 흐름', title: '요청 이해부터 결과 확인까지', description: '사용자 요청을 바탕으로 실행할 기능을 선택하고, 계획과 실행 결과를 검증한 뒤 답변으로 돌려주는 흐름입니다.' },
-          { label: '팀과 담당 역할', title: '4인 팀 · AI Engineer / AI Lead', description: 'Agent 파이프라인과 요청별 Tool 선택 구조를 개선하고, 멀티턴 문맥을 선별·압축하는 Context Manager를 적용했습니다.' }
+          { label: '해결 과제', title: 'Tool 오선택과 대화 문맥 누락', description: '사용자의 노트 검색·답변, 퀴즈, 메모리 요청을 하나의 Agent가 처리했습니다. Planner가 7개 Tool을 항상 받아 판단하면서 일정·퀴즈, 메모리·일반 대화 사이에 오선택이 발생했고 긴 대화의 과거 조건도 답변에서 빠졌습니다.' },
+          { label: '직접 맡은 일', title: '4인 팀 · AI Engineer / AI Lead', description: 'Agent의 역할 기반 파이프라인과 요청별 Tool 노출 범위를 개선했습니다. Context Manager에서 질문 관련 이력 선택, token 예산, Tool 결과 압축을 적용하고 각각의 평가 기준을 기록했습니다. 노트·퀴즈 서비스는 팀 구현 범위입니다.' },
+          { label: '검증 범위', title: 'Tool 라우팅과 멀티턴을 별도로 평가', description: 'Tool 선택 정확도와 Task 성공률은 Agent 평가에서 비교했습니다. 멀티턴은 고정 사례 15건을 각 한 번 실행했고 실제 DB 검색과 LLM Planner는 제외했습니다. 운영 트래픽의 성공률·비용으로 환산하지 않습니다.' }
         ],
-        stack: ['Multi-Agent', 'Tool Calling', 'Context Management', 'FastAPI', 'Route', 'Policy', 'Planner', 'Validator', 'Critic', 'Memory'],
+        stack: ['Python', 'LangGraph', 'FastAPI', 'Context Management'],
         metrics: ['평가 통과율 42.0% → 75.0%, Tool 선택 정확도 42.0% → 79.0%', 'Task 성공률 63.0% → 88.0%, 응답 성공률 63.0% → 86.0%', 'Planner 코드 643줄 → 198줄로 69.2% 감소, 요청별 노출 Tool 7개 → 2~3개', '전체 추정 token 80,581 → 15,945로 80.2% 감소, 평균 805.8 → 159.5', '멀티턴 15건 답변 기준 충족 53.3% → 86.7%, 입력 token 45.7% 감소', '멀티턴 답변 호출 추정 비용 $0.003921 → $0.002675 (31.8% 감소)', '잘못된 인자 비율 0%, Hard-gate 통과율 98.0%', 'Tool pipeline P50 1.07ms → 1.90ms, context eval P50 1,596ms → 1,225ms (각기 다른 평가)'],
         chartGroups: [
           {
@@ -2017,7 +2046,7 @@
         sourceNote: '평가 보고서: <a href="https://github.com/soshinbalun/gotion/blob/beta/docs/agent-context-live-eval.md" target="_blank" rel="noopener noreferrer">멀티턴 문맥 실측 보고서 ↗</a>. Planner schema 입력량은 문자 수 ÷ 4 추정치이고, 멀티턴 문맥 평가는 모델 응답에서 보고한 실제 token 사용량입니다. 두 token 지표는 산정 방식이 다릅니다.',
         role: 'AI Engineer / AI Lead',
         team: '4명',
-        highlights: ['Tool 선택 정확도 42.0% → 79.0%, 평가 통과율 42.0% → 75.0%', '멀티턴 평가 15건 답변 기준 충족 53.3% → 86.7%', '멀티턴 입력 token 45.7%, 답변 호출 추정 비용 31.8% 감소', 'Planner 역할을 분리해 코드량 643줄 → 198줄', '요청별 Tool schema 축소로 전체 추정 token 80.2% 감소', 'Policy·Validator·Critic으로 실행 전 안전성 검증'],
+        highlights: ['Agent 평가에서 Tool 선택 정확도 42.0% → 79.0%, Task 성공률 63.0% → 88.0%', '별도 멀티턴 15건 평가에서 답변 기준 충족 8/15 → 13/15, 모델 입력 token 45.7% 감소', 'Planner 코드 643줄 → 198줄 · Tool schema 입력량 80.2% 감소는 문자 수 기반 추정치'],
         architecture: ['Route', 'Policy', 'Planner', 'Validator', 'Critic', 'Executor', 'Result Validator', 'Memory'],
         coreImplementation: [
           { title: '의도·정책·계획을 분리', description: 'Route는 intent hint를 만들고 Policy는 요청 범위를 제한합니다. Planner는 허용된 범위에서 실행 계획을 생성해 하나의 prompt에 몰려 있던 책임을 나눴습니다.', flow: 'Request → Route → Policy → Planner' },
@@ -2101,15 +2130,58 @@
       },
       {
         id: 'practice-parallelism',
-        order: '05',
-        title: 'Practice Parallelism',
-        label: 'LLM Systems',
-        short: 'Qwen3-4B를 기준으로 학습 병렬화와 서빙 병목을 비교한 실험 모음',
+        order: '04',
+        title: 'Parallelism Lab',
+        label: 'LLM Serving / GPU Lab',
+        short: 'Qwen3-4B 학습 메모리 한계와 vLLM 서빙 구성을 측정한 개인 실험',
         icon: 'lucide:network',
-        overview: '단일 GPU LoRA부터 DDP, FSDP FULL_SHARD, Tensor Parallel, vLLM 서빙까지 같은 모델을 여러 실행 전략으로 비교하는 실험 저장소입니다.',
-        stack: ['PyTorch', 'Transformers', 'PEFT', 'DDP', 'FSDP', 'Tensor Parallel', 'vLLM'],
-        metrics: ['DDP 2 rank adapter checksum max diff 0.0으로 rank 동기화 확인', 'Qwen3-4B 전체 파인튜닝 DDP는 optimizer.step에서 OOM, FSDP FULL_SHARD는 peak memory 18.78 GiB 기록', 'Tensor Parallel 출력이 bf16 tolerance 0.01 안에 일치', 'vLLM benchmark JSON에 TTFT, p50 latency, throughput을 concurrency별 저장'],
+        overview: 'Qwen3-4B에서 학습 상태 복제로 생기는 GPU 메모리 한계와 vLLM 서빙 구성의 지연·처리량 차이를 직접 측정한 개인 실험입니다. 모델 서빙 플랫폼의 운영 경험이 아닌, 병렬화 전략을 비교하고 실패 원인을 기록한 실험입니다.',
+        projectProfile: [
+          { label: '해결 과제', title: '전체 파인튜닝 OOM과 병렬 서빙의 선택 기준', description: 'Qwen3-4B 전체 파인튜닝은 DDP의 optimizer.step에서 메모리 부족이 발생했습니다. 서빙에서는 GPU 병렬화 구성을 늘리는 것이 항상 처리량을 높이는지 같은 요청 조건으로 확인해야 했습니다.' },
+          { label: '직접 맡은 일', title: '개인 실험 설계·구현', description: 'LoRA·DDP·FSDP·Tensor Parallel 단계별 스크립트와 vLLM OpenAI 호환 API 벤치마크를 구성하고, 메모리·출력 정합성·TTFT·지연·처리량을 JSON으로 남겼습니다.' },
+          { label: '검증 범위', title: '로컬 GPU 실험', description: 'FSDP는 2 rank, 20 step 실행 결과이고 서빙 비교는 동일 모델에 16개 요청·동시성 8을 적용한 기록입니다. GPU 구성과 워크로드가 달라지면 수치가 바뀌며, 실제 서비스의 처리량으로 해석하지 않습니다.' }
+        ],
+        stack: ['Python', 'PyTorch', 'FSDP', 'Tensor Parallel', 'vLLM'],
+        metrics: ['DDP 전체 파인튜닝은 optimizer.step에서 OOM, FSDP FULL_SHARD 2 rank는 20 step 완료', 'FSDP 학습 peak memory 18.78 GiB, DDP OOM 시 allocated memory 43.76 GiB 기록', 'TP1/TP2 vLLM 비교: 16개 요청·동시성 8에서 340.64/283.06 completion tokens/s', 'Tensor Parallel 출력은 bf16 tolerance 0.01 내에서 일치'],
+        chartGroups: [{
+          title: 'vLLM 구성별 단일 실험 · 16개 요청 / 동시성 8',
+          note: '같은 Qwen3-4B 요청 조건에서 TP1과 TP2의 기록값을 비교합니다. 모델 크기와 GPU 구성에 따른 일반적인 우열은 주장하지 않습니다.',
+          stages: ['TP1', 'TP2'],
+          metrics: [
+            { label: 'Completion throughput', unit: 'token/s', values: [340.64, 283.06], displayValues: ['340.64 token/s', '283.06 token/s'] },
+            { label: '요청 지연 p50', unit: '초', values: [1.519, 1.662], displayValues: ['1.519초', '1.662초'] }
+          ],
+          footnote: '각 구성의 benchmark JSON에 기록된 값입니다. 반복 실행 분포와 운영 트래픽은 측정하지 않았습니다.'
+        }],
+        metricStats: [
+          { label: 'DDP 전체 학습', value: 'OOM' },
+          { label: 'FSDP peak', value: '18.78 GiB' },
+          { label: 'FSDP 완료', value: '20 steps' }
+        ],
         repoUrl: 'https://github.com/wkd09/practice_parallelism',
+        sourceNote: '근거: <a href="https://github.com/wkd09/practice_parallelism/blob/main/step3-fsdp/outputs/ddp-full-qwen3-4b/metrics.json" target="_blank" rel="noopener noreferrer">DDP 실패 기록 ↗</a>, <a href="https://github.com/wkd09/practice_parallelism/blob/main/step3-fsdp/outputs/fsdp-full-shard-qwen3-4b/metrics.json" target="_blank" rel="noopener noreferrer">FSDP 실행 기록 ↗</a>, <a href="https://github.com/wkd09/practice_parallelism/blob/main/step5-vllm-serving/outputs/benchmark_tp1.json" target="_blank" rel="noopener noreferrer">TP1 ↗</a>·<a href="https://github.com/wkd09/practice_parallelism/blob/main/step5-vllm-serving/outputs/benchmark_tp2.json" target="_blank" rel="noopener noreferrer">TP2 ↗</a> 벤치마크. 학습 메모리와 서빙 처리량을 합쳐 개선율을 계산하지 않았습니다.',
+        role: '실험 설계·구현',
+        team: '개인 실험',
+        highlights: ['DDP 전체 파인튜닝 OOM 이후 FSDP FULL_SHARD 2 rank로 20 step 완료', 'FSDP 학습 peak memory 18.78 GiB 기록', 'vLLM 16개 요청·동시성 8에서 TP1 340.64, TP2 283.06 completion tokens/s'],
+        architecture: ['Qwen3-4B', '학습 DDP·FSDP / 서빙 vLLM TP1·TP2', '메모리·요청 부하 측정', '조건별 metrics JSON'],
+        coreImplementation: [
+          { title: '학습 메모리 병목 확인', description: 'DDP 전체 파인튜닝이 optimizer.step에서 OOM으로 끝난 위치와 메모리 사용량을 저장했습니다. 같은 모델을 FSDP FULL_SHARD 2 rank로 실행해 shard 기반 대안을 확인했습니다.', flow: 'DDP OOM → FSDP FULL_SHARD → 20 steps' },
+          { title: '분산 실행 정합성 확인', description: 'DDP LoRA rank 간 adapter checksum과 Tensor Parallel의 bf16 출력 오차를 확인해 실행 성공 외에 결과의 일치 여부도 기록했습니다.', flow: 'rank checksum / TP output tolerance' },
+          { title: '서빙 구성별 병목 측정', description: 'vLLM OpenAI 호환 API에 같은 수의 요청을 보내고 TP1·TP2의 TTFT, p50 지연, completion tokens/s를 JSON에 저장했습니다.', flow: '16 requests × concurrency 8 → metrics JSON' }
+        ],
+        technicalChoice: {
+          question: 'DDP 전체 파인튜닝이 optimizer 단계에서 메모리 부족으로 멈출 때 어떤 구조를 선택할 것인가?',
+          hypothesis: '모델과 optimizer 상태를 각 rank가 복제하는 DDP에서는 4B 모델의 전체 학습이 메모리 한계에 걸릴 수 있다고 판단했습니다.',
+          alternatives: [
+            { title: 'DDP 전체 파인튜닝 유지', description: '구현은 단순하지만 이번 실행에서는 AdamW optimizer.step에서 메모리 부족이 발생했습니다.' },
+            { title: 'FSDP FULL_SHARD', description: '학습 상태를 rank에 나눠 보관해 메모리 압박을 낮추는 대신 통신과 설정 복잡성이 늘어납니다.' }
+          ],
+          selection: '동일 모델의 전체 학습을 계속하기 위해 FSDP FULL_SHARD를 선택했습니다. 2 rank에서 20 step을 마쳤고 peak memory 18.78 GiB를 기록했습니다. 서빙에서는 TP2가 TP1보다 느린 실험값을 확인해 병렬화 정도를 높이는 선택을 별도로 검증했습니다.'
+        },
+        troubleshooting: [
+          { title: 'DDP 전체 파인튜닝의 optimizer 단계 OOM', observation: 'Qwen3-4B의 DDP 전체 파인튜닝은 AdamW optimizer.step에서 OOM으로 종료됐고, 당시 할당 메모리는 43.76 GiB였습니다.', hypothesis: '각 rank의 모델·gradient·optimizer 상태 복제가 메모리 한계를 넘는다고 보았습니다.', decision: '기존 DDP 실행을 기준선으로 남기고 학습 상태를 분산하는 FSDP FULL_SHARD로 바꿨습니다.', implementation: '2 rank에서 같은 모델로 20 step을 실행하고 학습 peak memory와 처리량을 metrics.json에 기록했습니다.', verification: 'FSDP 실행은 20 step을 완료했고 기록된 peak training memory는 18.78 GiB입니다.', limitation: 'DDP OOM 시점의 할당량과 FSDP 전체 학습 peak는 같은 방식의 성능 개선율로 비교할 수 없습니다. 다른 GPU·배치에서 재측정이 필요합니다.' },
+          { title: 'TP2가 TP1보다 느린 서빙 결과', observation: 'vLLM의 16개 요청·동시성 8 실험에서 TP1의 처리량 340.64 completion tokens/s보다 TP2의 283.06 tokens/s가 낮았습니다.', hypothesis: '작은 모델과 제한된 요청 부하에서는 병렬화 통신 비용이 계산 이득보다 클 수 있다고 보았습니다.', decision: 'GPU 수만 보고 구성을 고르지 않고 동일 요청 조건에서 처리량과 지연을 함께 비교했습니다.', implementation: 'TP1·TP2에 같은 벤치마크 스크립트를 적용하고 p50 지연과 completion tokens/s를 JSON으로 저장했습니다.', verification: 'p50 지연은 TP1 1.519초, TP2 1.662초로 기록됐습니다. 이번 설정에서는 TP1이 두 지표에서 앞섰습니다.', limitation: '단일 실험 결과이며 GPU 구성·입출력 길이·동시성을 바꾸면 결론이 달라질 수 있습니다. 운영 환경의 가용성이나 비용은 측정하지 않았습니다.' }
+        ],
         sections: {
           Overview: '모델 크기와 요청량이 커질 때 어떤 병렬화 전략을 선택해야 하는지 코드와 실행 기록으로 비교한 학습 프로젝트입니다.',
           Problem: '단일 GPU 학습은 메모리 한계에 부딪히고, 분산 학습은 속도만 높이면 되는 것이 아니라 rank 간 파라미터 일치와 출력 정합성을 함께 확인해야 합니다. 서빙에서는 batch와 concurrency에 따라 latency와 throughput의 trade-off가 달라집니다.',
@@ -2311,7 +2383,7 @@
       }
     ];
 
-    const featuredProjectIds = new Set(['folio', 'gotion-agent', 'defapi']);
+    const featuredProjectIds = new Set(['folio', 'gotion-agent', 'defapi', 'practice-parallelism']);
     const projects = [...legacyProjects, ...projectAdditions]
       .map(project => ({ ...project, ...(projectOverrides[project.id] || {}) }))
       .filter(project => featuredProjectIds.has(project.id))
@@ -2577,10 +2649,10 @@
       if (!project) return;
 
       document.getElementById('detail-icon').setAttribute('icon', project.icon);
-      document.getElementById('detail-kicker').textContent = `${project.order} / Case Study`;
+      document.getElementById('detail-kicker').textContent = `${project.order} / ${project.id === 'practice-parallelism' ? '실험 기록' : '프로젝트 기록'}`;
       document.getElementById('detail-title').textContent = project.title;
       document.getElementById('detail-overview').textContent = project.overview;
-      document.getElementById('detail-case-study-title').textContent = project.projectProfile ? '프로젝트 소개' : '문제 해결 사례';
+      document.getElementById('detail-case-study-title').textContent = project.projectProfile ? '프로젝트 맥락' : '문제 해결 사례';
 
       document.getElementById('detail-header-stack').innerHTML = project.stack.map(item => `<span class="badge">${item}</span>`).join('');
       document.getElementById('detail-meta').innerHTML = [
@@ -2608,7 +2680,7 @@
       implementationGrid.classList.toggle('has-four-cards', implementationItems.length === 4);
       implementationGrid.innerHTML = implementationItems.map((item, index) => `
         <article class="case-implementation-card">
-          <p class="case-implementation-card__index">${String(index + 1).padStart(2, '0')} / BUILD</p>
+          <p class="case-implementation-card__index">${String(index + 1).padStart(2, '0')} / 구현</p>
           <h3>${item.title}</h3>
           <p>${item.description}</p>
           ${item.flow ? `<span class="case-implementation-card__flow">${item.flow}</span>` : ''}
@@ -2628,10 +2700,10 @@
           ${(choice.alternatives || []).map(option => `<div class="case-choice-option"><strong>${option.title}</strong><p>${option.description}</p></div>`).join('')}
         </div>
         <div class="case-choice-conclusion">
-          <h3>Selection</h3>
+          <h3>선택 이유</h3>
           <p>${choice.selection}</p>
         </div>
-        ${choice.tokenNote ? `<div class="case-choice-conclusion"><h3>Token Accounting</h3><p>${choice.tokenNote}</p></div>` : ''}
+        ${choice.tokenNote ? `<div class="case-choice-conclusion"><h3>토큰 산정</h3><p>${choice.tokenNote}</p></div>` : ''}
       ` : '';
 
       const troubleshooting = document.getElementById('detail-troubleshooting');
